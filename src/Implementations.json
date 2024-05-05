@@ -58,8 +58,7 @@
     [
         [["RST", "PRAM1"]],
         [
-            ["SET", "zero", "0"],
-            ["SET", "PRAM1", "zero"]
+            ["SET", "PRAM1", "0"],
         ]
     ],
     "Copy":
