@@ -11,8 +11,9 @@ nameToMnemonic = {}
 mnemonicToName = {}
 nameToClass = {}
 nameToImplementations:dict[str, list[list[tuple[str, list[str]] | "str"] | str]] = {}
-
-classFiles = [f for f in os.listdir(pathlib.Path("src\instructions")) if os.path.isfile(pathlib.Path("src\instructions" + "/"+f))]
+src = pathlib.Path("src")
+instructions_path = src / 'instructions'
+classFiles = [f for f in os.listdir(instructions_path) if os.path.isfile(instructions_path / f)]
 for className in classFiles:
     className = className[0:-3]
     module = importlib.import_module("instructions." + className)
@@ -33,7 +34,7 @@ def getMnemonic(name: str):
 def getClass(name: str) -> type[Instruction]:
     return nameToClass[name]
 
-with open(pathlib.Path("src/Costs.json")) as f:
+with open(src / 'Costs.json') as f:
     nameToCost: dict[str, float] = json.load(f)
 
 @staticmethod
@@ -42,7 +43,7 @@ def getCost(name: str):
         return None
     return nameToCost[name]
 
-with open(pathlib.Path("src/Implementations.json")) as f:
+with open(pathlib.Path(src / 'Implementations.json')) as f:
     implementations: dict[str, list[list[tuple[str, list]]]] = json.load(f)
     for name in implementations.keys():
         nameToImplementations[name] = []
@@ -81,34 +82,35 @@ def getBestCost(instructionName:str, context:list[Instruction], usedInstructions
             if bestCost == None or bestCost >= cost:
                 bestCost = cost
                 bestSource = copy(implementation)
-        else:
-            canDoImplementation = True
-            for opp in implementation:
-                if opp[0] in usedInstructions:
-                    canDoImplementation = False
-                    break
-            if canDoImplementation:
-                cost = 0
-                source:list = []
-                for opp in implementation:
-                    oppSource, oppCost = getBestCost(opp[0], context + source, usedInstructions + [opp[0]])
-                    for oppCommand in oppSource:
-                        prams = oppCommand[1]
-                        for i in range(len(prams)):
-                            pram = prams[i]
-                            if pram[0:4] == "PRAM" and pram[4:len(pram)].isnumeric():
-                                prams[i] = opp[1][int(pram[4:len(pram)])-1]
-                    if type(oppSource) == str:
-                        source.append(oppSource)
-                    else:
-                        source.extend(oppSource)
-                    cost += oppCost
-                    if bestCost != None and cost >= bestCost:
-                        canDoImplementation = False
-                        break
-                if (bestCost == None or bestCost > cost) and canDoImplementation:
-                    bestCost = cost
-                    bestSource = source
+            continue
+        canDoImplementation = True
+        for opp in implementation:
+            if opp[0] in usedInstructions:
+                canDoImplementation = False
+                break
+        if not canDoImplementation:
+            continue
+        cost = 0
+        source:list = []
+        for opp in implementation:
+            oppSource, oppCost = getBestCost(opp[0], context + source, usedInstructions + [opp[0]])
+            for oppCommand in oppSource:
+                prams = oppCommand[1]
+                for i in range(len(prams)):
+                    pram = prams[i]
+                    if pram[0:4] == "PRAM" and pram[4:len(pram)].isnumeric():
+                        prams[i] = opp[1][int(pram[4:len(pram)])-1]
+            if type(oppSource) == str:
+                source.append(oppSource)
+            else:
+                source.extend(oppSource)
+            cost += oppCost
+            if bestCost != None and cost >= bestCost:
+                canDoImplementation = False
+                break
+        if (bestCost == None or bestCost > cost) and canDoImplementation:
+            bestCost = cost
+            bestSource = source
     if bestCost == None:
         print("could not find cost for instruction " + instructionName)
     return deepcopy(bestSource), bestCost

@@ -23,13 +23,50 @@
         ]
     ],
     "Jump If":[[["JMIF", "PRAM1", "PRAM2"]]],
+    "Jump If Not":[[["JMNIF", "PRAM1", "PRAM2"]]],
+    "Jump If Zero":
+    [
+        [["JMZ", "PRAM1", "PRAM2"]],
+        [
+            ["RST", "zero"],
+            ["CCPY", "carrySave"],
+            ["NEQU", "PRAM2", "zero"],
+            ["JMIF", "isNotZero", "Carry"],
+            ["BOOL", "carrySave"],
+            ["JMP", "PRAM1"],
+            [".isNotZero"],
+            ["BOOL", "carrySave"]
+        ]
+    ],
+    "Jump If Not Zero":
+    [
+        [["JMNZ", "PRAM1", "PRAM2"]],
+        [
+            ["RST", "zero"],
+            ["CCPY", "carrySave"],
+            ["EQU", "PRAM2", "zero"],
+            ["JMIF", "isZero", "Carry"],
+            ["BOOL", "carrySave"],
+            ["JMP", "PRAM1"],
+            [".isZero"],
+            ["BOOL", "carrySave"]
+        ]
+    ],
     "Label":[[[".", "PRAM1"]]],
     "Set":[[["SET", "PRAM1", "PRAM2"]]],
+    "Reset":
+    [
+        [["RST", "PRAM1"]],
+        [
+            ["SET", "zero", "0"],
+            ["SET", "PRAM1", "zero"]
+        ]
+    ],
     "Copy":
     [
         [["CPY", "PRAM1", "PRAM2"]],
         [
-            ["SET", "zero", "0"],
+            ["RST", "zero"],
             ["ADD", "PRAM1", "zero", "PRAM2"]
         ],
         [
@@ -43,7 +80,7 @@
         [
             ["SET", "PRAM1", "1"],
             ["JMIF", "CarryOn", "Carry"],
-            ["SET", "PRAM1", "0"],
+            ["RST", "PRAM1"],
             [".CarryOn"]
         ]
     ],
@@ -53,6 +90,12 @@
         [
             ["CCPY", "carryVal"],
             ["NOT", "carryVal"]
+        ],
+        [
+            ["RST", "PRAM1"],
+            ["JMIF", "CarryOn", "Carry"],
+            ["SET", "PRAM1", "1"],
+            [".CarryOn"]
         ]
     ],
     "Equals":
@@ -128,7 +171,26 @@
     "Nand":[[["NAND", "PRAM1", "PRAM2"]]],
     "Nor":[[["NOR", "PRAM1", "PRAM2"]]],
     "Xnor":[[["XNOR", "PRAM1", "PRAM2"]]],
-    "Not":[[["NOT", "PRAM1"]]],
+    "Not":
+    [
+        [["NOT", "PRAM1"]],
+        [
+            ["RST", "zero"],
+            ["EQU", "PRAM1", "zero"]
+        ]
+    ],
+    "Bool":
+    [
+        [["BOOL", "PRAM1"]],
+        [
+            ["RST", "zero"],
+            ["NEQU", "PRAM1", "zero"]
+        ],
+        [
+            ["NOT", "PRAM1"],
+            ["CNOT"]
+        ]
+    ],
     "Add":[[["ADD", "PRAM1", "PRAM2"]]],
     "Sub":[[["SUB", "PRAM1", "PRAM2"]]],
     "MultiplyLow": [[["MLL", "PRAM1", "PRAM2"]]]
