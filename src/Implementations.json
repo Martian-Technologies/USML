@@ -1,0 +1,135 @@
+{
+    "Halt":
+    [
+        [["HLT"]],
+        [
+            [".Halt"],
+            ["JMP", "Halt"]
+        ]
+    ],
+    "No Operation":
+    [
+        [["NOP"]],
+        [
+            ["JMP", "NoOperation"],
+            [".NoOperation"]
+        ]
+    ],
+    "Jump":
+    [
+        [["JMP", "PRAM1"]],
+        [
+            ["JMIF", "PRAM1", "1"]
+        ]
+    ],
+    "Jump If":[[["JMIF", "PRAM1", "PRAM2"]]],
+    "Label":[[[".", "PRAM1"]]],
+    "Set":[[["SET", "PRAM1", "PRAM2"]]],
+    "Copy":
+    [
+        [["CPY", "PRAM1", "PRAM2"]],
+        [
+            ["SET", "zero", "0"],
+            ["ADD", "PRAM1", "zero", "PRAM2"]
+        ],
+        [
+            ["SET", "one", "1"],
+            ["MLL", "PRAM1", "one", "PRAM2"]
+        ]
+    ],
+    "Carry Copy":
+    [
+        [["CCPY", "PRAM1"]],
+        [
+            ["SET", "PRAM1", "1"],
+            ["JMIF", "CarryOn", "Carry"],
+            ["SET", "PRAM1", "0"],
+            [".CarryOn"]
+        ]
+    ],
+    "Carry Not":
+    [
+        [["CNOT"]],
+        [
+            ["CCPY", "carryVal"],
+            ["NOT", "carryVal"]
+        ]
+    ],
+    "Equals":
+    [
+        [["EQU", "PRAM1", "PRAM2"]],
+        [
+            ["NEQU", "PRAM1", "PRAM2"],
+            ["CNOT", "CARRY"]
+        ]
+    ],
+    "Not Equals":
+    [
+        [["NEQU", "PRAM1", "PRAM2"]],
+        [
+            ["EQU", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ]
+    ],
+    "Greater":
+    [
+        [["GRT", "PRAM1", "PRAM2"]],
+        [
+            ["LOE", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ]
+    ],
+    "Less":
+    [
+        [["LES", "PRAM1", "PRAM2"]],
+        [
+            ["GOE", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ]
+    ],
+    "Greater Or Equal":
+    [
+        [["GOE", "PRAM1", "PRAM2"]],
+        [
+            ["LES", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ],
+        [
+            ["GRT", "PRAM1", "PRAM2"],
+            ["CCPY", "greaterOutput"],
+            ["EQU", "PRAM1", "PRAM2"],
+            ["OR", "greaterOutput", "CARRY"]
+        ]
+    ],
+    "Less Or Equal":
+    [
+        [["LOE", "PRAM1", "PRAM2"]],
+        [
+            ["GRT", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ],
+        [
+            ["LES", "PRAM1", "PRAM2"],
+            ["CCPY", "lessOutput"],
+            ["EQU", "PRAM1", "PRAM2"],
+            ["OR", "lessOutput", "CARRY"]
+        ]
+    ],
+    "And":
+    [
+        [["AND", "PRAM1", "PRAM2"]],
+        [
+            ["NOR", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ]
+    ],
+    "Or":[[["OR", "PRAM1", "PRAM2"]]],
+    "Xor":[[["XOR", "PRAM1", "PRAM2"]]],
+    "Nand":[[["NAND", "PRAM1", "PRAM2"]]],
+    "Nor":[[["NOR", "PRAM1", "PRAM2"]]],
+    "Xnor":[[["XNOR", "PRAM1", "PRAM2"]]],
+    "Not":[[["NOT", "PRAM1"]]],
+    "Add":[[["ADD", "PRAM1", "PRAM2"]]],
+    "Sub":[[["SUB", "PRAM1", "PRAM2"]]],
+    "MultiplyLow": [[["MLL", "PRAM1", "PRAM2"]]]
+}
