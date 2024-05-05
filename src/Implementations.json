@@ -22,34 +22,69 @@
             ["JMIF", "PRAM1", "1"]
         ]
     ],
-    "Jump If":[[["JMIF", "PRAM1", "PRAM2"]]],
-    "Jump If Not":[[["JMNIF", "PRAM1", "PRAM2"]]],
-    "Jump If Zero":
+    "Jump If":
     [
-        [["JMZ", "PRAM1", "PRAM2"]],
-        [
-            ["RST", "zero"],
-            ["CCPY", "carrySave"],
-            ["NEQU", "PRAM2", "zero"],
-            ["JMIF", "isNotZero", "Carry"],
-            ["BOOL", "carrySave"],
-            ["JMP", "PRAM1"],
-            [".isNotZero"],
-            ["BOOL", "carrySave"]
-        ]
-    ],
-    "Jump If Not Zero":
-    [
-        [["JMNZ", "PRAM1", "PRAM2"]],
+        [["JMIF", "PRAM1", "PRAM2"]],
         [
             ["RST", "zero"],
             ["CCPY", "carrySave"],
             ["EQU", "PRAM2", "zero"],
-            ["JMIF", "isZero", "Carry"],
+            ["CCPY", "notPram2"],
+            ["BOOL", "carrySave"],
+            ["JMIFN", "PRAM1", "notPram2"]
+        ],
+        [
+            ["CCPY", "carrySave"],
+            ["BOOL", "PRAM2"],
+            ["JFC", "IsNotZero"],
             ["BOOL", "carrySave"],
             ["JMP", "PRAM1"],
-            [".isZero"],
+            [".IsNotZero"],
             ["BOOL", "carrySave"]
+        ]
+    ],
+    "Jump If Not":[
+        [["JMIFN", "PRAM1", "PRAM2"]],
+        [
+            ["RST", "zero"],
+            ["CCPY", "carrySave"],
+            ["EQU", "PRAM2", "zero"],
+            ["CCPY", "notPram2"],
+            ["BOOL", "carrySave"],
+            ["JFNC", "PRAM1", "notPram2"]
+        ],
+        [
+            ["CCPY", "carrySave"],
+            ["NOT", "PRAM2"],
+            ["JFC", "IsZero"],
+            ["BOOL", "carrySave"],
+            ["JMP", "PRAM1"],
+            [".IsZero"],
+            ["BOOL", "carrySave"]
+        ]
+    ],
+    "Jump If Carry":
+    [
+        [["JFC", "PRAM1"]],
+        [
+            ["CNOT"],
+            ["JFNC", "PRAM1"]
+        ],
+        [
+            ["CCPY", "carryValue"],
+            ["JMIF", "PRAM1", "carryValue"]
+        ]
+    ],
+    "Jump If Not Carry":
+    [
+        [["JFNC", "PRAM1"]],
+        [
+            ["CNOT"],
+            ["JFC", "PRAM1"]
+        ],
+        [
+            ["CCPY", "carryValue"],
+            ["JMIFN", "PRAM1", "carryValue"]
         ]
     ],
     "Label":[[[".", "PRAM1"]]],
@@ -78,7 +113,7 @@
         [["CCPY", "PRAM1"]],
         [
             ["SET", "PRAM1", "1"],
-            ["JMIF", "CarryOn", "Carry"],
+            ["JFC", "CarryOn"],
             ["RST", "PRAM1"],
             [".CarryOn"]
         ]
@@ -92,7 +127,7 @@
         ],
         [
             ["RST", "PRAM1"],
-            ["JMIF", "CarryOn", "Carry"],
+            ["JFC", "CarryOn"],
             ["SET", "PRAM1", "1"],
             [".CarryOn"]
         ]

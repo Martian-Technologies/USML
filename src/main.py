@@ -1,2 +1,2 @@
 import lookUp
-print(lookUp.getBestCost("Jump If Zero", ["LABEL"]))
+print(lookUp.getBestCost("Jump If", []))
