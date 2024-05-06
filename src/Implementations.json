@@ -20,18 +20,18 @@
         [["JMP", "PRAM1"]],
         [
             ["JMIF", "PRAM1", "1"]
+        ],
+        [
+            ["JMIFN", "PRAM1", "0"]
         ]
     ],
     "Jump If":
     [
         [["JMIF", "PRAM1", "PRAM2"]],
         [
-            ["RST", "zero"],
-            ["CCPY", "carrySave"],
-            ["EQU", "PRAM2", "zero"],
-            ["CCPY", "notPram2"],
-            ["BOOL", "carrySave"],
-            ["JMIFN", "PRAM1", "notPram2"]
+            ["JMIFN", "DontDoJump", "PRAM2"],
+            ["JMP", "PRAM1"],
+            [".DontDoJump"]
         ],
         [
             ["CCPY", "carrySave"],
@@ -46,17 +46,14 @@
     "Jump If Not":[
         [["JMIFN", "PRAM1", "PRAM2"]],
         [
-            ["RST", "zero"],
-            ["CCPY", "carrySave"],
-            ["EQU", "PRAM2", "zero"],
-            ["CCPY", "notPram2"],
-            ["BOOL", "carrySave"],
-            ["JFNC", "PRAM1", "notPram2"]
+            ["JMIF", "DontDoJump", "PRAM2"],
+            ["JMP", "PRAM1"],
+            [".DontDoJump"]
         ],
         [
             ["CCPY", "carrySave"],
-            ["NOT", "PRAM2"],
-            ["JFC", "IsZero"],
+            ["BOOL", "PRAM2"],
+            ["JFNC", "IsZero"],
             ["BOOL", "carrySave"],
             ["JMP", "PRAM1"],
             [".IsZero"],
@@ -67,8 +64,9 @@
     [
         [["JFC", "PRAM1"]],
         [
-            ["CNOT"],
-            ["JFNC", "PRAM1"]
+            ["JFNC", "DontDoJump"],
+            ["JMP", "PRAM1"],
+            [".DontDoJump"]
         ],
         [
             ["CCPY", "carryValue"],
@@ -79,8 +77,9 @@
     [
         [["JFNC", "PRAM1"]],
         [
-            ["CNOT"],
-            ["JFC", "PRAM1"]
+            ["JFC", "DontDoJump"],
+            ["JMP", "PRAM1"],
+            [".DontDoJump"]
         ],
         [
             ["CCPY", "carryValue"],
@@ -196,11 +195,17 @@
     [
         [["AND", "PRAM1", "PRAM2"]],
         [
+            ["NAND", "PRAM1", "PRAM2"],
+            ["CNOT"]
+        ]
+    ],
+    "Or":[
+        [["OR", "PRAM1", "PRAM2"]],
+        [
             ["NOR", "PRAM1", "PRAM2"],
             ["CNOT"]
         ]
     ],
-    "Or":[[["OR", "PRAM1", "PRAM2"]]],
     "Xor":[[["XOR", "PRAM1", "PRAM2"]]],
     "Nand":[[["NAND", "PRAM1", "PRAM2"]]],
     "Nor":[[["NOR", "PRAM1", "PRAM2"]]],
@@ -211,6 +216,10 @@
         [
             ["RST", "zero"],
             ["EQU", "PRAM1", "zero"]
+        ],
+        [
+            ["BOOL", "PRAM1"],
+            ["CNOT"]
         ]
     ],
     "Bool":

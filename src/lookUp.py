@@ -91,7 +91,7 @@ with open(pathlib.Path(src / 'Implementations.json')) as f:
                     nameToImplementations[name][-1].append(
                         (
                             "Label",
-                            instructionData[0][1:len(instructionData[0])]
+                            [instructionData[0][1 : len(instructionData[0])]]
                             )
                         )
                 else:
@@ -113,7 +113,7 @@ def getImplementations(name:str) -> list[list[tuple[str, list[str]]]] | None:
     Returns:
         implementations (list): All the possible implementations of the instruction
     """
-    if name == "Defalt" or name not in nameToImplementations.keys:
+    if name == "Defalt" or name not in nameToImplementations.keys():
         return None
     return nameToImplementations[name]
 
@@ -131,7 +131,9 @@ def getBestCost(instructionName:str, context:list[str], usedInstructions:list[st
         (float): The cost of that implementation
     """
     if usedInstructions == None:
-        usedInstructions = []
+        usedInstructions = [instructionName]
+    else:
+        usedInstructions.append(instructionName)
     bestCost:float = None
     bestSource:list[tuple[str, list[str]]] = {}
     for implementation in getImplementations(instructionName):
@@ -151,7 +153,10 @@ def getBestCost(instructionName:str, context:list[str], usedInstructions:list[st
         cost = 0
         source:list = []
         for opp in implementation:
-            oppSource, oppCost = getBestCost(opp[0], context + source, usedInstructions + [opp[0]])
+            oppSource, oppCost = getBestCost(opp[0], context + source, copy(usedInstructions))
+            if oppCost == None:
+                canDoImplementation = False
+                break
             for oppCommand in oppSource:
                 prams = oppCommand[1]
                 for i in range(len(prams)):

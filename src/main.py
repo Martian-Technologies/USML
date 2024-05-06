@@ -1,2 +1,2 @@
 import lookUp
-print(lookUp.getBestCost("Jump If", []))
+print(lookUp.getBestCost("Less", []))
