@@ -1,2 +1,2 @@
 import lookUp
-print(lookUp.getBestCost("Less", []))
+print(lookUp.getBestCost("Add", []))

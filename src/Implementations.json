@@ -234,7 +234,33 @@
             ["CNOT"]
         ]
     ],
-    "Add":[[["ADD", "PRAM1", "PRAM2"]]],
-    "Sub":[[["SUB", "PRAM1", "PRAM2"]]],
+    "Bit Shift Left":
+    [
+        [["BSL", "PRAM1", "PRAM2"]],
+        [["ADD", "PRAM1", "PRAM1", "PRAM2"]]
+    ],
+    "Bit Shift Left With Carry":
+    [
+        [["BSLC", "PRAM1", "PRAM2"]],
+        [["ADDC", "PRAM1", "PRAM1", "PRAM2"]]
+    ],
+    "Bit Shift Right":
+    [
+        [["BSR", "PRAM1", "PRAM2"]]
+    ],
+    "Bit Shift Right With Carry":
+    [
+        [["BSRC", "PRAM1", "PRAM2"]]
+    ],
+    "Increment": [
+        [["INC", "PRAM1", "PRAM2"]],
+        [
+            ["SET", "one", "1"],
+            ["ADD", "PRAM1", "one", "PRAM2"]
+        ]
+    ],
+    "Add":[[["ADD", "PRAM1", "PRAM2", "PRAM3"]]],
+    "Add With Carry": [[["ADDC", "PRAM1", "PRAM2", "PRAM3"]]],
+    "Sub":[[["SUB", "PRAM1", "PRAM2", "PRAM3"]]],
     "MultiplyLow": [[["MLL", "PRAM1", "PRAM2"]]]
 }
