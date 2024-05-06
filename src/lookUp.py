@@ -10,7 +10,7 @@ from instructions.instruction import Instruction
 nameToMnemonic = {}
 mnemonicToName = {}
 nameToClass = {}
-nameToImplementations:dict[str, list[list[tuple[str, list[str]] | "str"] | str]] = {}
+nameToImplementations:dict[str, list[list[tuple[str, list[str]]]]] = {}
 src = pathlib.Path("src")
 instructions_path = src / 'instructions'
 classFiles = [f for f in os.listdir(instructions_path) if os.path.isfile(instructions_path / f)]
@@ -23,15 +23,42 @@ for className in classFiles:
     nameToClass[classObj.name] = classObj
 
 @staticmethod
-def getName(mnemonic: str):
+def getName(mnemonic: str) -> str:
+    """
+    Used to get the name of the instruction associated with the mnemonic (mnemonic)
+
+    Args:
+        mnemonic (str): The mnemonic associated instruction
+
+    Returns:
+        name str: The name of the instruction
+    """
     return mnemonicToName[mnemonic]
 
 @staticmethod
 def getMnemonic(name: str):
+    """
+    Used to get the mnemonic associated with the instruction named (name)
+
+    Args:
+        name (str): The name of the instruction
+
+    Returns:
+        mnemonic (str): The mnemonic associated instruction
+    """
     return nameToMnemonic[name]
 
 @staticmethod
 def getClass(name: str) -> type[Instruction]:
+    """
+    Used to get the class of the instruction named (name)
+
+    Args:
+        name (str): The name of the instruction
+
+    Returns:
+        class (type[Instruction]): The class of the instruction
+    """
     return nameToClass[name]
 
 with open(src / 'Costs.json') as f:
@@ -39,12 +66,22 @@ with open(src / 'Costs.json') as f:
 
 @staticmethod
 def getCost(name: str):
+    """
+    Used to get the cost of the instruction named (name)\n
+    Costs are definded in "Cost.json"
+
+    Args:
+        name (str): The name of the instruction
+
+    Returns:
+        cost (float): The cost of the instruction
+    """
     if name == "Defalt":
         return None
     return nameToCost[name]
 
 with open(pathlib.Path(src / 'Implementations.json')) as f:
-    implementations: dict[str, list[list[tuple[str, list]]]] = json.load(f)
+    implementations: dict[str, list[list[list[str]]]] = json.load(f)
     for name in implementations.keys():
         nameToImplementations[name] = []
         for implementation in implementations[name]:
@@ -66,12 +103,33 @@ with open(pathlib.Path(src / 'Implementations.json')) as f:
                     )
 
 @staticmethod
-def getImplementations(name):
-    if name == "Defalt":
+def getImplementations(name:str) -> list[list[tuple[str, list[str]]]] | None:
+    """
+    Used to get all the possible implementations of an instruction named (name)
+
+    Args:
+        name (str): The name of the instruction
+
+    Returns:
+        implementations (list): All the possible implementations of the instruction
+    """
+    if name == "Defalt" or name not in nameToImplementations.keys:
         return None
     return nameToImplementations[name]
 
-def getBestCost(instructionName:str, context:list[Instruction], usedInstructions:list[str] = None) -> tuple[list[str] | str, float]:
+def getBestCost(instructionName:str, context:list[str], usedInstructions:list[str] = None) -> tuple[list[tuple[str, list[str]]], float]:
+    """
+    Used to get the best possible implementation of an instruction named (name) in the given context (context)
+
+    Args:
+        instructionName (str): The name of the instruction
+        context (idk what this will be): The context the command is used in. This is for more complex cost functions that need to know what other commands are around this one.
+        usedInstructions (list[str]): Used when running recusively to stop circular implementations. Defaults to None.
+
+    Returns:
+        (list): The best possible implementation of the instruction
+        (float): The cost of that implementation
+    """
     if usedInstructions == None:
         usedInstructions = []
     bestCost:float = None

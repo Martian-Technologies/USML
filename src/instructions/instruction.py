@@ -9,6 +9,9 @@ class Instruction:
 
     @staticmethod
     def getCostIfAdded(instructionName, context):
+        """
+        gets the cost if this instruction is added in this contex
+        """
         return lookUp.getCost(instructionName)
 
 import lookUp
