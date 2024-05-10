@@ -141,7 +141,7 @@ def getBestCost(instructionName:str, context:list[str], usedInstructions:list[st
             cost = getClass(instructionName).getCostIfAdded(instructionName, context)
             if bestCost == None or bestCost >= cost:
                 bestCost = cost
-                bestSource = copy(implementation)
+                bestSource = deepcopy(implementation)
             continue
         canDoImplementation = True
         for opp in implementation:

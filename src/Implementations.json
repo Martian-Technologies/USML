@@ -119,7 +119,7 @@
     ],
     "Carry Not":
     [
-        [["CNOT"]],
+        [["CNOT", "CARRY"]],
         [
             ["CCPY", "carryVal"],
             ["NOT", "carryVal"]
@@ -144,7 +144,7 @@
         [["NEQU", "PRAM1", "PRAM2"]],
         [
             ["EQU", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Greater":
@@ -152,7 +152,7 @@
         [["GRT", "PRAM1", "PRAM2"]],
         [
             ["LOE", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Less":
@@ -160,7 +160,7 @@
         [["LES", "PRAM1", "PRAM2"]],
         [
             ["GOE", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Greater Or Equal":
@@ -168,7 +168,7 @@
         [["GOE", "PRAM1", "PRAM2"]],
         [
             ["LES", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ],
         [
             ["GRT", "PRAM1", "PRAM2"],
@@ -182,7 +182,7 @@
         [["LOE", "PRAM1", "PRAM2"]],
         [
             ["GRT", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ],
         [
             ["LES", "PRAM1", "PRAM2"],
@@ -196,14 +196,14 @@
         [["AND", "PRAM1", "PRAM2"]],
         [
             ["NAND", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Or":[
         [["OR", "PRAM1", "PRAM2"]],
         [
             ["NOR", "PRAM1", "PRAM2"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Xor":[[["XOR", "PRAM1", "PRAM2"]]],
@@ -219,7 +219,7 @@
         ],
         [
             ["BOOL", "PRAM1"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Bool":
@@ -231,7 +231,7 @@
         ],
         [
             ["NOT", "PRAM1"],
-            ["CNOT"]
+            ["CNOT", "CARRY"]
         ]
     ],
     "Bit Shift Left":

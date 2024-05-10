@@ -1,2 +1,2 @@
 import lookUp
-print(lookUp.getBestCost("Add", []))
+print(lookUp.getBestCost("Carry Not", []))
