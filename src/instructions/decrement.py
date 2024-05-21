@@ -1,9 +1,9 @@
 from pram.pram import Pram
 from instructions import instruction
 
-class Set(instruction.Instruction):
-    name = "Set"
-    mnemonic = "SET"
+class Decrement(instruction.Instruction):
+    name =  "Decrement"
+    mnemonic = "DEC"
     
     def __init__(self):
         super().__init__()
@@ -15,4 +15,14 @@ class Set(instruction.Instruction):
         raise Exception("Failed running instruction {name}")
 
     def getImplementations(self):
-        return [[["SET", "PRAM1", "PRAM2"]]]
+        return [
+            [["DEC", "PRAM1", "PRAM2"]],
+            [
+                ["SET", "one", "1"],
+                ["DECI", "PRAM1", "PRAM2", "one"]
+            ],
+            [
+                ["SET", "one", "1"],
+                ["ADD", "PRAM1", "one", "PRAM2"]
+            ]
+        ]

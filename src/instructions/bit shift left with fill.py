@@ -1,9 +1,9 @@
 from pram.pram import Pram
 from instructions import instruction
 
-class Set(instruction.Instruction):
-    name = "Set"
-    mnemonic = "SET"
+class BitShiftLeftWithFill(instruction.Instruction):
+    name = "Bit Shift Left With Fill"
+    mnemonic = "BSLF"
     
     def __init__(self):
         super().__init__()
@@ -15,4 +15,9 @@ class Set(instruction.Instruction):
         raise Exception("Failed running instruction {name}")
 
     def getImplementations(self):
-        return [[["SET", "PRAM1", "PRAM2"]]]
+        return [
+            [["BSLF", "PRAM1", "PRAM2", "PRAM3"]],
+            [
+                ["BSROF", "PRAM1", "PRAM2", "none", "PRAM3"]
+            ]
+        ]

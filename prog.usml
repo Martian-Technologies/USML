@@ -1,0 +1,7 @@
+SET a 0
+SET b 1
+SET d 10
+.again
+ADD a b a
+NEQU d a c
+JMIF again c
