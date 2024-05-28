@@ -1,4 +1,4 @@
-from pram.pram import Pram
+from param.param import Param
 from instructions import instruction
 
 class Bool(instruction.Instruction):
@@ -8,21 +8,21 @@ class Bool(instruction.Instruction):
     def __init__(self):
         super().__init__()
 
-    def setPram(self, pramNumber:int, pram:Pram):
-        raise Exception("Failed adding pram {pram} at {pramNumber}. Defalt instruction has no prams")
+    def setParam(self, paramNumber:int, param:Param):
+        raise Exception(f"Failed adding param {param} at {paramNumber}. Defalt instruction has no params")
 
     def run(self):
-        raise Exception("Failed running instruction {name}")
+        raise Exception(f"Failed running instruction {self.name}")
 
     def getImplementations(self):
         return [
-            [["BOOL", "PRAM1", "PRAM2"]],
+            [["BOOL", "PARAM1", "PARAM2"]],
             [
                 ["RST", "zero"],
-                ["NEQU", "PRAM1", "zero", "PRAM2"]
+                ["NEQU", "PARAM1", "zero", "PARAM2"]
             ],
             [
-                ["NOT", "PRAM1", "PRAM2"],
-                ["NOT", "PRAM2", "PRAM2"]
+                ["NOT", "PARAM1", "PARAM2"],
+                ["NOT", "PARAM2", "PARAM2"]
             ]
         ]

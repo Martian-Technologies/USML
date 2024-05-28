@@ -1,4 +1,4 @@
-from pram.pram import Pram
+from param.param import Param
 from instructions import instruction
 
 class Jump(instruction.Instruction):
@@ -8,21 +8,21 @@ class Jump(instruction.Instruction):
     def __init__(self):
         super().__init__()
 
-    def setPram(self, pramNumber:int, pram:Pram):
-        raise Exception("Failed adding pram {pram} at {pramNumber}. Defalt instruction has no prams")
+    def setParam(self, paramNumber:int, param:Param):
+        raise Exception(f"Failed adding param {param} at {paramNumber}. Defalt instruction has no params")
 
     def run(self):
-        raise Exception("Failed running instruction {name}")
+        raise Exception(f"Failed running instruction {self.name}")
 
     def getImplementations(self):
         return [
-            [["JMP", "PRAM1"]],
+            [["JMP", "PARAM1"]],
             [
                 ["SET", "one", "1"],
-                ["JMIF", "PRAM1", "one"]
+                ["JMIF", "PARAM1", "one"]
             ],
             [
                 ["RST", "zero"],
-                ["JMIFN", "PRAM1", "zero"]
+                ["JMIFN", "PARAM1", "zero"]
             ]
         ]

@@ -1,4 +1,4 @@
-from pram.pram import Pram
+from param.param import Param
 from instructions import instruction
 
 class BitShiftLeftWithOverflow(instruction.Instruction):
@@ -8,17 +8,17 @@ class BitShiftLeftWithOverflow(instruction.Instruction):
     def __init__(self):
         super().__init__()
 
-    def setPram(self, pramNumber:int, pram:Pram):
-        raise Exception("Failed adding pram {pram} at {pramNumber}. Defalt instruction has no prams")
+    def setParam(self, paramNumber:int, param:Param):
+        raise Exception(f"Failed adding param {param} at {paramNumber}. Defalt instruction has no params")
 
     def run(self):
-        raise Exception("Failed running instruction {name}")
+        raise Exception(f"Failed running instruction {self.name}")
 
     def getImplementations(self):
         return [
-            [["BSLO", "PRAM1", "PRAM2", "PRAM3"]],
+            [["BSLO", "PARAM1", "PARAM2", "PARAM3"]],
             [
                 ["RST", "zero"],
-                ["BSROF", "PRAM1", "PRAM2", "PRAM3", "zero"]
+                ["BSROF", "PARAM1", "PARAM2", "PARAM3", "zero"]
             ]
         ]

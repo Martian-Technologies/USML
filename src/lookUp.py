@@ -152,11 +152,11 @@ class LookUp:
     #                 canDoImplementation = False
     #                 break
     #             for oppCommand in oppSource:
-    #                 prams = oppCommand[1]
-    #                 for i in range(len(prams)):
-    #                     pram = prams[i]
-    #                     if pram[0:4] == "PRAM" and pram[4:len(pram)].isnumeric():
-    #                         prams[i] = opp[1][int(pram[4:len(pram)])-1]
+    #                 params = oppCommand[1]
+    #                 for i in range(len(params)):
+    #                     param = params[i]
+    #                     if param[0:4] == "PARAM" and param[4:len(param)].isnumeric():
+    #                         params[i] = opp[1][int(param[4:len(param)])-1]
     #             if type(oppSource) == str:
     #                 source.append(oppSource)
     #             else:

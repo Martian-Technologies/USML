@@ -17,223 +17,223 @@
     ],
     "Jump":
     [
-        [["JMP", "PRAM1"]],
+        [["JMP", "PARAM1"]],
         [
             ["SET", "one", "1"],
-            ["JMIF", "PRAM1", "one"]
+            ["JMIF", "PARAM1", "one"]
         ],
         [
             ["RST", "zero"],
-            ["JMIFN", "PRAM1", "zero"]
+            ["JMIFN", "PARAM1", "zero"]
         ]
     ],
     "Jump If":
     [
-        [["JMIF", "PRAM1", "PRAM2"]],
+        [["JMIF", "PARAM1", "PARAM2"]],
         [
-            ["JMIFN", "DontDoJump", "PRAM2"],
-            ["JMP", "PRAM1"],
+            ["JMIFN", "DontDoJump", "PARAM2"],
+            ["JMP", "PARAM1"],
             [".DontDoJump"]
         ]
     ],
     "Jump If Not":[
-        [["JMIFN", "PRAM1", "PRAM2"]],
+        [["JMIFN", "PARAM1", "PARAM2"]],
         [
-            ["JMIF", "DontDoJump", "PRAM2"],
-            ["JMP", "PRAM1"],
+            ["JMIF", "DontDoJump", "PARAM2"],
+            ["JMP", "PARAM1"],
             [".DontDoJump"]
         ]
     ],
-    "Label":[[[".", "PRAM1"]]],
-    "Set":[[["SET", "PRAM1", "PRAM2"]]],
+    "Label":[[[".", "PARAM1"]]],
+    "Set":[[["SET", "PARAM1", "PARAM2"]]],
     "Reset":
     [
-        [["RST", "PRAM1"]],
+        [["RST", "PARAM1"]],
         [
-            ["SET", "PRAM1", "0"]
+            ["SET", "PARAM1", "0"]
         ]
     ],
     "Copy":
     [
-        [["CPY", "PRAM1", "PRAM2"]],
+        [["CPY", "PARAM1", "PARAM2"]],
         [
             ["RST", "zero"],
-            ["ADD", "PRAM1", "zero", "PRAM2"]
+            ["ADD", "PARAM1", "zero", "PARAM2"]
         ],
         [
             ["SET", "one", "1"],
-            ["MLL", "PRAM1", "one", "PRAM2"]
+            ["MLL", "PARAM1", "one", "PARAM2"]
         ]
     ],
     "Equals":
     [
-        [["EQU", "PRAM1", "PRAM2", "PRAM3"]],
+        [["EQU", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["NEQU", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["NEQU", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ]
     ],
     "Not Equals":
     [
-        [["NEQU", "PRAM1", "PRAM2", "PRAM3"]],
+        [["NEQU", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["EQU", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["EQU", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ]
     ],
     "Greater":
     [
-        [["GRT", "PRAM1", "PRAM2", "PRAM3"]],
+        [["GRT", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["LOE", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["LOE", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ]
     ],
     "Less":
     [
-        [["LES", "PRAM1", "PRAM2", "PRAM3"]],
+        [["LES", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["GOE", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["GOE", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ]
     ],
     "Greater Or Equal":
     [
-        [["GOE", "PRAM1", "PRAM2", "PRAM3"]],
+        [["GOE", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["LES", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["LES", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ],
         [
-            ["GRT", "PRAM1", "PRAM2", "PRAM3"],
-            ["EQU", "PRAM1", "PRAM2", "isEqu"],
-            ["OR", "PRAM3", "isEqu", "PRAM3"]
+            ["GRT", "PARAM1", "PARAM2", "PARAM3"],
+            ["EQU", "PARAM1", "PARAM2", "isEqu"],
+            ["OR", "PARAM3", "isEqu", "PARAM3"]
         ]
     ],
     "Less Or Equal":
     [
-        [["LOE", "PRAM1", "PRAM2", "PRAM3"]],
+        [["LOE", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["GRT", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["GRT", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ],
         [
-            ["LES", "PRAM1", "PRAM2", "PRAM3"],
-            ["EQU", "PRAM1", "PRAM2", "isEqu"],
-            ["OR", "PRAM3", "isEqu", "PRAM3"]
+            ["LES", "PARAM1", "PARAM2", "PARAM3"],
+            ["EQU", "PARAM1", "PARAM2", "isEqu"],
+            ["OR", "PARAM3", "isEqu", "PARAM3"]
         ]
     ],
     "And":
     [
-        [["AND", "PRAM1", "PRAM2", "PRAM3"]],
+        [["AND", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["NAND", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["NAND", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ]
     ],
     "Or":[
-        [["OR", "PRAM1", "PRAM2", "PRAM3"]],
+        [["OR", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["NOR", "PRAM1", "PRAM2", "PRAM3"],
-            ["NOT", "PRAM3", "PRAM3"]
+            ["NOR", "PARAM1", "PARAM2", "PARAM3"],
+            ["NOT", "PARAM3", "PARAM3"]
         ]
     ],
-    "Xor":[[["XOR", "PRAM1", "PRAM2", "PRAM3"]]],
-    "Nand":[[["NAND", "PRAM1", "PRAM2", "PRAM3"]]],
-    "Nor":[[["NOR", "PRAM1", "PRAM2", "PRAM3"]]],
-    "Xnor":[[["XNOR", "PRAM1", "PRAM2", "PRAM3"]]],
+    "Xor":[[["XOR", "PARAM1", "PARAM2", "PARAM3"]]],
+    "Nand":[[["NAND", "PARAM1", "PARAM2", "PARAM3"]]],
+    "Nor":[[["NOR", "PARAM1", "PARAM2", "PARAM3"]]],
+    "Xnor":[[["XNOR", "PARAM1", "PARAM2", "PARAM3"]]],
     "Not":
     [
-        [["NOT", "PRAM1", "PRAM2"]],
+        [["NOT", "PARAM1", "PARAM2"]],
         [
             ["RST", "zero"],
-            ["EQU", "PRAM1", "zero", "PRAM2"]
+            ["EQU", "PARAM1", "zero", "PARAM2"]
         ],
         [
-            ["BOOL", "PRAM1", "PRAM2"],
-            ["NOT", "PRAM2", "PRAM2"]
+            ["BOOL", "PARAM1", "PARAM2"],
+            ["NOT", "PARAM2", "PARAM2"]
         ]
     ],
     "Bool":
     [
-        [["BOOL", "PRAM1", "PRAM2"]],
+        [["BOOL", "PARAM1", "PARAM2"]],
         [
             ["RST", "zero"],
-            ["NEQU", "PRAM1", "zero", "PRAM2"]
+            ["NEQU", "PARAM1", "zero", "PARAM2"]
         ],
         [
-            ["NOT", "PRAM1", "PRAM2"],
-            ["NOT", "PRAM2", "PRAM2"]
+            ["NOT", "PARAM1", "PARAM2"],
+            ["NOT", "PARAM2", "PARAM2"]
         ]
     ],
     "Bit Shift Left":
     [
-        [["BSL", "PRAM1", "PRAM2"]]
+        [["BSL", "PARAM1", "PARAM2"]]
     ],
     "Bit Shift Left With Overflow":
     [
-        [["BSLO", "PRAM1", "PRAM2", "PRAM3"]],
+        [["BSLO", "PARAM1", "PARAM2", "PARAM3"]],
         [
             ["RST", "zero"],
-            ["BSROF", "PRAM1", "PRAM2", "PRAM3", "zero"]
+            ["BSROF", "PARAM1", "PARAM2", "PARAM3", "zero"]
         ]
     ],
     "Bit Shift Left With Fill":
     [
-        [["BSLF", "PRAM1", "PRAM2", "PRAM3"]],
+        [["BSLF", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["BSROF", "PRAM1", "PRAM2", "none", "PRAM3"]
+            ["BSROF", "PARAM1", "PARAM2", "none", "PARAM3"]
         ]
     ],
     "Bit Shift Left With Overflow And Fill":
     [
-        [["BSLOF", "PRAM1", "PRAM2", "PRAM3", "PRAM4"]]
+        [["BSLOF", "PARAM1", "PARAM2", "PARAM3", "PARAM4"]]
     ],
     "Bit Shift Right":
     [
-        [["BSR", "PRAM1", "PRAM2"]]
+        [["BSR", "PARAM1", "PARAM2"]]
     ],
     "Bit Shift Right With Overflow":
     [
-        [["BSRO", "PRAM1", "PRAM2", "PRAM3"]],
+        [["BSRO", "PARAM1", "PARAM2", "PARAM3"]],
         [
             ["RST", "zero"],
-            ["BSROF", "PRAM1", "PRAM2", "PRAM3", "zero"]
+            ["BSROF", "PARAM1", "PARAM2", "PARAM3", "zero"]
         ]
     ],
     "Bit Shift Right With Fill":
     [
-        [["BSRF", "PRAM1", "PRAM2", "PRAM3"]],
+        [["BSRF", "PARAM1", "PARAM2", "PARAM3"]],
         [
-            ["BSROF", "PRAM1", "PRAM2", "none", "PRAM3"]
+            ["BSROF", "PARAM1", "PARAM2", "none", "PARAM3"]
         ]
     ],
     "Bit Shift Right With Overflow And Fill":
     [
-        [["BSROF", "PRAM1", "PRAM2", "PRAM3", "PRAM4"]]
+        [["BSROF", "PARAM1", "PARAM2", "PARAM3", "PARAM4"]]
     ],
     "Increment": [
-        [["INC", "PRAM1", "PRAM2"]],
+        [["INC", "PARAM1", "PARAM2"]],
         [
             ["SET", "one", "1"],
-            ["ADD", "PRAM1", "one", "PRAM2"]
+            ["ADD", "PARAM1", "one", "PARAM2"]
         ]
     ],
     "Increment If": [
-        [["INCI", "PRAM1", "PRAM2", "PRAM3"]]
+        [["INCI", "PARAM1", "PARAM2", "PARAM3"]]
     ],
     "Decrement": [
-        [["DEC", "PRAM1", "PRAM2"]],
+        [["DEC", "PARAM1", "PARAM2"]],
         [
             ["SET", "one", "1"],
-            ["ADD", "PRAM1", "one", "PRAM2"]
+            ["ADD", "PARAM1", "one", "PARAM2"]
         ]
     ],
     "Decrement If": [
-        [["DECI", "PRAM1", "PRAM2", "PRAM3"]]
+        [["DECI", "PARAM1", "PARAM2", "PARAM3"]]
     ],
-    "Add":[[["ADD", "PRAM1", "PRAM2", "PRAM3"]]],
-    "Add With Carry": [[["ADDC", "PRAM1", "PRAM2", "PRAM3", "PRAM4"]]],
-    "Sub":[[["SUB", "PRAM1", "PRAM2", "PRAM3"]]],
-    "MultiplyLow": [[["MLL", "PRAM1", "PRAM2"]]]
+    "Add":[[["ADD", "PARAM1", "PARAM2", "PARAM3"]]],
+    "Add With Carry": [[["ADDC", "PARAM1", "PARAM2", "PARAM3", "PARAM4"]]],
+    "Sub":[[["SUB", "PARAM1", "PARAM2", "PARAM3"]]],
+    "MultiplyLow": [[["MLL", "PARAM1", "PARAM2"]]]
 }

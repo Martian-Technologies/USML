@@ -1,4 +1,4 @@
-from pram.pram import Pram
+from param.param import Param
 from instructions import instruction
 
 class GreaterOrEqual(instruction.Instruction):
@@ -8,22 +8,22 @@ class GreaterOrEqual(instruction.Instruction):
     def __init__(self):
         super().__init__()
 
-    def setPram(self, pramNumber:int, pram:Pram):
-        raise Exception("Failed adding pram {pram} at {pramNumber}. Defalt instruction has no prams")
+    def setParam(self, paramNumber:int, param:Param):
+        raise Exception(f"Failed adding param {param} at {paramNumber}. Defalt instruction has no params")
 
     def run(self):
-        raise Exception("Failed running instruction {name}")
+        raise Exception(f"Failed running instruction {self.name}")
 
     def getImplementations(self):
         return [
-            [["GOE", "PRAM1", "PRAM2", "PRAM3"]],
+            [["GOE", "PARAM1", "PARAM2", "PARAM3"]],
             [
-                ["LES", "PRAM1", "PRAM2", "PRAM3"],
-                ["NOT", "PRAM3", "PRAM3"]
+                ["LES", "PARAM1", "PARAM2", "PARAM3"],
+                ["NOT", "PARAM3", "PARAM3"]
             ],
             [
-                ["GRT", "PRAM1", "PRAM2", "PRAM3"],
-                ["EQU", "PRAM1", "PRAM2", "isEqu"],
-                ["OR", "PRAM3", "isEqu", "PRAM3"]
+                ["GRT", "PARAM1", "PARAM2", "PARAM3"],
+                ["EQU", "PARAM1", "PARAM2", "isEqu"],
+                ["OR", "PARAM3", "isEqu", "PARAM3"]
             ]
         ]

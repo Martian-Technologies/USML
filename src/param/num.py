@@ -1,6 +1,6 @@
-from pram.pram import Pram
+from param.param import Param
 
-class Num(Pram):
+class Num(Param):
     def __init__(self, value:int):
         self.value = value
 

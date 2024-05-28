@@ -1,6 +1,6 @@
-from pram.pram import Pram
+from param.param import Param
 
-class Var(Pram):
+class Var(Param):
     def __init__(self, name:str, valueRange:tuple[int, int]):
         self.name = name
         self.valueRange = valueRange

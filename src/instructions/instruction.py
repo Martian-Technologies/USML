@@ -1,23 +1,23 @@
 from __future__ import annotations
-from pram.pram import Pram
+from param.param import Param
 
 class Instruction:
     name = "Defalt"
     mnemonic = "Defalt"
     
     def __init__(self):
-        self.prams:list[Pram] = []
+        self.params:list[Param] = []
 
-    def setPram(self, pramNumber:int, pram:Pram):
-        raise Exception("Failed adding pram {pram} at {pramNumber}. Defalt instruction has no prams")
+    def setParam(self, paramNumber:int, param:Param):
+        raise Exception(f"Failed adding param {param} at {paramNumber}. Defalt instruction has no params")
 
-    def getPram(self, pramNumber:int):
-        if pramNumber >= 0 and len(self.prams) > pramNumber:
-            return self.prams[pramNumber]
+    def getParam(self, paramNumber:int):
+        if paramNumber >= 0 and len(self.params) > paramNumber:
+            return self.params[paramNumber]
         return None
 
-    def getPrams(self):
-        return self.prams
+    def getParams(self):
+        return self.params
 
     def run(self):
         raise Exception("Failed running instruction. Can not run defalt instruction")

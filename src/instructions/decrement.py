@@ -1,4 +1,4 @@
-from pram.pram import Pram
+from param.param import Param
 from instructions import instruction
 
 class Decrement(instruction.Instruction):
@@ -8,21 +8,21 @@ class Decrement(instruction.Instruction):
     def __init__(self):
         super().__init__()
 
-    def setPram(self, pramNumber:int, pram:Pram):
-        raise Exception("Failed adding pram {pram} at {pramNumber}. Defalt instruction has no prams")
+    def setParam(self, paramNumber:int, param:Param):
+        raise Exception(f"Failed adding param {param} at {paramNumber}. Defalt instruction has no params")
 
     def run(self):
-        raise Exception("Failed running instruction {name}")
+        raise Exception(f"Failed running instruction {self.name}")
 
     def getImplementations(self):
         return [
-            [["DEC", "PRAM1", "PRAM2"]],
+            [["DEC", "PARAM1", "PARAM2"]],
             [
                 ["SET", "one", "1"],
-                ["DECI", "PRAM1", "PRAM2", "one"]
+                ["DECI", "PARAM1", "PARAM2", "one"]
             ],
             [
                 ["SET", "one", "1"],
-                ["ADD", "PRAM1", "one", "PRAM2"]
+                ["ADD", "PARAM1", "one", "PARAM2"]
             ]
         ]

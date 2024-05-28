@@ -1,13 +1,13 @@
 from __future__ import annotations
 from collections.abc import Iterable
 from copy import deepcopy
-from pram.pram import Pram
+from param.param import Param
 
 class Context:
     def __init__(self) -> None:
-        self.commands:list[tuple[str, list[Pram]]] = []
+        self.commands:list[tuple[str, list[Param]]] = []
 
-    def addCommand(self, command:tuple[str, list[Pram]], index:int = None):
+    def addCommand(self, command:tuple[str, list[Param]], index:int = None):
         if index == None or index == len(self.commands):
             self.commands.append(deepcopy(command()))
         else:
@@ -24,7 +24,7 @@ class Context:
         if index >= 0 and index < len(self.commands):
             del self.commands[index]
 
-    def getCommand(self, index:int) -> tuple[str, list[Pram]]:
+    def getCommand(self, index:int) -> tuple[str, list[Param]]:
         if index >= 0 and index < len(self.commands):
             return self.commands[index]
         
@@ -33,5 +33,5 @@ class Context:
         newContext.addContext(self)
         return newContext
 
-    def getIter(self) -> Iterable[tuple[str, list[Pram]]]:
+    def getIter(self) -> Iterable[tuple[str, list[Param]]]:
         return self.commands
