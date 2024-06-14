@@ -8,14 +8,11 @@ class USMLRunner:
             assembler = baseAssembler()
 
     def process(self, codeStr:str):
-        code = []
+        code = Context()
         cost = []
         for line in codeStr.splitlines():
             lineData = line.split(" ")
             if lineData[0][0] == ".":
                 lineData = [".", lineData[0][1:len(lineData[0])]]
-            bestLine = lookUp.getBestCost(lookUp.getName(lineData[0]), lineData[1:len(lineData)])
-            cost = bestLine[1]
-            code.extend(bestLine[0])
-        for line in code:
-            print(line)
+            code.addCommand(lineData)
+        print(code)
