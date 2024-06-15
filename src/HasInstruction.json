@@ -13,7 +13,7 @@
     "Carry Copy": true,
     "Carry Not": true,
     "Equals": true,
-    "Not Equals": false,
+    "Not Equals": true,
     "Greater": true,
     "Less": true,
     "Greater Or Equal": true,
