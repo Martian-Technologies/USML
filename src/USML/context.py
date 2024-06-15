@@ -207,9 +207,7 @@ class Context:
         self.iterOverParams(addName)
 
     def __copy__(self):
-        c = Context()
-        c.addContext(self)
-        return c
+        return self.copy()
 
     def __len__(self):
         return len(self.commands)
