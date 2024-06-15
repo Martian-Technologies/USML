@@ -1,3 +1,17 @@
+import json
+
 class Assembler:
     def __init__(self) -> None:
-        pass
+        with open("src/Costs.json") as f:
+            self.simpleCosts:dict[str, float] = json.load(f)
+        with open("src/hasInstruction.json") as f:
+            self.instructionsToUse:dict[str, bool] = json.load(f)
+
+    def hasInstruction(self, instructionName):
+        if instructionName in self.instructionsToUse:
+            return self.instructionsToUse[instructionName]
+        return False
+    
+    def getSimpleCost(self, instructionName):
+        if instructionName in self.simpleCosts:
+            return self.simpleCosts[instructionName]

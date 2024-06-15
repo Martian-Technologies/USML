@@ -1,7 +1,4 @@
-# import lookUp
-# print(lookUp.getBestCost(lookUp.getName("."), []))
-
-from usmlRunner import USMLRunner
+from USML.usmlRunner import USMLRunner
 
 runner = USMLRunner()
 
