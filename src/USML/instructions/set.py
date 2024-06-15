@@ -1,16 +1,18 @@
 from USML.instructions import instruction
+from USML.bitString import BitString
 
 class Set(instruction.Instruction):
     name = "Set"
     mnemonic = "SET"
+    expectedParams = ['var', 'num']
     
     def __init__(self):
         super().__init__()
 
-    def run(self, params):
-        raise Exception(f"Failed running instruction {self.name}")
+    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+        memory[params[0]]["value"].setInt(params[1])
 
-    def getImplementations(self):
+    def getImplementations(self) -> list[list[list[str]]]:
         return [
             [["SET", "PARAM1", "PARAM2"]]
         ]

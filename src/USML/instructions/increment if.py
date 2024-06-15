@@ -1,21 +1,24 @@
 from USML.instructions import instruction
+from USML.bitString import BitString
 
 class IncrementIf(instruction.Instruction):
     name =  "Increment If"
     mnemonic = "INCI"
+    expectedParams = ['var', 'var']
     
     def __init__(self):
         super().__init__()
 
-    def run(self, params):
-        raise Exception(f"Failed running instruction {self.name}")
+    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+        if memory[params[1]]["value"].getInt() != 0:
+            memory[params[0]]["value"].setInt(memory[params[0]]["value"].getInt() + 1)
 
-    def getImplementations(self):
+    def getImplementations(self) -> list[list[list[str]]]:
         return [
-            [["INCI", "PARAM1", "PARAM2", "PARAM3"]]
+            [["INCI", "PARAM1", "PARAM2"]]
             [
-                ["JMIFN", "NoInc", "PARAM3"],
-                ["INC", "PARAM1", "PARAM2"],
+                ["JMIFN", "NoInc", "PARAM2"],
+                ["INC", "PARAM1"],
                 [".NoInc"]
             ]
         ]

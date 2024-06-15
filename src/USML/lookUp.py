@@ -45,7 +45,7 @@ class LookUp:
         """
         return self.nameToMnemonic[name]
 
-    def getClass(self, name: str) -> type[Instruction]:
+    def getClass(self, name: str) -> Instruction:
         """
         Used to get the class of the instruction named (name)
 
@@ -53,6 +53,6 @@ class LookUp:
             name (str): The name of the instruction
 
         Returns:
-            class (type[Instruction]): The class of the instruction
+            class (Instruction): A instances of the instruction
         """
-        return self.nameToClass[name]
+        return self.nameToClass[name]()

@@ -1,16 +1,18 @@
 from USML.instructions import instruction
+from USML.bitString import BitString
 
 class NoOperation(instruction.Instruction):
     name =  "No Operation"
     mnemonic = "NOP"
+    expectedParams = []
     
     def __init__(self):
         super().__init__()
 
-    def run(self, params):
-        raise Exception(f"Failed running instruction {self.name}")
+    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+        pass
 
-    def getImplementations(self):
+    def getImplementations(self) -> list[list[list[str]]]:
         return [
             [["NOP"]],
             [

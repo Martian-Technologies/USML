@@ -1,16 +1,18 @@
 from USML.instructions import instruction
+from USML.bitString import BitString
 
 class Jump(instruction.Instruction):
     name = "Jump"
     mnemonic = "JMP"
+    expectedParams = ["label"]
     
     def __init__(self):
         super().__init__()
 
-    def run(self, params):
-        raise Exception(f"Failed running instruction {self.name}")
+    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+        return memory[params[0]]["value"]
 
-    def getImplementations(self):
+    def getImplementations(self) -> list[list[list[str]]]:
         return [
             [["JMP", "PARAM1"]],
             [

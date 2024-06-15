@@ -30,7 +30,7 @@ class USMLRunner:
                 i += 1
             con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
             code.addContext(con, lineData[1:len(lineData)])
-        print(code)
+        return code
 
     def getBestInstructionSimple(self, instructionName:str, instructionNotToUse:list|None = None) -> Context|None:
         instructionNotToUse = shalowCopy(instructionNotToUse)
@@ -49,7 +49,7 @@ class USMLRunner:
                 return None
             instructionNotToUse.append(instructionName)
         best:Context|None = None
-        for implimation in self.lookup.getClass(instructionName)().getImplementations():
+        for implimation in self.lookup.getClass(instructionName).getImplementations():
             if len(implimation) == 1 and self.lookup.getName(implimation[0][0]) == instructionName:
                 if self.assembler.hasInstruction(instructionName):
                     con = Context()
