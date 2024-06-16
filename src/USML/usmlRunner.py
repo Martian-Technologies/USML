@@ -15,6 +15,10 @@ class USMLRunner:
         code = Context()
         for line in codeStr.splitlines():
             lineData = line.split(" ")
+            if len(lineData) == 0:
+                continue
+            if lineData[0] == "":
+                continue
             if lineData[0][0] == ".":
                 lineData = [".", lineData[0][1:len(lineData[0])]]
             for i in range(len(lineData[1:len(lineData)])):
