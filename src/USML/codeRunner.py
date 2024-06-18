@@ -10,8 +10,8 @@ class CodeRunner:
         self.vars:dict[str, dict[str, BitString|str|int]] = {}
         self.instructionPointer:int = 0
         self.lastInstructionPointer:None|int = None
-        self.lookup:LookUp = LookUp()
         self.bitCount = bitCount
+        self.steps = 0
         self.findLabels()
 
     def run(self, debug=False):
@@ -30,8 +30,9 @@ class CodeRunner:
                 command = couldBeCommand
             else:
                 self.instructionPointer += 1
-        commandClass:Instruction = self.lookup.getClass(self.lookup.getName(command[0]))
-        commandShouldBeParamTypes:list[str] = commandClass.getExpectedParams()
+        self.steps += 1
+        commandClass:Instruction = LookUp.lookUp.getClass(LookUp.lookUp.getName(command[0]))
+        commandShouldBeParamTypes:list[str] = commandClass.getexpectedDataType()
         params = command[1]
         for i in range(len(params)):
             param = params[i]
@@ -83,6 +84,7 @@ class CodeRunner:
         string += "---- info ----\n"
         string += f"Last Line: {self.lastInstructionPointer}\n"
         string += f"Next Line: {self.instructionPointer}\n"
+        string += f"Steps: {self.steps}\n"
         string += "---- VARS ----\n"
         for varName in self.vars:
             if self.vars[varName]["type"] == "var":

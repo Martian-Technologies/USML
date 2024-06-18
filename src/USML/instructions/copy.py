@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Copy(instruction.Instruction):
     name = "Copy"
     mnemonic = "CPY"
-    expectedParams = ['var', 'var']
-    
+    expectedDataType = ["var", "var"]
+    usageTypes = ["in", "out"]
+
     def __init__(self):
         super().__init__()
 

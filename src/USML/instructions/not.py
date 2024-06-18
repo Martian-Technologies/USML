@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Not(instruction.Instruction):
     name =  "Not"
     mnemonic = "NOT"
-    expectedParams = ['var', 'var']
-    
+    expectedDataType = ["var", "var"]
+    usageTypes = ["in", "out"]
+
     def __init__(self):
         super().__init__()
 

@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Greater(instruction.Instruction):
     name =  "Greater"
     mnemonic = "GRT"
-    expectedParams = ['var', 'var', 'var']
-    
+    expectedDataType = ["var", "var", "var"]
+    usageTypes = ["in", "in", "out"]
+
     def __init__(self):
         super().__init__()
 

@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Bool(instruction.Instruction):
     name = "Bool"
     mnemonic = "BOOL"
-    expectedParams = ['var', 'var']
-    
+    expectedDataType = ["var", "var"]
+    usageTypes = ["in", "out"]
+
     def __init__(self):
         super().__init__()
 

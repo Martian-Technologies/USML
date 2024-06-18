@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Nand(instruction.Instruction):
     name =  "Nand"
     mnemonic = "NAND"
-    expectedParams = ['var', 'var', 'var']
-    
+    expectedDataType = ["var", "var", "var"]
+    usageTypes = ["in", "in", "out"]
+
     def __init__(self):
         super().__init__()
 

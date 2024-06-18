@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class JumpIfNot(instruction.Instruction):
     name = "Jump If Not"
     mnemonic = "JMIFN"
-    expectedParams = ['label', 'var']
-    
+    expectedDataType = ["label", "var"]
+    usageTypes = [None, "in"]
+
     def __init__(self):
         super().__init__()
 

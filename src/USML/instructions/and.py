@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class And(instruction.Instruction):
     name = "And"
     mnemonic = "AND"
-    expectedParams = ['var', 'var', 'var']
-    
+    expectedDataType = ["var", "var", "var"]
+    usageTypes = ["in", "in", "out"]
+
     def __init__(self):
         super().__init__()
 

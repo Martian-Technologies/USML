@@ -8,7 +8,6 @@ class USMLRunner:
         if assembler == None:
             assembler = baseAssembler()
         self.assembler:baseAssembler = assembler
-        self.lookup:LookUp = LookUp()
         self.bestInstructionSimple:dict[str, tuple[Context, float]] = {}
     
     def process(self, codeStr:str):
@@ -26,7 +25,7 @@ class USMLRunner:
                     lineData[i + 1] = float(lineData[i + 1])
                 except:
                     pass
-            con = self.getBestInstructionSimple(self.lookup.getName(lineData[0]))
+            con = self.getBestInstructionSimple(LookUp.lookUp.getName(lineData[0]))
             toReplace = []
             i = 1
             for var in lineData[1:len(lineData)]:
@@ -53,8 +52,8 @@ class USMLRunner:
                 return None
             instructionNotToUse.append(instructionName)
         best:Context|None = None
-        for implimation in self.lookup.getClass(instructionName).getImplementations():
-            if len(implimation) == 1 and self.lookup.getName(implimation[0][0]) == instructionName:
+        for implimation in LookUp.lookUp.getClass(instructionName).getImplementations():
+            if len(implimation) == 1 and LookUp.lookUp.getName(implimation[0][0]) == instructionName:
                 if self.assembler.hasInstruction(instructionName):
                     con = Context()
                     con.addCommand(implimation[0], self.assembler.getSimpleCost(instructionName))
@@ -67,7 +66,7 @@ class USMLRunner:
                 for line in implimation:
                     if line[0][0] == ".":
                         line = [".", line[0][1:len(line[0])]]
-                    conLine = self.getBestInstructionSimple(self.lookup.getName(line[0]), instructionNotToUse)
+                    conLine = self.getBestInstructionSimple(LookUp.lookUp.getName(line[0]), instructionNotToUse)
                     if conLine == None:
                         con = None
                         break

@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Reset(instruction.Instruction):
     name = "Reset"
     mnemonic = "RST"
-    expectedParams = ['var']
-    
+    expectedDataType = ["var"]
+    usageTypes = ["out"]
+
     def __init__(self):
         super().__init__()
 

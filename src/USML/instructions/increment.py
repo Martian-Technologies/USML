@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Increment(instruction.Instruction):
     name =  "Increment"
     mnemonic = "INC"
-    expectedParams = ['var']
-    
+    expectedDataType = ["var"]
+    usageTypes = ["both"]
+
     def __init__(self):
         super().__init__()
 

@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class BitShiftRight(instruction.Instruction):
     name = "Bit Shift Right"
     mnemonic = "BSR"
-    expectedParams = ['var', 'var']
-    
+    expectedDataType = ["var", "var"]
+    usageTypes = ["in", "out"]
+
     def __init__(self):
         super().__init__()
 

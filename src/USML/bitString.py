@@ -18,13 +18,20 @@ class BitString:
     def setInt(self, num:int) -> None:
         if num < 0:
             num = math.pow(2, len(self.bits)) - num
-        for i in range(len(self.bits)-1, -1, -1):
+        i = len(self.bits)-1
+        while i >= 0:
             bitValue = math.pow(2, i)
-            if bitValue > num:
-                self.bits[i] = False
+            if bitValue*2 <= num:
+                i += 1
             else:
-                self.bits[i] = True
-                num -= bitValue
+                if i > len(self.bits)-1:
+                    num -= bitValue
+                elif bitValue > num:
+                    self.bits[i] = False
+                else:
+                    self.bits[i] = True
+                    num -= bitValue
+                i -= 1
     
     def maxIntValue(self) -> int:
         return math.pow(2, len(self.bits)) - 1
@@ -56,3 +63,4 @@ class BitString:
     def __copy__(self) -> BitString:
         newBitString = BitString(len(self.bits))
         newBitString.bits = copy(self.bits)
+        return newBitString

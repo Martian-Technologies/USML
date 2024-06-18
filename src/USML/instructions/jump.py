@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Jump(instruction.Instruction):
     name = "Jump"
     mnemonic = "JMP"
-    expectedParams = ["label"]
-    
+    expectedDataType = ["label"]
+    usageTypes = [None]
+
     def __init__(self):
         super().__init__()
 

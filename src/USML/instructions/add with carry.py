@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class AddWithCarry(instruction.Instruction):
     name = "Add With Carry"
     mnemonic = "ADDC"
-    expectedParams = ['var', 'var', 'var', 'var']
-    
+    expectedDataType = ["var", "var", "var", "var"]
+    usageTypes = ["in", "in", "out", "out"]
+
     def __init__(self):
         super().__init__()
 

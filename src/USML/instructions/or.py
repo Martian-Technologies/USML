@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Or(instruction.Instruction):
     name =  "Or"
     mnemonic = "OR"
-    expectedParams = ['var', 'var', 'var']
-    
+    expectedDataType = ["var", "var", "var"]
+    usageTypes = ["in", "in", "out"]
+
     def __init__(self):
         super().__init__()
 

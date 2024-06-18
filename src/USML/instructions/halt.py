@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Halt(instruction.Instruction):
     name = "Halt"
     mnemonic = "HLT"
-    expectedParams = []
-    
+    expectedDataType = []
+    usageTypes = []
+
     def __init__(self):
         super().__init__()
 

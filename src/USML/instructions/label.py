@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Label(instruction.Instruction):
     name = "Label"
     mnemonic = "."
-    expectedParams = ['label']
-    
+    expectedDataType = ["label"]
+    usageTypes = [None]
+
     def __init__(self):
         super().__init__()
 

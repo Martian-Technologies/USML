@@ -1,7 +1,9 @@
 SET a 0
 SET b 1
-SET d 10
+SET limit 255
 .again
-ADD a b a
-NEQU d a c
-JMIF again c
+ADD a b tmp
+CPY a b
+CPY tmp a
+NEQU limit a notAtLimit
+JMIF again notAtLimit

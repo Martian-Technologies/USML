@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class BitShiftLeftWithOverflowAndFill(instruction.Instruction):
     name = "Bit Shift Left With Overflow And Fill"
     mnemonic = "BSLOF"
-    expectedParams = ['var', 'var', 'var', 'var']
-    
+    expectedDataType = ["var", "var", "var", "var"]
+    usageTypes = ["in", "in", "out", "out"]
+
     def __init__(self):
         super().__init__()
 

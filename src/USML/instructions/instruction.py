@@ -4,8 +4,9 @@ from USML.bitString import BitString
 class Instruction:
     name = "Defalt"
     mnemonic = "Defalt"
-    expectedParams = [] # list of 'var', 'num', 'label'
-    
+    expectedDataType = [] # list of "var", "num", "label"
+    usageTypes = [] # list of "in", "out", "both"
+
     def __init__(self):
         pass
 
@@ -21,5 +22,8 @@ class Instruction:
     def getName(self) -> str:
         return self.name
     
-    def getExpectedParams(self) -> list[str]:
-        return self.expectedParams
+    def getexpectedDataType(self) -> list[str]:
+        return self.expectedDataType
+    
+    def getusageTypes(self) -> list[str]:
+        return self.usageTypes
