@@ -10,7 +10,7 @@ class Label(instruction.Instruction):
 
     @staticmethod
     def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
-        raise Exception(f"Failed running instruction {self.name}")
+        raise Exception(f"Tried to run label {params[0]}. Labels should not be run.")
 
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
