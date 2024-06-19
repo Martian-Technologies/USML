@@ -5,7 +5,7 @@ class Label(instruction.Instruction):
     name = "Label"
     mnemonic = "."
     expectedDataType = ["label"]
-    usageTypes = [None]
+    usageTypes = ["out"]
 
     def __init__(self):
         super().__init__()

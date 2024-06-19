@@ -1,9 +1,8 @@
 SET a 0
 SET b 1
-SET limit 255
+SET limit 64
 .again
-ADD a b tmp
-CPY a b
-CPY tmp a
-NEQU limit a notAtLimit
+ADD a b a
+SWP a b
+GRT limit b notAtLimit
 JMIF again notAtLimit

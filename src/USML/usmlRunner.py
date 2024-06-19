@@ -1,11 +1,14 @@
-from USML.lookUp import LookUp
+from copy import copy as shalowCopy
+
+from USML.instructions.instructionLookUp import ILU
+from USML.optimizers.simple.simpleOptimizerGetter import SimpleOptimizerGetter
 from assembler import Assembler as baseAssembler
 from USML.context import Context
-from copy import copy as shalowCopy
+
 
 class USMLRunner:
     def __init__(self, assembler = None) -> None:
-        if assembler == None:
+        if assembler is None:
             assembler = baseAssembler()
         self.assembler:baseAssembler = assembler
         self.bestInstructionSimple:dict[str, tuple[Context, float]] = {}
@@ -25,7 +28,7 @@ class USMLRunner:
                     lineData[i + 1] = float(lineData[i + 1])
                 except:
                     pass
-            con = self.getBestInstructionSimple(LookUp.lookUp.getName(lineData[0]))
+            con = self.getBestInstructionSimple(ILU.getName(lineData[0]))
             toReplace = []
             i = 1
             for var in lineData[1:len(lineData)]:
@@ -33,17 +36,19 @@ class USMLRunner:
                 i += 1
             con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
             code.addContext(con, lineData[1:len(lineData)])
+        for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
+            code = optimizer.run(code)
         return code
 
     def getBestInstructionSimple(self, instructionName:str, instructionNotToUse:list|None = None) -> Context|None:
         instructionNotToUse = shalowCopy(instructionNotToUse)
         # already hashed the instruction
         if instructionName in self.bestInstructionSimple:
-            if self.bestInstructionSimple[instructionName] == None:
+            if self.bestInstructionSimple[instructionName] is None:
                 raise Exception("cant find implimation for {instructionName}")
             return self.bestInstructionSimple[instructionName]
         # find best instruction simple
-        if instructionNotToUse == None:
+        if instructionNotToUse is None:
             isMain = True
             instructionNotToUse = [instructionName]
         else:
@@ -52,12 +57,12 @@ class USMLRunner:
                 return None
             instructionNotToUse.append(instructionName)
         best:Context|None = None
-        for implimation in LookUp.lookUp.getClass(instructionName).getImplementations():
-            if len(implimation) == 1 and LookUp.lookUp.getName(implimation[0][0]) == instructionName:
+        for implimation in ILU.getClass_Name(instructionName).getImplementations():
+            if len(implimation) == 1 and ILU.getName(implimation[0][0]) == instructionName:
                 if self.assembler.hasInstruction(instructionName):
                     con = Context()
                     con.addCommand(implimation[0], self.assembler.getSimpleCost(instructionName))
-                    if best == None:
+                    if best is None:
                         best = con
                     elif con.getCost() <= best.getCost():
                         best = con
@@ -66,8 +71,8 @@ class USMLRunner:
                 for line in implimation:
                     if line[0][0] == ".":
                         line = [".", line[0][1:len(line[0])]]
-                    conLine = self.getBestInstructionSimple(LookUp.lookUp.getName(line[0]), instructionNotToUse)
-                    if conLine == None:
+                    conLine = self.getBestInstructionSimple(ILU.getName(line[0]), instructionNotToUse)
+                    if conLine is None:
                         con = None
                         break
                     toReplace = []
@@ -77,11 +82,11 @@ class USMLRunner:
                         i += 1
                     conLine.replaceVarNamesWithUniqueNames(dict(zip(toReplace, line[1:len(line)])))
                     con.addContext(conLine, line[1:len(line)])
-                if con != None:
-                    if best == None:
+                if con is not None:
+                    if best is None:
                         best = con
                     elif con.getCost() < best.getCost():
                         best = con
-        if best == None and isMain:
+        if best is None and isMain:
             raise Exception("cant find implimation for {instructionName}")
         return best

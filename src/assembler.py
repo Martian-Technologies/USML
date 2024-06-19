@@ -1,5 +1,6 @@
 import json
 
+
 class Assembler:
     def __init__(self) -> None:
         with open("src/Costs.json") as f:

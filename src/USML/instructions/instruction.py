@@ -22,8 +22,8 @@ class Instruction:
     def getName(self) -> str:
         return self.name
     
-    def getexpectedDataType(self) -> list[str]:
+    def getExpectedDataType(self) -> list[str]:
         return self.expectedDataType
     
-    def getusageTypes(self) -> list[str]:
+    def getUsageTypes(self) -> list[str]:
         return self.usageTypes

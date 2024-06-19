@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import Literal
 from copy import deepcopy
 
+from USML.instructions.instructionLookUp import ILU
+
 
 class Context:
     def __init__(self) -> None:
@@ -11,7 +13,7 @@ class Context:
 
     def addCommand(self, command: tuple[str, list[str]] | list[list[str]], cost: float = None, varsToKeep:Literal["all"]|list|None = "all", index: int|None = None) -> None:
         # set varsToKeep
-        if varsToKeep == None :
+        if varsToKeep is None :
             varsToKeep = []
         # correct command format
         if len(command) == 1:
@@ -29,7 +31,7 @@ class Context:
                         hashOfOldNames[name] = self.generateNewVarName(name, command[1])
                     command[1][i] = hashOfOldNames[name]
         # add command
-        if index == None or index == len(self.commands):
+        if index is None or index == len(self.commands):
             for var in command[1]:
                 if type(var) == str:
                     if var not in self.varNames:
@@ -46,15 +48,15 @@ class Context:
 
     def addCommands(self, commands: list[tuple[str, list[str]]] | list[list[str]], costs: list[float]|None = None, varsToKeep:Literal["all"]|list|None = "all", index: int|None = None):
         # set index
-        if index == None:
+        if index is None:
             index = len(self.commands)
         # set costs
-        if costs == None:
+        if costs is None:
             costs = []
         while len(costs) < len(commands):
             costs.append(None)
         # set varsToKeep
-        if varsToKeep == None :
+        if varsToKeep is None :
             varsToKeep = []
         # loop through all commands for data collection and correction
         vars = []
@@ -94,15 +96,15 @@ class Context:
     def addContext(self, context: Context, varsToKeep:Literal["all"]|list|None = "all", index: int = None) -> None:
         context = context.copy()
         # set index
-        if index == None:
+        if index is None:
             index = len(self.commands) + 1
         # set varsToKeep
-        if varsToKeep == None :
+        if varsToKeep is None :
             varsToKeep = []
         # replace vars that are in self.vars and not in varsToKeep
         if varsToKeep != "all":
             hashOfOldNames:dict[str, str] = {}
-            def correctVarNames(name):
+            def correctVarNames(name, line, type, usageType):
                 if name not in varsToKeep:
                     if name not in hashOfOldNames:
                         hashOfOldNames[name] = self.generateNewVarName(name, context.varNames)
@@ -120,31 +122,34 @@ class Context:
             self.costs.insert(index, commandCostPair[1])
             index += 1
 
-    def removeCommand(self, index: int) -> tuple[tuple[str, list[str]], float]:
+    def removeCommand(self, index: int) -> tuple[tuple[str, list[str]], float]|None:
         if index >= 0 and index < len(self.commands):
             pair = (self.commands[index], self.costs[index])
             del self.commands[index]
             del self.costs[index]
             self.updateVarNames()
             return pair
+        return None
 
-    def getCommand(self, index: int) -> tuple[str, list[str]]:
+    def getCommand(self, index: int) -> tuple[str, list[str]]|None:
         if index >= 0 and index < len(self.commands):
             return self.commands[index]
-
+        return None
+    
     def setCost(self, value: float, index: int) -> None:
         if index >= 0 and index < len(self.commands):
             self.costs[index] = value
 
-    def getCost(self, index: int | None = None) -> float:
-        if index == None:
+    def getCost(self, index: int | None = None) -> float|None:
+        if index is None:
             cost = 0
             for c in self.costs:
-                if c != None:
+                if c is not None:
                     cost += c
             return cost
         if index >= 0 and index < len(self.commands):
             return self.costs[index]
+        return None
 
     def copy(self):
         newContext = Context()
@@ -168,7 +173,7 @@ class Context:
         self.updateVarNames()
 
     def replaceVarNamesWithUniqueNames(self, replacementDict:dict):
-        def replaceFunc(name):
+        def replaceFunc(name, line, type, usageType):
             if name in replacementDict:
                 return replacementDict[name]
             elif name in replacementDict.values():
@@ -178,7 +183,7 @@ class Context:
         self.updateVarNames()
 
     def generateNewVarName(self, oldName:str|None = None, toExclude:None|list[str] = None):
-        if toExclude == None:
+        if toExclude is None:
             toExclude = []
         if oldName in self.varNames:
             i = 1
@@ -191,17 +196,29 @@ class Context:
         return varName in self.varNames
 
     def iterOverParams(self, functionToRun:function, includeNumbers = False):
-        for command in self.commands:
+        """
+        calls a function on every param in the context
+
+        Data in: (name, line, type, usageType)
+        Returning any data will rename the var to that data.
+        """
+        for lineNumber in range(len(self.commands)):
+            command = self.commands[lineNumber]
             for i in range(len(command[1])):
                 name = command[1][i]
                 if includeNumbers or type(name) == str:
-                    newName = functionToRun(name)
-                    if newName != None:
+                    newName = functionToRun(
+                        name,
+                        lineNumber,
+                        ILU.getExpectedDataType_Mnemonic(command[0])[i],
+                        ILU.getUsageTypes_Mnemonic(command[0])[i]
+                    )
+                    if newName is not None:
                         command[1][i] = newName
 
     def updateVarNames(self):
         self.varNames = []
-        def addName(name):
+        def addName(name, line, type, usageType):
             if name not in self.varNames:
                 self.varNames.append(name)
         self.iterOverParams(addName)
@@ -225,7 +242,7 @@ class Context:
         i = 0
         while i < len(self.commands):
             cost = self.costs[i]
-            if cost == None:
+            if cost is None:
                 cost = "X"
             else:
                 cost = str(cost)

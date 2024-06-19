@@ -5,7 +5,7 @@ class JumpIf(instruction.Instruction):
     name = "Jump If"
     mnemonic = "JMIF"
     expectedDataType = ["label", "var"]
-    usageTypes = [None, "in"]
+    usageTypes = ["in", "in"]
 
     def __init__(self):
         super().__init__()

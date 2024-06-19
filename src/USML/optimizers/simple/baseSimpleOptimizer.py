@@ -1,9 +1,7 @@
-from USML import context
+from USML.context import Context
 
 
-class baseSimpleOptimizer:
-    def __init__(self) -> None:
-        pass
-
-    def run(self, context) -> context:
-        pass
+class BaseSimpleOptimizer:
+    @staticmethod
+    def run(context:Context) -> Context:
+        return context

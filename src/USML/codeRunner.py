@@ -1,5 +1,5 @@
 from USML.context import Context
-from USML.lookUp import LookUp
+from USML.instructions.instructionLookUp import ILU
 from USML.instructions.instruction import Instruction
 from random import randint
 from USML.bitString import BitString
@@ -22,7 +22,7 @@ class CodeRunner:
     def stepCode(self):
         self.lastInstructionPointer = self.instructionPointer
         command = None
-        while command == None:
+        while command is None:
             if self.instructionPointer >= len(self.code):
                 return None
             couldBeCommand = self.code.getCommand(self.instructionPointer)
@@ -31,8 +31,8 @@ class CodeRunner:
             else:
                 self.instructionPointer += 1
         self.steps += 1
-        commandClass:Instruction = LookUp.lookUp.getClass(LookUp.lookUp.getName(command[0]))
-        commandShouldBeParamTypes:list[str] = commandClass.getexpectedDataType()
+        commandClass:Instruction = ILU.getClass_Mnemonic(command[0])
+        commandShouldBeParamTypes:list[str] = commandClass.getExpectedDataType()
         params = command[1]
         for i in range(len(params)):
             param = params[i]
@@ -58,7 +58,7 @@ class CodeRunner:
         newPointer = commandClass.run(params, self.vars)
         if newPointer == "END":
             self.instructionPointer = len(self.code) - 1
-        elif newPointer != None:
+        elif newPointer is not None:
             self.instructionPointer = newPointer
         self.instructionPointer += 1
         return True
