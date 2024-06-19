@@ -8,6 +8,8 @@ class SimpleAssembler(Assembler):
         simpleCosts:dict[str, float] = json.load(f)
     with open("src/hasInstruction.json") as f:
         instructionsToUse:dict[str, bool] = json.load(f)
+    with open("src/hasInstruction.json") as f:
+        instructionReadAndWritePos:dict[str, bool] = json.load(f)
 
     @staticmethod
     def hasInstruction(instructionName):
