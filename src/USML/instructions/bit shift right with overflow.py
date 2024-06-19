@@ -5,20 +5,20 @@ class BitShiftRightWithOverflow(instruction.Instruction):
     name = "Bit Shift Right With Overflow"
     mnemonic = "BSRO"
     expectedDataType = ["var", "var", "var"]
-    usageTypes = ["in", "in", "out"]
+    usageTypes = ["in", "out", "out"]
     tags = []
 
-    def __init__(self):
-        super().__init__()
+    @staticmethod
+    def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+        memory[params[1]]["value"].setInt(memory[params[0]]["value"].getInt() / 2)
+        memory[params[2]]["value"].setInt(memory[params[0]]["value"].getInt() % 2)
 
-    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
-        raise Exception(f"Failed running instruction {self.name}")
-
-    def getImplementations(self) -> list[list[list[str]]]:
+    @staticmethod
+    def getImplementations() -> list[list[list[str]]]:
         return [
             [["BSRO", "PARAM1", "PARAM2", "PARAM3"]],
             [
                 ["RST", "zero"],
-                ["BSROF", "PARAM1", "PARAM2", "PARAM3", "zero"]
+                ["BSROF", "PARAM1", "PARAM2", "zero", "PARAM3"]
             ]
         ]

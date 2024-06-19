@@ -37,5 +37,6 @@
     "Bit Shift Right With Overflow And Fill": true,
     "Bit Shift Right With Overflow": true,
     "Add": true,
-    "Add With Carry": true
+    "Add With Carry": true,
+    "Print": true
 }

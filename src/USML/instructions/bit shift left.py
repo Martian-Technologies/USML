@@ -11,10 +11,12 @@ class BitShiftLeft(instruction.Instruction):
     def __init__(self):
         super().__init__()
         
-    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
-        raise Exception(f"Failed running instruction {self.name}")
+    @staticmethod
+    def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+        memory[params[1]]["value"].setInt(memory[params[0]]["value"].getInt() * 2)
 
-    def getImplementations(self) -> list[list[list[str]]]:
+    @staticmethod
+    def getImplementations() -> list[list[list[str]]]:
         return [
             [["BSL", "PARAM1", "PARAM2"]]
         ]

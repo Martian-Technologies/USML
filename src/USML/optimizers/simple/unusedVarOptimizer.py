@@ -6,6 +6,7 @@ from USML.context import Context
 
 class UnusedVarOptimizer(BaseSimpleOptimizer):
     @staticmethod
+    @staticmethod
     def run(context:Context) -> Context:
         tryRemove = True
         while tryRemove:

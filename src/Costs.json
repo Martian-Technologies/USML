@@ -38,5 +38,6 @@
     "Bit Shift Right With Overflow And Fill": 1,
     "Bit Shift Right With Overflow": 1,
     "Add": 1,
-    "Add With Carry": 1
+    "Add With Carry": 1,
+    "Print": 1
 }

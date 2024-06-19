@@ -8,11 +8,10 @@ class Instruction:
     usageTypes = [] # list of "in", "out", "both"
     tags = [] # list of tags. Currently (Force Jump, Maybe Jump)
 
-    def __init__(self):
-        pass
-
-    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+    @staticmethod
+    def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
         raise Exception("Failed running instruction. Can not run defalt instruction")
 
-    def getImplementations(self) -> list[list[list[str]]]:
+    @staticmethod
+    def getImplementations() -> list[list[list[str]]]:
         raise Exception("Failed getting implementations. Defalt instruction has no implementations")

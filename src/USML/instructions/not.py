@@ -8,13 +8,12 @@ class Not(instruction.Instruction):
     usageTypes = ["in", "out"]
     tags = []
 
-    def __init__(self):
-        super().__init__()
-
-    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+    @staticmethod
+    def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
         memory[params[1]]["value"].setInt(int(memory[params[0]]["value"].getInt() == 0))
 
-    def getImplementations(self) -> list[list[list[str]]]:
+    @staticmethod
+    def getImplementations() -> list[list[list[str]]]:
         return [
             [["NOT", "PARAM1", "PARAM2"]],
             [

@@ -8,15 +8,14 @@ class Swap(instruction.Instruction):
     usageTypes = ["both", "both"]
     tags = []
 
-    def __init__(self):
-        super().__init__()
-
-    def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
+    @staticmethod
+    def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
         temp = memory[params[0]]["value"].copy()
         memory[params[0]]["value"] = memory[params[1]]["value"].copy()
         memory[params[1]]["value"] = temp
 
-    def getImplementations(self) -> list[list[list[str]]]:
+    @staticmethod
+    def getImplementations() -> list[list[list[str]]]:
         return [
             [["SWP", "PARAM1", "PARAM2"]],
             [

@@ -1,18 +1,17 @@
 from USML.instructions import instruction
 from USML.bitString import BitString
 
-class Set(instruction.Instruction):
-    name = "Set"
-    mnemonic = "SET"
-    expectedDataType = ["var", "num"]
-    usageTypes = ["out", None]
+class Print(instruction.Instruction):
+    name = "Print"
+    mnemonic = "PRINT"
+    expectedDataType = ["var"]
+    usageTypes = ["in"]
+    tags = []
 
     @staticmethod
     def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
-        memory[params[0]]["value"].setInt(params[1])
+        print(memory[params[0]]["value"])
 
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
-        return [
-            [["SET", "PARAM1", "PARAM2"]]
-        ]
+        return [[["PRINT", "PARAM1"]]]

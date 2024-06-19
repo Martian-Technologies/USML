@@ -2,15 +2,13 @@ from copy import copy as shalowCopy
 
 from USML.instructions.instructionLookUp import ILU
 from USML.optimizers.simple.simpleOptimizerGetter import SimpleOptimizerGetter
-from assembler import Assembler as baseAssembler
+from USML.baseAssembler import Assembler
 from USML.context import Context
 
 
 class USMLRunner:
-    def __init__(self, assembler = None) -> None:
-        if assembler is None:
-            assembler = baseAssembler()
-        self.assembler:baseAssembler = assembler
+    def __init__(self, assembler:Assembler) -> None:
+        self.assembler:Assembler = assembler
         self.bestInstructionSimple:dict[str, tuple[Context, float]] = {}
     
     def process(self, codeStr:str):
