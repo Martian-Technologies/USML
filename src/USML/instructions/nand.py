@@ -4,7 +4,7 @@ from USML.bitString import BitString
 class Nand(instruction.Instruction):
     name =  "Nand"
     mnemonic = "NAND"
-    description = "Performs a NAND operation on the values of variable 1 and variable 2 and stores the result in variable 3."
+    description = "Sets variable 3 to 1 if variable 1 and variable 2 are both 0, otherwise sets variable 3 to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []
