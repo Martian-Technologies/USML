@@ -18,6 +18,6 @@ class BitShiftLeftWithFill(instruction.Instruction):
         return [
             [["BSLF", "PARAM1", "PARAM2", "PARAM3"]],
             [
-                ["BSROF", "PARAM1", "PARAM2", "PARAM3", "none"]
+                ["BSLOF", "PARAM1", "PARAM2", "PARAM3", "none"]
             ]
         ]
