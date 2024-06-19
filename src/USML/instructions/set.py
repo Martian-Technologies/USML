@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Set(instruction.Instruction):
     name = "Set"
     mnemonic = "SET"
+    description = "Sets variable 1 to the value of variable 2."
     expectedDataType = ["var", "num"]
     usageTypes = ["out", None]
 

@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Nor(instruction.Instruction):
     name =  "Nor"
     mnemonic = "NOR"
+    description = "Sets variable 3 to 1 if both variable 1 and variable 2 are 0, otherwise sets variable 3 to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

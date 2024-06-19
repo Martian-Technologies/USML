@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class IncrementIf(instruction.Instruction):
     name =  "Increment If"
     mnemonic = "INCI"
+    description = "Increments the value of variable 1 by 1 if variable 2 is 0."
     expectedDataType = ["var", "var"]
     usageTypes = ["both", "in"]
     tags = []

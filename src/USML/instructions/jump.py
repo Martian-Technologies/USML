@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Jump(instruction.Instruction):
     name = "Jump"
     mnemonic = "JMP"
+    description = "Jumps to the label."
     expectedDataType = ["label"]
     usageTypes = ["in"]
     tags = ["force jump"]

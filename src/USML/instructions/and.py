@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class And(instruction.Instruction):
     name = "And"
     mnemonic = "AND"
+    description = "Performs a bitwise AND operation on variables 1 and 2 and stores the result in variable 3."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

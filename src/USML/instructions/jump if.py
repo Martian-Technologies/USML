@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class JumpIf(instruction.Instruction):
     name = "Jump If"
     mnemonic = "JMIF"
+    description = "Jumps to the label if the value of variable 2 is not 0."
     expectedDataType = ["label", "var"]
     usageTypes = ["in", "in"]
     tags = ["maybe jump"]

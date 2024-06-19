@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Label(instruction.Instruction):
     name = "Label"
     mnemonic = "."
+    description = "A label for the program to jump to. Does nothing."
     expectedDataType = ["label"]
     usageTypes = ["out"]
     tags = []

@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Reset(instruction.Instruction):
     name = "Reset"
     mnemonic = "RST"
+    description = "Resets variable 1 to 0."
     expectedDataType = ["var"]
     usageTypes = ["out"]
     tags = []

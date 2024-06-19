@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class BitShiftRightWithOverflowAndFill(instruction.Instruction):
     name = "Bit Shift Right With Overflow And Fill"
     mnemonic = "BSROF"
+    description = "Shifts the bits of variable 1 to the right by 1 and fills the leftmost bit with the value of variable 3. The result is stored in variable 2. The remainder is stored in variable 4."
     expectedDataType = ["var", "var", "var", "var"]
     usageTypes = ["in", "out", "in", "out"]
     tags = []

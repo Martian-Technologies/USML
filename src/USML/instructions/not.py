@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Not(instruction.Instruction):
     name =  "Not"
     mnemonic = "NOT"
+    description = "Sets variable 2 to 1 if variable 1 is 0, otherwise sets variable 2 to 0."
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
     tags = []

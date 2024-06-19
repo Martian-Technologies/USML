@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class GreaterOrEqual(instruction.Instruction):
     name =  "Greater Or Equal"
     mnemonic = "GOE"
+    description = "Sets variable 3 to 1 if variable 1 is greater than or equal to variable 2, otherwise sets variable 3 to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

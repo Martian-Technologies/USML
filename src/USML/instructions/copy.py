@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Copy(instruction.Instruction):
     name = "Copy"
     mnemonic = "CPY"
+    description = "Copies the value of variable 1 to variable 2."
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
     tags = []

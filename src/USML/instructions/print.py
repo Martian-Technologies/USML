@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Print(instruction.Instruction):
     name = "Print"
     mnemonic = "PRINT"
+    description = "Prints the value of variable 1 to the python console."
     expectedDataType = ["var"]
     usageTypes = ["in"]
     tags = []

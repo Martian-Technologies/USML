@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Bool(instruction.Instruction):
     name = "Bool"
     mnemonic = "BOOL"
+    description = "Sets variable 2 to 1 if variable 1 is 0, otherwise sets variable 2 to 0."
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
     tags = []

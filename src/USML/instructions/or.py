@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Or(instruction.Instruction):
     name =  "Or"
     mnemonic = "OR"
+    description = "Sets variable 3 to 1 if either variable 1 or variable 2 are 1, otherwise sets variable 3 to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

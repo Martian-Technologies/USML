@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Instruction:
     name = "Defalt"
     mnemonic = "Defalt"
+    description = "Defalt instruction. Should not be used."
     expectedDataType = [] # list of "var", "num", "label"
     usageTypes = [] # list of "in", "out", "both"
     tags = [] # list of tags. Currently (Force Jump, Maybe Jump)

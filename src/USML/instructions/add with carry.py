@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class AddWithCarry(instruction.Instruction):
     name = "Add With Carry"
     mnemonic = "ADDC"
+    description = "Adds variables 1 and 2 together and stores it in variable 3. The carry flag is stored in variable 4."
     expectedDataType = ["var", "var", "var", "var"]
     usageTypes = ["in", "in", "out", "out"]
     tags = []

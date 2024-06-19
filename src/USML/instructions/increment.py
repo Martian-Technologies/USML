@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Increment(instruction.Instruction):
     name =  "Increment"
     mnemonic = "INC"
+    description = "Increments the value of variable 1 by 1."
     expectedDataType = ["var"]
     usageTypes = ["both"]
     tags = []

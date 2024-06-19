@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class JumpIfEqual(instruction.Instruction):
     name = "Jump If Equal"
     mnemonic = "JMIFE"
+    description = "Jumps to the label if the values of variable 2 and variable 3 are equal."
     expectedDataType = ["label", "var", "var"]
     usageTypes = ["in", "in", "in"]
     tags = ["maybe jump"]

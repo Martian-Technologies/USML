@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class NoOperation(instruction.Instruction):
     name =  "No Operation"
     mnemonic = "NOP"
+    description = "Does nothing."
     expectedDataType = []
     usageTypes = []
 

@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Xor(instruction.Instruction):
     name =  "Xor"
     mnemonic = "XOR"
+    description = "Sets variable 3 to 1 if variable 1 is not equal to variable 2, otherwise sets variable 3 to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

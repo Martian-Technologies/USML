@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class MultiplyLow(instruction.Instruction):
     name =  "Multiply Low"
     mnemonic = "MLL"
+    description = "Multiplies the value of variable 1 by the value of variable 2 and stores the lower n bits of the result in variable 3."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

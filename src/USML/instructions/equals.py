@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Equals(instruction.Instruction):
     name = "Equals"
     mnemonic = "EQU"
+    description = "Sets variable 3 to 1 if variable 1 is equal to variable 2, otherwise sets variable 3 to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Decrement(instruction.Instruction):
     name =  "Decrement"
     mnemonic = "DEC"
+    description = "Decrements the value of variable 1 by 1."
     expectedDataType = ["var"]
     usageTypes = ["both"]
     tags = []

@@ -4,6 +4,7 @@ from USML.bitString import BitString
 class Less(instruction.Instruction):
     name =  "Less"
     mnemonic = "LES"
+    description = "Sets the value of variable 3 to 1 if the value of variable 1 is less than the value of variable 2, otherwise sets it to 0."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []

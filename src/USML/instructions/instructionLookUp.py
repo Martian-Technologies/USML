@@ -8,7 +8,7 @@ from USML.instructions.instruction import Instruction
 src = pathlib.Path("src")
 instructions_path = src / 'USML' / 'instructions'
 
-class InstructionLookUp:    
+class InstructionLookUp:
     nameToMnemonic = {}
     mnemonicToName = {}
     nameToExpectedDataType = {}
@@ -58,6 +58,18 @@ class InstructionLookUp:
             mnemonic (str): The mnemonic associated instruction
         """
         return InstructionLookUp.nameToMnemonic[name]
+
+    def getDescription_Name(name: str) -> str:
+        """
+        Used to get the description of the instruction named (name)
+
+        Args:
+            name (str): The name of the instruction
+
+        Returns:
+            description (str): The description of the instruction
+        """
+        return InstructionLookUp.nameToClass[name].description
 
     def getExpectedDataType_Name(name: str):
         """
@@ -149,7 +161,7 @@ class InstructionLookUp:
 
         Args:
             mnemonic (str): The mnemonic associated instruction
-        
+
         Returns:
             class (Instruction): A instances of the instruction
         """
