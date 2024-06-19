@@ -30,7 +30,6 @@ class UnusedVarOptimizer(BaseSimpleOptimizer):
                 if toDel[line] == UnusedVarOptimizer.instructionOutCount(context.getCommand(line)[0]):
                     context.removeCommand(line)
                     tryRemove = True
-        print(context)
         return context
     
     @staticmethod

@@ -6,5 +6,5 @@ runner = USMLRunner()
 
 with open("prog.usml") as codeStr:
     code = runner.process(codeStr.read())
-    runner = CodeRunner(code, bitCount=8)
-    runner.run(True)
+    # runner = CodeRunner(code, bitCount=8)
+    # runner.run(True)

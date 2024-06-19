@@ -36,8 +36,12 @@ class USMLRunner:
                 i += 1
             con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
             code.addContext(con, lineData[1:len(lineData)])
+        print("before")
+        print(code)
         for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
             code = optimizer.run(code)
+        print("after")
+        print(code)
         return code
 
     def getBestInstructionSimple(self, instructionName:str, instructionNotToUse:list|None = None) -> Context|None:
