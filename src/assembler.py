@@ -1,5 +1,7 @@
 import json
 
+from USML.contextDataGetter import ContextDataGetter
+
 
 class Assembler:
     def __init__(self) -> None:
@@ -16,3 +18,7 @@ class Assembler:
     def getSimpleCost(self, instructionName):
         if instructionName in self.simpleCosts:
             return self.simpleCosts[instructionName]
+        
+    def assemble(self, context):
+        dataGetter = ContextDataGetter(context)
+        

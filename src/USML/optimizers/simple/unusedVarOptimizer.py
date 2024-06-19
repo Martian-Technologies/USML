@@ -55,7 +55,9 @@ class UnusedVarOptimizer(BaseSimpleOptimizer):
             line = context.getCommand(lineNumber)
             if line is None:
                 return False
-            if line[0] == ILU.getMnemonic("Jump"):
+            print(ILU.getTags_Mnemonic(line[0]))
+            print(line[0])
+            if "force jump" in ILU.getTags_Mnemonic(line[0]):
                 labelUsage = varAndLabelUsage[line[1][0]]
                 newLineNumber = None
                 for usage in labelUsage["usage"]:
@@ -64,7 +66,7 @@ class UnusedVarOptimizer(BaseSimpleOptimizer):
                 if newLineNumber is None:
                     raise Exception(f"jump label {line[1][0]} not defined. Line {lineNumber}")
                 lineNumber = newLineNumber
-            elif line[0] == ILU.getMnemonic("Jump If") or line[0] == ILU.getMnemonic("Jump If Not"):
+            elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
                 labelUsage = varAndLabelUsage[line[1][0]]
                 for usage in labelUsage["usage"]:
                     if usage["usageType"] == "out":

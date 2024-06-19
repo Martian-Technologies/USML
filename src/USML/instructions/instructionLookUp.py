@@ -93,7 +93,7 @@ class InstructionLookUp:
         Returns:
             tags (list[str]): A list of tags that are assigned to the instruction
         """
-        return InstructionLookUp.mnemonicToUsageTypes[name]
+        return InstructionLookUp.nameToTages[name]
 
     def getClass_Name(name: str) -> Instruction:
         """
@@ -141,7 +141,7 @@ class InstructionLookUp:
         Returns:
             tags (list[str]): A list of tags that are assigned to the instruction
         """
-        return InstructionLookUp.mnemonicToUsageTypes[mnemonic]
+        return InstructionLookUp.mnemonicToTages[mnemonic]
 
     def getClass_Mnemonic(mnemonic: str) -> Instruction:
         """
