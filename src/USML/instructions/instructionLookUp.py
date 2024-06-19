@@ -13,9 +13,11 @@ class InstructionLookUp:
     mnemonicToName = {}
     nameToExpectedDataType = {}
     nameToUsageTypes = {}
+    nameToTages = {}
     nameToClass = {}
     mnemonicToExpectedDataType = {}
     mnemonicToUsageTypes = {}
+    mnemonicToTages = {}
     mnemonicToClass = {}
     classFiles = [f for f in os.listdir(instructions_path) if (os.path.isfile(instructions_path / f) and f != "instructionLookUp.py")]
     for className in classFiles:
@@ -26,9 +28,11 @@ class InstructionLookUp:
         mnemonicToName[classObj.mnemonic] = classObj.name
         nameToExpectedDataType[classObj.name] = classObj.expectedDataType
         nameToUsageTypes[classObj.name] = classObj.usageTypes
+        nameToTages[classObj.name] = classObj.tags
         nameToClass[classObj.name] = classObj
         mnemonicToExpectedDataType[classObj.mnemonic] = classObj.expectedDataType
         mnemonicToUsageTypes[classObj.mnemonic] = classObj.usageTypes
+        mnemonicToTages[classObj.mnemonic] = classObj.tags
         mnemonicToClass[classObj.mnemonic] = classObj
 
     def getName(mnemonic: str) -> str:
@@ -79,6 +83,18 @@ class InstructionLookUp:
         """
         return InstructionLookUp.nameToUsageTypes[name]
 
+    def getTags_Name(name: str) -> list[str]:
+        """
+        Used to get the tags of the instruction named (name)
+
+        Args:
+            name (str): The name associated instruction
+
+        Returns:
+            tags (list[str]): A list of tags that are assigned to the instruction
+        """
+        return InstructionLookUp.mnemonicToUsageTypes[name]
+
     def getClass_Name(name: str) -> Instruction:
         """
         Used to get the class of the instruction named (name)
@@ -112,6 +128,18 @@ class InstructionLookUp:
 
         Returns:
             usageTypes (list[str]): A list of the usage types for the instruction [list of "in", "out", "both"]
+        """
+        return InstructionLookUp.mnemonicToUsageTypes[mnemonic]
+
+    def getTags_Mnemonic(mnemonic: str) -> list[str]:
+        """
+        Used to get the tags of the instruction associated with the mnemonic (mnemonic)
+
+        Args:
+            mnemonic (str): The mnemonic associated instruction
+
+        Returns:
+            tags (list[str]): A list of tags that are assigned to the instruction
         """
         return InstructionLookUp.mnemonicToUsageTypes[mnemonic]
 

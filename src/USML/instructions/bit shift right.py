@@ -6,6 +6,7 @@ class BitShiftRight(instruction.Instruction):
     mnemonic = "BSR"
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

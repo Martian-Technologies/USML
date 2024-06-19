@@ -6,24 +6,10 @@ class Instruction:
     mnemonic = "Defalt"
     expectedDataType = [] # list of "var", "num", "label"
     usageTypes = [] # list of "in", "out", "both"
+    tags = [] # list of tags. Currently (Force Jump, Maybe Jump)
 
     def __init__(self):
         pass
 
     def run(self, params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
         raise Exception("Failed running instruction. Can not run defalt instruction")
-
-    def getImplementations(self) -> list[list[list[str]]]:
-        raise Exception("Failed getting implementations. Defalt instruction has no implementations")
-
-    def getMnemonic(self) -> str:
-        return self.mnemonic
-
-    def getName(self) -> str:
-        return self.name
-    
-    def getExpectedDataType(self) -> list[str]:
-        return self.expectedDataType
-    
-    def getUsageTypes(self) -> list[str]:
-        return self.usageTypes

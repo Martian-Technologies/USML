@@ -6,6 +6,7 @@ class GreaterOrEqual(instruction.Instruction):
     mnemonic = "GOE"
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

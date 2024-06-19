@@ -6,6 +6,7 @@ class Jump(instruction.Instruction):
     mnemonic = "JMP"
     expectedDataType = ["label"]
     usageTypes = ["in"]
+    tags = ["force jump"]
 
     def __init__(self):
         super().__init__()

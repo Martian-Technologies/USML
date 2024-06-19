@@ -6,6 +6,7 @@ class BitShiftLeftWithOverflowAndFill(instruction.Instruction):
     mnemonic = "BSLOF"
     expectedDataType = ["var", "var", "var", "var"]
     usageTypes = ["in", "in", "out", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

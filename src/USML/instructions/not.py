@@ -6,6 +6,7 @@ class Not(instruction.Instruction):
     mnemonic = "NOT"
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

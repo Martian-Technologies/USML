@@ -6,6 +6,7 @@ class Increment(instruction.Instruction):
     mnemonic = "INC"
     expectedDataType = ["var"]
     usageTypes = ["both"]
+    tags = []
 
     def __init__(self):
         super().__init__()

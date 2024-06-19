@@ -6,6 +6,7 @@ class Copy(instruction.Instruction):
     mnemonic = "CPY"
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

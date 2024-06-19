@@ -6,6 +6,7 @@ class Swap(instruction.Instruction):
     mnemonic = "SWP"
     expectedDataType = ["var", "var"]
     usageTypes = ["both", "both"]
+    tags = []
 
     def __init__(self):
         super().__init__()

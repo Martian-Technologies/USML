@@ -6,6 +6,7 @@ class Greater(instruction.Instruction):
     mnemonic = "GRT"
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

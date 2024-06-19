@@ -6,6 +6,7 @@ class Bool(instruction.Instruction):
     mnemonic = "BOOL"
     expectedDataType = ["var", "var"]
     usageTypes = ["in", "out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

@@ -6,6 +6,7 @@ class Reset(instruction.Instruction):
     mnemonic = "RST"
     expectedDataType = ["var"]
     usageTypes = ["out"]
+    tags = []
 
     def __init__(self):
         super().__init__()

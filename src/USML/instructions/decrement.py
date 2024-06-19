@@ -6,6 +6,7 @@ class Decrement(instruction.Instruction):
     mnemonic = "DEC"
     expectedDataType = ["var"]
     usageTypes = ["both"]
+    tags = []
 
     def __init__(self):
         super().__init__()
