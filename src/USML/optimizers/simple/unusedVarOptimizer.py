@@ -55,8 +55,6 @@ class UnusedVarOptimizer(BaseSimpleOptimizer):
             line = context.getCommand(lineNumber)
             if line is None:
                 return False
-            print(ILU.getTags_Mnemonic(line[0]))
-            print(line[0])
             if "force jump" in ILU.getTags_Mnemonic(line[0]):
                 labelUsage = varAndLabelUsage[line[1][0]]
                 newLineNumber = None

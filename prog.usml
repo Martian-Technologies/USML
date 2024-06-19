@@ -4,5 +4,4 @@ SET limit 64
 .again
 ADD a b a
 SWP a b
-GRT limit b notAtLimit
-JMIF again notAtLimit
+JMIFG again limit b

@@ -18,6 +18,7 @@ class CodeRunner:
         while self.stepCode():
             if debug:
                 print(self)
+        print(self)
 
     def stepCode(self):
         self.lastInstructionPointer = self.instructionPointer
@@ -31,8 +32,7 @@ class CodeRunner:
             else:
                 self.instructionPointer += 1
         self.steps += 1
-        commandClass:Instruction = ILU.getClass_Mnemonic(command[0])
-        commandShouldBeParamTypes:list[str] = commandClass.getExpectedDataType()
+        commandShouldBeParamTypes:list[str] = ILU.getExpectedDataType_Mnemonic(command[0])
         params = command[1]
         for i in range(len(params)):
             param = params[i]
@@ -55,7 +55,7 @@ class CodeRunner:
                             f"Label {i + 1} in {command} on line {self.instructionPointer} not correct type. It is {type(param)} which it should be str"
                             )
                     raise Exception(f"Label {i + 1} in {command} on line {self.instructionPointer} is not defined.")
-        newPointer = commandClass.run(params, self.vars)
+        newPointer = ILU.getClass_Mnemonic(command[0]).run(params, self.vars)
         if newPointer == "END":
             self.instructionPointer = len(self.code) - 1
         elif newPointer is not None:
