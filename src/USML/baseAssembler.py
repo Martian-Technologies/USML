@@ -14,4 +14,7 @@ class Assembler:
 
     @staticmethod 
     def assemble(context):
+        """
+        This will return a context object that holds the assembly. This object does NOT hold USML code.
+        """
         pass        

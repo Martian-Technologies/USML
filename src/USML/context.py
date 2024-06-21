@@ -268,6 +268,8 @@ class Context:
             for item in self.commands[i][1]:
                 if ii > 0:
                     string += "|"
+                if type(item) == float:
+                    item = int(item)
                 string += " " + str(item) + (11 - len(str(item))) * " "
                 ii += 1
             string += "\n"

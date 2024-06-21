@@ -71,7 +71,7 @@ class InstructionLookUp:
         """
         return InstructionLookUp.nameToClass[name].description
 
-    def getExpectedDataType_Name(name: str):
+    def getExpectedDataType_Name(name: str) -> list[str]:
         """
         Used to get the expectedDataType of the instruction named (name)
 
@@ -119,7 +119,7 @@ class InstructionLookUp:
         """
         return InstructionLookUp.nameToClass[name]()
 
-    def getExpectedDataType_Mnemonic(mnemonic: str):
+    def getExpectedDataType_Mnemonic(mnemonic: str) -> list[str]:
         """
         Used to get the expectedDataType of the instruction associated with the mnemonic (mnemonic)
 
@@ -166,4 +166,4 @@ class InstructionLookUp:
             class (Instruction): A instances of the instruction
         """
         return InstructionLookUp.mnemonicToClass[mnemonic]()
-ILU = InstructionLookUp
+ILU:type[InstructionLookUp] = InstructionLookUp

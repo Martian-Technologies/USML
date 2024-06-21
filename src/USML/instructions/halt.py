@@ -7,6 +7,7 @@ class Halt(instruction.Instruction):
     description = "Halts the program."
     expectedDataType = []
     usageTypes = []
+    tags = ["program stop"]
 
     @staticmethod
     def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:

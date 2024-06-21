@@ -1,4 +1,9 @@
-SET a 255
-SET b -256
-BSLF a a b
+SET a 0
 PRINT a
+SET b 1
+SET limit 64
+.again
+ADD a b a
+PRINT b
+SWP a b
+JMIFG again limit b

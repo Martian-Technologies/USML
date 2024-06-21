@@ -39,21 +39,15 @@ class CodeRunner:
             if param in self.vars:
                 paramType = self.vars[param]["type"]
                 if commandShouldBeParamTypes[i] != paramType:
-                    raise Exception(
-                        f"Param {i + 1} in {command} on line {self.instructionPointer} not correct type.It is {paramType} which it should be {commandShouldBeParamTypes[i]}"
-                        )
+                    raise Exception(f"Param {i + 1} in {command} on line {self.instructionPointer} not correct type.It is {paramType} which it should be {commandShouldBeParamTypes[i]}")
             else:
                 if commandShouldBeParamTypes[i] == "var":
                     if type(param) != str:
-                        raise Exception(
-                            f"Var {i + 1} in {command} on line {self.instructionPointer} not correct type. It is {type(param)} which it should be str"
-                            )
+                        raise Exception(f"Var {i + 1} in {command} on line {self.instructionPointer} not correct type. It is {type(param)} which it should be str")
                     self.vars[param] = {"type": commandShouldBeParamTypes[i], "value":BitString.randomized(self.bitCount)}
                 elif commandShouldBeParamTypes[i] == "label":
                     if type(param) != str:
-                        raise Exception(
-                            f"Label {i + 1} in {command} on line {self.instructionPointer} not correct type. It is {type(param)} which it should be str"
-                            )
+                        raise Exception(f"Label {i + 1} in {command} on line {self.instructionPointer} not correct type. It is {type(param)} which it should be str")
                     raise Exception(f"Label {i + 1} in {command} on line {self.instructionPointer} is not defined.")
         newPointer = ILU.getClass_Mnemonic(command[0]).run(params, self.vars)
         if newPointer == "END":
@@ -71,8 +65,7 @@ class CodeRunner:
                     label = command[1][0]
                     if type(label) != str:
                         raise Exception(
-                            f"Param {i + 1} in {command} on line {self.ininstructionPointerst} not correct type. It is {type(label)} which it should be str"
-                            )
+                            f"Param {i + 1} in {command} on line {self.instructionPointer} not correct type. It is {type(label)} which it should be str")
                     if label in self.vars: # there should only be labels in this at this point
                         raise Exception(f"Cant have labels with the same names. Line {i} and line {self.vars[label]['value']}")
                     self.vars[label] = {"type": "label", "value":i}
