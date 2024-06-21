@@ -12,7 +12,7 @@
     "Label": [null],
     "Set": [[1], null],
     "Reset": [[1]],
-    "Copy": [[1], [1]],
+    "Copy": ["all", "all"],
     "Swap": [[1], [1]],
     "Equals": [[1], [1], [1]],
     "Not Equals": [[1], [1], [1]],

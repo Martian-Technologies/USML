@@ -173,6 +173,8 @@ class SimpleAssembler(Assembler):
                 positionsCompact:str|list[str|None]|None = commandRWPos[i]
                 if positionsCompact is None or len(positionsCompact) == 0: # all var params need positions
                     raise Exception(f"Command {ILU.getName(line[0])} can not have var with out read or write pos at param {i}")
+                if type(positionsCompact) == str:
+                    positionsCompact = [positionsCompact]
                 positions:list[MemoryPos] = []
                 for pos in positionsCompact:
                     positions.extend(SimpleAssembler.getMemoryAddressesFromData(pos, mem, positionsUsedForInputs))
@@ -191,6 +193,8 @@ class SimpleAssembler(Assembler):
                         best = pos
                     elif pos[0] < best[0]:
                         best = pos
+                if best is None:
+                    raise Exception(f"error not enough positions left for var {varName} in line {lineNumber}")
                 varsToGiveAddresses.append((varName, best[1]))
                 positionsUsedForGettingInputs.append(best[2])
                 positionsUsedForInputs.append(best[1])
@@ -207,6 +211,8 @@ class SimpleAssembler(Assembler):
                 positionsCompact:str|list[str|None]|None = commandRWPos[i]
                 if positionsCompact is None: # all var params need positions
                     raise Exception(f"Command {ILU.getName(line[0])} can not have var with out read or write pos at param {i}")
+                if type(positionsCompact) == str:
+                    positionsCompact = [positionsCompact]
                 positions:list[MemoryPos] = []
                 for pos in positionsCompact:
                     positions.extend(SimpleAssembler.getMemoryAddressesFromData(pos, mem, positionsUsedForOutputs))
@@ -226,6 +232,8 @@ class SimpleAssembler(Assembler):
                         best = pos
                     elif pos[0] < best[0]:
                         best = pos
+                if best is None:
+                    raise Exception(f"error not enough positions left for var {varName} in line {lineNumber}")
                 varsToGiveAddresses.append((varName, best[1]))
                 varNamesUsedForOutputs.append(varName)
                 positionsUsedForOutputs.append(best[1])
@@ -237,7 +245,7 @@ class SimpleAssembler(Assembler):
             if fromPos == toPos:
                 continue
             if mem[toPos] == mem[fromPos] or SimpleAssembler.canOverwriteMemoryPos(mem, toPos, lineNumber, dataGetter, commandsToAdd):
-                commandsToAdd.append(("move", [fromPos, toPos]))
+                commandsToAdd.append(("MOVE", [fromPos, toPos]))
             else:
                 possiblePositions = []
                 for memIndex in range(len(mem)):
@@ -255,8 +263,8 @@ class SimpleAssembler(Assembler):
                         best = pos
                     elif pos[0] < best[0]:
                         best = pos
-                commandsToAdd.append(("move", [toPos, best[1]]))
-                commandsToAdd.append(("move", [fromPos, toPos]))
+                commandsToAdd.append(("MOVE", [toPos, best[1]]))
+                commandsToAdd.append(("MOVE", [fromPos, toPos]))
         for i in range(len(positionsUsedForOutputs)):
             writePos = positionsUsedForOutputs[i]
             varName = varNamesUsedForOutputs[i]
@@ -279,11 +287,11 @@ class SimpleAssembler(Assembler):
                         best = pos
                     elif pos[0] < best[0]:
                         best = pos
-                commandsToAdd.append(("move", [writePos, best[1]]))
+                commandsToAdd.append(("MOVE", [writePos, best[1]]))
                 memThatWillBeSet.append((writePos, varName))
        
         for command in commandsToAdd:
-            if command[0] == "move":
+            if command[0] == "MOVE":
                 mem[command[1][1]] = mem[command[1][0]]
         for posName in memThatWillBeSet:
             for pos in mem.getAddressesOfVar(posName[1]):
@@ -318,7 +326,7 @@ class SimpleAssembler(Assembler):
             if len(addresses) == 0:
                 raise Exception(f"failed to find var {shouldBeAtAddress} while doing memory merge on memorys {memToKeep} and {memToChange} at memory {position}")
             memToChange[addresses[0]] = shouldBeAtAddress
-            commandsToAdd.append(("move", [addresses[0], position]))
+            commandsToAdd.append(("MOVE", [addresses[0], position]))
         else:
             possiblePositions = []
             for memIndex in range(len(memToChange)):
@@ -344,11 +352,11 @@ class SimpleAssembler(Assembler):
                                   while doing memory merge on memorys {memToKeep} and {memToChange} at memory {position}")
             memToChange[best[1]] = memToChange[position]
             dirtiedPositions.append(best[1])
-            commandsToAdd.append(("move", [position, best[1]]))
+            commandsToAdd.append(("MOVE", [position, best[1]]))
             addresses = memToChange.getAddressesOfVar(shouldBeAtAddress)
             if len(addresses) == 0:
                 raise Exception(f"failed to find var {shouldBeAtAddress} while doing memory merge on memorys {memToKeep} and {memToChange} at memory {position}. Also this should not happen")
-            commandsToAdd.append(("move", [addresses[0] ,position]))
+            commandsToAdd.append(("MOVE", [addresses[0] ,position]))
         return commandsToAdd, dirtiedPositions
 
     @staticmethod
@@ -377,12 +385,13 @@ class SimpleAssembler(Assembler):
         if commandsToAdd != None:
             mem = mem.copy()
             for command in commandsToAdd:
-                if command[0] == "move":
+                if command[0] == "MOVE":
                     mem[command[1][1]] = mem[command[1][0]]
         return (mem[pos] is None) or (len(mem.getAddressesOfVar(mem[pos])) > 1) or (dataGetter.varNextUsed(mem[pos], lineNumber) is None)
 
     @staticmethod
     def getMemoryAddressesFromData(data, mem:Memory, positionNotToUse:list[MemoryPos] = None):
+        print(data)
         if positionNotToUse is None:
             positionNotToUse = []
         positions:list[MemoryPos] = []
@@ -405,6 +414,9 @@ class SimpleAssembler(Assembler):
         else:
             for memIndex in range(len(mem[data])):
                 positions.append(MemoryPos(data, memIndex))
+        print("???")
+        print(positions)
         for pos in positionNotToUse:
             positions.remove(pos)
+        print(positions)
         return positions
