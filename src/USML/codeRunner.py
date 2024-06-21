@@ -1,6 +1,5 @@
 from USML.context import Context
 from USML.instructions.instructionLookUp import ILU
-from USML.instructions.instruction import Instruction
 from random import randint
 from USML.bitString import BitString
 
