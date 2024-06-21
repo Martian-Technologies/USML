@@ -126,19 +126,21 @@ class SimpleAssembler(Assembler):
                     else:
                         lineNumber = newLineNumber - 1
         dataToSet = sorted(dataToSet, key=(lambda a:-a[0]))
+        orderingOffsetsPerLine = {}
         for data in dataToSet:
             lineNumber = data[0]
+            if lineNumber not in orderingOffsetsPerLine:
+                orderingOffsetsPerLine[lineNumber] = 0
             varValuesToChange = data[1][1]
             for varValue in varValuesToChange:
-                line = context.getCommand(lineNumber)
+                line = context.getCommand(lineNumber + orderingOffsetsPerLine[lineNumber])
                 for i in range(len(line[1])):
                     if line[1][i] == varValue[0]:
                         line[1][i] = varValue[1]
             commands = data[1][0]
-            orderingOffset = 0
             for command in commands:
-                context.addCommand(command, index=lineNumber + orderingOffset)
-                orderingOffset += 1
+                context.addCommand(command, index=lineNumber + orderingOffsetsPerLine[lineNumber])
+                orderingOffsetsPerLine[lineNumber] += 1
         return context
             
     @staticmethod
@@ -279,6 +281,7 @@ class SimpleAssembler(Assembler):
                         best = pos
                 commandsToAdd.append(("move", [writePos, best[1]]))
                 memThatWillBeSet.append((writePos, varName))
+       
         for command in commandsToAdd:
             if command[0] == "move":
                 mem[command[1][1]] = mem[command[1][0]]
@@ -315,7 +318,7 @@ class SimpleAssembler(Assembler):
             if len(addresses) == 0:
                 raise Exception(f"failed to find var {shouldBeAtAddress} while doing memory merge on memorys {memToKeep} and {memToChange} at memory {position}")
             memToChange[addresses[0]] = shouldBeAtAddress
-            commandsToAdd.append(("move", addresses[0], position))
+            commandsToAdd.append(("move", [addresses[0], position]))
         else:
             possiblePositions = []
             for memIndex in range(len(memToChange)):
@@ -341,11 +344,11 @@ class SimpleAssembler(Assembler):
                                   while doing memory merge on memorys {memToKeep} and {memToChange} at memory {position}")
             memToChange[best[1]] = memToChange[position]
             dirtiedPositions.append(best[1])
-            commandsToAdd.append(("move", position, best[1]))
+            commandsToAdd.append(("move", [position, best[1]]))
             addresses = memToChange.getAddressesOfVar(shouldBeAtAddress)
             if len(addresses) == 0:
                 raise Exception(f"failed to find var {shouldBeAtAddress} while doing memory merge on memorys {memToKeep} and {memToChange} at memory {position}. Also this should not happen")
-            commandsToAdd.append(("move", addresses[0] ,position))
+            commandsToAdd.append(("move", [addresses[0] ,position]))
         return commandsToAdd, dirtiedPositions
 
     @staticmethod
@@ -356,9 +359,17 @@ class SimpleAssembler(Assembler):
         if (mem[toPos] is None) or (nextUsed is None): # rather not overwrite vars
             return 5
         if SimpleAssembler.canOverwriteMemoryPos(mem, toPos, lineNumber, dataGetter, commandsToAdd):
-            return 10 + max((100 - nextUsed)/20, 0)
+            return 10 + max((100 - nextUsed["steps"])/20, 0)
+        line = dataGetter.context.getCommand(lineNumber)
+        usageTypes = ILU.getUsageTypes_Mnemonic(line[0])
+        isNeeded = False
+        for i in range(len(line[1])):
+            if mem[toPos] == line[1][i]:
+                if usageTypes[i] == "in":
+                    isNeeded = True
+                    break
         if allowOverWrite:
-            return 20
+            return 20 + max((100 - nextUsed["steps"])/20, 0) +(10 if isNeeded else 0)
         return None
 
     @staticmethod
