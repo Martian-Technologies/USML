@@ -19,5 +19,6 @@ class BitShiftLeft(instruction.Instruction):
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
         return [
-            [["BSL", "PARAM1", "PARAM2"]]
+            [["BSL", "PARAM1", "PARAM2"]],
+            [["BSLO", "PARAM1", "PARAM2", "none"]],
         ]

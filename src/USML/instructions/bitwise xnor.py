@@ -2,9 +2,9 @@ from USML.instructions import instruction
 from USML.bitString import BitString
 
 class BitwiseNxor(instruction.Instruction):
-    name = "Bitwise Nxor"
-    mnemonic = "BNXOR"
-    description = "Performs a bitwise NXOR operation on the values of variable 1 and variable 2 and stores the result in variable 3."
+    name = "Bitwise Xnor"
+    mnemonic = "BXNOR"
+    description = "Performs a bitwise XNOR operation on the values of variable 1 and variable 2 and stores the result in variable 3."
     expectedDataType = ["var", "var", "var"]
     usageTypes = ["in", "in", "out"]
     tags = []
@@ -16,5 +16,9 @@ class BitwiseNxor(instruction.Instruction):
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
         return [
-            [["BNXOR", "PARAM1", "PARAM2", "PARAM3"]],
+            [["BXNOR", "PARAM1", "PARAM2", "PARAM3"]],
+            [
+                ["BXOR", "PARAM1", "PARAM2", "PARAM3"],
+                ["BNOT", "PARAM3", "PARAM3"],
+            ],
         ]

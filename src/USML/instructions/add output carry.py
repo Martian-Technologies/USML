@@ -2,7 +2,7 @@ from USML.instructions import instruction
 from USML.bitString import BitString
 
 class AddWithCarry(instruction.Instruction):
-    name = "Add With Carry"
+    name = "Add Output Carry"
     mnemonic = "ADDC"
     description = "Adds variables 1 and 2 together and stores it in variable 3. The carry flag is stored in variable 4."
     expectedDataType = ["var", "var", "var", "var"]
@@ -17,4 +17,10 @@ class AddWithCarry(instruction.Instruction):
 
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
-        return [[["ADDC", "PARAM1", "PARAM2", "PARAM3", "PARAM4"]]]
+        return [
+            [["ADDC", "PARAM1", "PARAM2", "PARAM3", "PARAM4"]]
+            [
+                ["ADD", "PARAM1", "PARAM2", "PARAM3"],
+                ["GRT", "PARAM1" "PARAM3", "PARAM4"]
+            ]
+        ]

@@ -17,4 +17,13 @@ class BitwiseAnd(instruction.Instruction):
     def getImplementations() -> list[list[list[str]]]:
         return [
             [["BAND", "PARAM1", "PARAM2", "PARAM3"]],
+            [
+                ["BNAND", "PARAM1", "PARAM2", "PARAM3"],
+                ["BNOT", "PARAM3", "PARAM3"]
+            ],
+            [
+                ["BNOT", "PARAM1", "not1"],
+                ["BNOT", "PARAM1", "PARAM3"],
+                ["BNOR", "PARAM3", "not1", "PARAM3"]
+            ]
         ]

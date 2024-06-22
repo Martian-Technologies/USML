@@ -15,4 +15,10 @@ class Xor(instruction.Instruction):
 
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
-        return [[["XOR", "PARAM1", "PARAM2", "PARAM3"]]]
+        return [
+            [["XOR", "PARAM1", "PARAM2", "PARAM3"]],
+            [
+                ["XNOR", "PARAM1", "PARAM2", "PARAM3"],
+                ["NOT", "PARAM3", "PARAM3"],
+            ],
+        ]

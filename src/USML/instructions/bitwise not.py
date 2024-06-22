@@ -17,4 +17,6 @@ class BitwiseNot(instruction.Instruction):
     def getImplementations() -> list[list[list[str]]]:
         return [
             [["BNOT", "PARAM1", "PARAM2"]],
+            [["BNAND", "PARAM1", "PARAM1", "PARAM2"]],
+            [["BNOR", "PARAM1","PARAM1", "PARAM2"]],
         ]

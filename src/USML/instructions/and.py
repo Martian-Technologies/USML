@@ -20,5 +20,10 @@ class And(instruction.Instruction):
             [
                 ["NAND", "PARAM1", "PARAM2", "PARAM3"],
                 ["NOT", "PARAM3", "PARAM3"]
+            ],
+            [
+                ["NOT", "PARAM1", "not1"],
+                ["NOT", "PARAM1", "PARAM3"],
+                ["NOR", "PARAM3", "not1", "PARAM3"]
             ]
         ]

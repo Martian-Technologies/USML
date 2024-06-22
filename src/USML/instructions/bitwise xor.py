@@ -17,4 +17,8 @@ class BitwiseXor(instruction.Instruction):
     def getImplementations() -> list[list[list[str]]]:
         return [
             [["BXOR", "PARAM1", "PARAM2", "PARAM3"]],
+            [
+                ["BXNOR", "PARAM1", "PARAM2", "PARAM3"],
+                ["BNOT", "PARAM3", "PARAM3"],
+            ],
         ]

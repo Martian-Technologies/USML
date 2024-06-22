@@ -15,4 +15,7 @@ class Add(instruction.Instruction):
 
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
-        return [[["ADD", "PARAM1", "PARAM2", "PARAM3"]]]
+        return [
+            [["ADD", "PARAM1", "PARAM2", "PARAM3"]]
+            ["ADDC", "PARAM1", "PARAM2", "PARAM3", "none"]
+        ]
