@@ -1,5 +1,6 @@
 {
-    "memorySizes":[32, 2],
+    "ramSizes":[32],
+    "regSizes":[2],
     "movementCommand":[],
     "bitCount":8
 }

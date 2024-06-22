@@ -13,7 +13,7 @@
     "Label": 0,
     "Set": 1,
     "Reset": 1,
-    "Copy": 1,
+    "Copy": 0.5,
     "Swap": 1,
     "Equals": 1,
     "Not Equals": 1,

@@ -13,7 +13,7 @@
     "Set": true,
     "Reset": true,
     "Copy": true,
-    "Swap": true,
+    "Swap": false,
     "Equals": true,
     "Not Equals": true,
     "Greater": true,

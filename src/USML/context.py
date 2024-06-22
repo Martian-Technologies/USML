@@ -47,6 +47,7 @@ class Context:
             self.costs.insert(index, cost)
 
     def addCommands(self, commands: list[tuple[str, list[str]]] | list[list[str]], costs: list[float]|None = None, varsToKeep:Literal["all"]|list|None = "all", index: int|None = None):
+        commands = deepcopy(commands)
         # set index
         if index is None:
             index = len(self.commands)
