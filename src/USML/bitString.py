@@ -8,10 +8,10 @@ class BitString:
     def __init__(self, bitCount:int) -> None:
         self.bits:list[bool] = [False] * bitCount
         self.bitCount = bitCount
-    
+
     def getBit(self, index):
         return self.bits[index]
-    
+
     def setBit(self, index, state:int|bool):
         self.bits[index] = bool(state)
 
@@ -21,7 +21,7 @@ class BitString:
             if self.bits[i]:
                 num = round(num + math.pow(2, i))
         return num
-    
+
     def setInt(self, num:int) -> None:
         while num < 0:
             num = num + math.pow(2, self.bitCount)
@@ -42,7 +42,13 @@ class BitString:
                     num -= bitValue
                 i -= 1
         return overFlow / math.pow(2, self.bitCount)
-    
+
+    def getArray(self) -> list[bool]:
+        return self.bits
+
+    def setArray(self, bits:list[bool]) -> None:
+        self.bits = bits
+
     def maxIntValue(self) -> int:
         return math.pow(2, self.bitCount) - 1
 
@@ -70,7 +76,7 @@ class BitString:
         string = "[" + string
         string += "]:" + str(self.getInt())
         return string
-    
+
     def __copy__(self) -> BitString:
         newBitString = BitString(len(self.bits))
         newBitString.bits = copy(self.bits)
