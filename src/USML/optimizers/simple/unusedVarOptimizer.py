@@ -1,7 +1,6 @@
 from USML.optimizers.simple.baseSimpleOptimizer import BaseSimpleOptimizer
-from USML.contextDataGetter import ContextDataGetter
 from USML.instructions.instructionLookUp import ILU
-from USML.context import Context
+from USML.context import Context, ContextDataGetter
 
 
 class UnusedVarOptimizer(BaseSimpleOptimizer):
@@ -17,7 +16,7 @@ class UnusedVarOptimizer(BaseSimpleOptimizer):
                 if varAndLabelUsage[param]["type"] == "var":
                     for usage in varAndLabelUsage[param]["usage"]:
                         if usage["usageType"] in ["out", "both"]:
-                            if dataGetter.varNextUsed(param, usage["line"]) is None:
+                            if dataGetter.varNextRead(param, usage["line"]) is None:
                                 if usage["line"] in toDel:
                                     toDel[usage["line"]] += 1
                                 else:

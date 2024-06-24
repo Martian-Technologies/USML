@@ -69,6 +69,12 @@ class BitString:
     def copy(self):
         return self.__copy__()
 
+    def getBitString(self) -> str:
+        string = ""
+        for bit in self.bits:
+            string = ("1" if bit else "0") + string
+        return string
+
     def __str__(self) -> str:
         string = ""
         for bit in self.bits:

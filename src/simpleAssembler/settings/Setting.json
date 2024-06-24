@@ -1,0 +1,21 @@
+{
+    "numberBitCount": 8,
+    "addressBitCount": 5,
+    "commandBitCount": 6,
+    "ramSizes":[32],
+    "regSizes":[2],
+    "movementCommands":[
+        {
+            "movementFrom": ["ram"],
+            "movementTo": ["reg"],
+            "commandName": "Load",
+            "commandId": 14
+        },
+        {
+            "movementFrom": ["reg"],
+            "movementTo": ["ram"],
+            "commandName": "Save",
+            "commandId": 15
+        }
+    ]
+}

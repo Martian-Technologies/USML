@@ -65,6 +65,10 @@ class Memory:
         return addresses
     
     def getMemoryAddressesFromData(self, data) -> list[MemoryPos]:
+        for item in data:
+            if type(item) == int:
+                data = [data]
+                break
         if type(data) == str:
             data = [data]
         positions:list[MemoryPos] = []
@@ -129,11 +133,27 @@ class Memory:
     def __iter__(self):
         return iter(self.mem)
 
-class MemoryPos:
+class MemoryPos:    
     def __init__(self, ramOrReg:str ,memIndex:int, memAddress:int) -> None:
         self.ramOrReg = ramOrReg
         self.memIndex:int = memIndex
         self.memAddress:int = memAddress
+
+    def containedInData(self, data):
+        if type(data) == list:
+            if len(data) == 1:
+                data = data[0]
+            elif len(data) == 2:
+                return data[0] == self.ramOrReg and data[1] == self.memIndex
+            elif len(data) == 3:
+                return data[0] == self.ramOrReg and data[1] == self.memIndex and data[2] == self.memAddress
+        if data == "all":
+            return True
+        if data == "reg":
+            return self.ramOrReg == "reg"
+        if data == "ram":
+            return self.ramOrReg == "ram"
+        raise Exception(f"can not read pos data {data}")
 
     def __str__(self) -> str:
         return f"pos [{self.ramOrReg}, {self.memIndex}, {self.memAddress}]"

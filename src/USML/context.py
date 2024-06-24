@@ -5,6 +5,7 @@ from copy import deepcopy
 from USML.instructions.instructionLookUp import ILU
 
 
+# Context Object
 class Context:
     def __init__(self) -> None:
         self.commands: list[tuple[str, list[str]]] = []
@@ -276,4 +277,221 @@ class Context:
             string += "\n"
             i += 1
         return string
+
+
+# Context Data Getter Object
+class ContextDataGetter:
+    def __init__(self, context:Context):
+        self.context:Context = context.copy()
+        self.varAndLabelUsage = None
+
+    def getVarAndLabelUsage(self) -> dict[str, dict[str, list[dict[str, int]]|int]]:
+        if self.varAndLabelUsage is not None:
+            return self.varAndLabelUsage
+        data:dict[str, dict[str, str|int|list[dict[str, int]]]] = {}
+        def getData(name:str, line:int, type:str, usageType:str):
+            if name not in data:
+                data[name] = {
+                    "usage": [],
+                    "count": 0,
+                    "type": type
+                }
+            data[name]["count"] += 1
+            data[name]["usage"].append({"usageType": usageType, "line": line})
+
+        self.context.iterOverParams(getData)
+        self.varAndLabelUsage = data
+        return data
     
+    def varNextRead(self, varName:str, startLineNumber:int, vistedLines = None):
+        varAndLabelUsage = self.getVarAndLabelUsage()
+        if vistedLines is None:
+            vistedLines:dict[int, bool] = {}
+        otherPath:None|dict[str, int] = None
+        if startLineNumber in vistedLines:
+            return otherPath
+        vistedLines[startLineNumber] = True
+        if otherPath is not None:
+            if otherPath["steps"] < len(vistedLines):
+                return otherPath
+        line = self.context.getCommand(startLineNumber)
+        if line is None:
+            return otherPath
+        if "program stop" in ILU.getTags_Mnemonic(line[0]):
+            return otherPath
+        if "force jump" in ILU.getTags_Mnemonic(line[0]):
+            labelUsage = varAndLabelUsage[line[1][0]]
+            newstartLineNumber = None
+            for usage in labelUsage["usage"]:
+                if usage["usageType"] == "out":
+                    newstartLineNumber = usage["line"]
+            if newstartLineNumber is None:
+                raise Exception(f"jump label {line[1][0]} not defined. Line {startLineNumber}")
+            startLineNumber = newstartLineNumber
+        elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
+            labelUsage = varAndLabelUsage[line[1][0]]
+            for usage in labelUsage["usage"]:
+                if usage["usageType"] == "out":
+                    possibleOtherPath = self.varNextRead(varName, usage["line"], deepcopy(vistedLines))
+                    if otherPath is None:
+                        otherPath = possibleOtherPath
+                    elif otherPath["steps"] > possibleOtherPath:
+                        otherPath = possibleOtherPath
+        while True:
+            startLineNumber += 1
+            if startLineNumber in vistedLines:
+                return otherPath
+            vistedLines[startLineNumber] = True
+            if otherPath is not None:
+                if otherPath["steps"] < len(vistedLines):
+                    return otherPath
+            line = self.context.getCommand(startLineNumber)
+            if line is None:
+                return otherPath
+            if "program stop" in ILU.getTags_Mnemonic(line[0]):
+                return otherPath
+            if "force jump" in ILU.getTags_Mnemonic(line[0]):
+                labelUsage = varAndLabelUsage[line[1][0]]
+                newstartLineNumber = None
+                for usage in labelUsage["usage"]:
+                    if usage["usageType"] == "out":
+                        newstartLineNumber = usage["line"]
+                if newstartLineNumber is None:
+                    raise Exception(f"jump label {line[1][0]} not defined. Line {startLineNumber}")
+                startLineNumber = newstartLineNumber
+            elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
+                labelUsage = varAndLabelUsage[line[1][0]]
+                for usage in labelUsage["usage"]:
+                    if usage["usageType"] == "out":
+                        possibleOtherPath = self.varNextRead(varName, usage["line"], deepcopy(vistedLines))
+                        if otherPath is None:
+                            otherPath = possibleOtherPath
+                        elif otherPath["steps"] > possibleOtherPath:
+                            otherPath = possibleOtherPath
+            for i in range(len(line[1])):
+                if line[1][i] == varName:
+                    usageType = ILU.getUsageTypes_Mnemonic(line[0])[i]
+                    if usageType == "out":
+                        return otherPath
+                    elif usageType in ["in", "both"]:
+                        if (otherPath is None) or otherPath["steps"] >= len(vistedLines):
+                            return {"lineNumber":startLineNumber, "steps":len(vistedLines)}
+                        else:
+                            return otherPath
+
+    def varNextWriten(self, varName:str, startLineNumber:int, vistedLines = None):
+        varAndLabelUsage = self.getVarAndLabelUsage()
+        if vistedLines is None:
+            vistedLines:dict[int, bool] = {}
+        otherPath:None|dict[str, int] = None
+        if startLineNumber in vistedLines:
+            return otherPath
+        vistedLines[startLineNumber] = True
+        if otherPath is not None:
+            if otherPath["steps"] < len(vistedLines):
+                return otherPath
+        line = self.context.getCommand(startLineNumber)
+        if line is None:
+            return otherPath
+        if "program stop" in ILU.getTags_Mnemonic(line[0]):
+            return otherPath
+        if "force jump" in ILU.getTags_Mnemonic(line[0]):
+            labelUsage = varAndLabelUsage[line[1][0]]
+            newstartLineNumber = None
+            for usage in labelUsage["usage"]:
+                if usage["usageType"] == "out":
+                    newstartLineNumber = usage["line"]
+            if newstartLineNumber is None:
+                raise Exception(f"jump label {line[1][0]} not defined. Line {startLineNumber}")
+            startLineNumber = newstartLineNumber
+        elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
+            labelUsage = varAndLabelUsage[line[1][0]]
+            for usage in labelUsage["usage"]:
+                if usage["usageType"] == "out":
+                    possibleOtherPath = self.varNextRead(varName, usage["line"], deepcopy(vistedLines))
+                    if otherPath is None:
+                        otherPath = possibleOtherPath
+                    elif otherPath["steps"] > possibleOtherPath:
+                        otherPath = possibleOtherPath
+        while True:
+            startLineNumber += 1
+            if startLineNumber in vistedLines:
+                return otherPath
+            vistedLines[startLineNumber] = True
+            if otherPath is not None:
+                if otherPath["steps"] < len(vistedLines):
+                    return otherPath
+            line = self.context.getCommand(startLineNumber)
+            if line is None:
+                return otherPath
+            if "program stop" in ILU.getTags_Mnemonic(line[0]):
+                return otherPath
+            if "force jump" in ILU.getTags_Mnemonic(line[0]):
+                labelUsage = varAndLabelUsage[line[1][0]]
+                newstartLineNumber = None
+                for usage in labelUsage["usage"]:
+                    if usage["usageType"] == "out":
+                        newstartLineNumber = usage["line"]
+                if newstartLineNumber is None:
+                    raise Exception(f"jump label {line[1][0]} not defined. Line {startLineNumber}")
+                startLineNumber = newstartLineNumber
+            elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
+                labelUsage = varAndLabelUsage[line[1][0]]
+                for usage in labelUsage["usage"]:
+                    if usage["usageType"] == "out":
+                        possibleOtherPath = self.varNextRead(varName, usage["line"], deepcopy(vistedLines))
+                        if otherPath is None:
+                            otherPath = possibleOtherPath
+                        elif otherPath["steps"] > possibleOtherPath:
+                            otherPath = possibleOtherPath
+            for i in range(len(line[1])):
+                if line[1][i] == varName:
+                    usageType = ILU.getUsageTypes_Mnemonic(line[0])[i]
+                    if usageType in ["out", "both"]:
+                        if (otherPath is None) or otherPath["steps"] >= len(vistedLines):
+                            return {"lineNumber":startLineNumber, "steps":len(vistedLines)}
+                        else:
+                            return otherPath
+
+
+# Context Data Changer Object
+class ContextDataChanger:
+    def __init__(self, context:Context) -> None:
+        self.context:Context = context.copy()
+        self.commandsToAddBeforeLine:dict[int, list] = {}
+        self.commandsToAddAfterLine:dict[int, list] = {}
+        self.paramsToChange:list[tuple[int, int, str|int]] = []
+
+    def addCommandBeforeLine(self, lineNumber:int, command:tuple[str, list[str]]) -> None:
+        if lineNumber not in self.commandsToAddBeforeLine:
+            self.commandsToAddBeforeLine[lineNumber] = []
+        self.commandsToAddBeforeLine[lineNumber].append(command)
+
+    def addCommandAfterLine(self, lineNumber:int, command:tuple[str, list[str]]) -> None:
+        if lineNumber not in self.commandsToAddAfterLine:
+            self.commandsToAddAfterLine[lineNumber] = []
+        self.commandsToAddAfterLine[lineNumber].append(command)
+
+    def addParamChange(self, lineNumber:int, paramIndex:int, valueToSet:str|int):
+        self.paramsToChange.append((lineNumber, paramIndex, valueToSet))
+
+    def applyCommands(self) -> Context:
+        context = self.context.copy()
+        for paramToChange in self.paramsToChange:
+            context.getCommand(paramToChange[0])[1][paramToChange[1]] = paramToChange[2]
+        for lineNumber in range(len(context)-1, -1, -1):
+            if lineNumber in self.commandsToAddAfterLine:
+                context.addCommands(self.commandsToAddAfterLine[lineNumber], index=lineNumber+1)
+            if lineNumber in self.commandsToAddBeforeLine:
+                context.addCommands(self.commandsToAddBeforeLine[lineNumber], index=lineNumber)
+        return context
+
+    def getCommandsToAddBeforeLineAtLine(self, lineNumber):
+        if lineNumber in self.commandsToAddBeforeLine:
+            return self.commandsToAddBeforeLine[lineNumber]
+        return []
+    
+    def getCommandsToAddAfterLineAtLine(self, lineNumber):
+        if lineNumber in self.commandsToAddAfterLine:
+            return self.commandsToAddAfterLine[lineNumber]
+        return []
