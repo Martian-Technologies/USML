@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Or(instruction.Instruction):
+class Or(Instruction):
     name =  "Or"
     mnemonic = "OR"
     description = "Sets variable 3 to 1 if either variable 1 or variable 2 are 1, otherwise sets variable 3 to 0."

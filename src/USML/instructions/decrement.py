@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Decrement(instruction.Instruction):
+class Decrement(Instruction):
     name =  "Decrement"
     mnemonic = "DEC"
     description = "Decrements the value of variable 1 by 1."

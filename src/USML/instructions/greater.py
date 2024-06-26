@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Greater(instruction.Instruction):
+class Greater(Instruction):
     name =  "Greater"
     mnemonic = "GRT"
     description = "Sets variable 3 to 1 if variable 1 is greater than variable 2, otherwise sets variable 3 to 0."

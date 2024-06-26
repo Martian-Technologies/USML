@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class IncrementIf(instruction.Instruction):
+class IncrementIf(Instruction):
     name =  "Increment If"
     mnemonic = "INCI"
     description = "Increments the value of variable 1 by 1 if variable 2 is 0."

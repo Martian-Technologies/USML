@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Increment(instruction.Instruction):
+class Increment(Instruction):
     name =  "Increment"
     mnemonic = "INC"
     description = "Increments the value of variable 1 by 1."

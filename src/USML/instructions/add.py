@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Add(instruction.Instruction):
+class Add(Instruction):
     name = "Add"
     mnemonic = "ADD"
     description = "Adds variables 1 and 2 together and stores it in variable 3."

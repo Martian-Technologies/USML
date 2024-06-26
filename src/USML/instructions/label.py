@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Label(instruction.Instruction):
+class Label(Instruction):
     name = "Label"
     mnemonic = "."
     description = "A label for the program to jump to. Does nothing."

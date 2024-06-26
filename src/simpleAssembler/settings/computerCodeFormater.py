@@ -53,6 +53,9 @@ def makeAssembly(line:tuple[str, list[int|MemoryPos]], instructionData:dict[str|
         if paramStr[len(paramStr)-2:len(paramStr)] == ".0":
             paramStr = paramStr[0:len(paramStr)-2]
 
+    # remove space for labels
+    if newName == ".":
+        paramStr = paramStr[1:len(paramStr)]
     # return line
     return newName + paramStr
 

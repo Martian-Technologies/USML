@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class BitwiseXor(instruction.Instruction):
+class BitwiseXor(Instruction):
     name = "Bitwise Xor"
     mnemonic = "BXOR"
     description = "Performs a bitwise XOR operation on the values of variable 1 and variable 2 and stores the result in variable 3."

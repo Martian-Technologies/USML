@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Swap(instruction.Instruction):
+class Swap(Instruction):
     name = "Swap"
     mnemonic = "SWP"
     description = "Swaps the values of variable 1 and variable 2."

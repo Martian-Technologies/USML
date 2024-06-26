@@ -16,3 +16,12 @@ class Instruction:
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
         raise Exception("Failed getting implementations. Defalt instruction has no implementations")
+    
+    @staticmethod
+    def dealWithNumberData(numberData:str|int|float, memory:dict[str, dict[str, BitString|str|int]]):
+        if type(numberData) == str:
+            if numberData[0:1] == "&":
+                return list(memory.keys()).index(numberData[1:len(numberData)])
+            numberData = float(numberData)
+        return numberData
+    

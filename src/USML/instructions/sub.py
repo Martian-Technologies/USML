@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Sub(instruction.Instruction):
+class Sub(Instruction):
     name = "Sub"
     mnemonic = "SUB"
     description = "Subtracts the value of variable 2 from the value of variable 1 and stores the result in variable 3."

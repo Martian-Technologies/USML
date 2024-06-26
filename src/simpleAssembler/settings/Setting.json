@@ -8,13 +8,13 @@
         {
             "movementFrom": ["ram"],
             "movementTo": ["reg"],
-            "commandName": "Load",
+            "commandName": "LOD",
             "commandId": 14
         },
         {
             "movementFrom": ["reg"],
             "movementTo": ["ram"],
-            "commandName": "Save",
+            "commandName": "SAV",
             "commandId": 15
         }
     ]

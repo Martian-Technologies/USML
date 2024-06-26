@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Equals(instruction.Instruction):
+class Equals(Instruction):
     name = "Equals"
     mnemonic = "EQU"
     description = "Sets variable 3 to 1 if variable 1 is equal to variable 2, otherwise sets variable 3 to 0."

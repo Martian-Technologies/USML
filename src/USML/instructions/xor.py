@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Xor(instruction.Instruction):
+class Xor(Instruction):
     name =  "Xor"
     mnemonic = "XOR"
     description = "Sets variable 3 to 1 if only one of variable 1 and variable 2 are 0, otherwise sets variable 3 to 0."

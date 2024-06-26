@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Reset(instruction.Instruction):
+class Reset(Instruction):
     name = "Reset"
     mnemonic = "RST"
     description = "Resets variable 1 to 0."

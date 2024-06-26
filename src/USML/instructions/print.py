@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Print(instruction.Instruction):
+class Print(Instruction):
     name = "Print"
     mnemonic = "PRINT"
     description = "Prints the value of variable 1 to the python console."

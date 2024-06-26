@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class BitwiseNot(instruction.Instruction):
+class BitwiseNot(Instruction):
     name = "Bitwise Not"
     mnemonic = "BNOT"
     description = "Performs a bitwise NOT operation on the values of variable 1 and stores the result in variable 2."

@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Not(instruction.Instruction):
+class Not(Instruction):
     name =  "Not"
     mnemonic = "NOT"
     description = "Sets variable 2 to 1 if variable 1 is 0, otherwise sets variable 2 to 0."

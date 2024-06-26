@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Bool(instruction.Instruction):
+class Bool(Instruction):
     name = "Bool"
     mnemonic = "BOOL"
     description = "Sets variable 2 to 1 if variable 1 is 0, otherwise sets variable 2 to 0."

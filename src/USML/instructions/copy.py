@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Copy(instruction.Instruction):
+class Copy(Instruction):
     name = "Copy"
     mnemonic = "CPY"
     description = "Copies the value of variable 1 to variable 2."

@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Xnor(instruction.Instruction):
+class Xnor(Instruction):
     name =  "Xnor"
     mnemonic = "XNOR"
     description = "Sets variable 3 to 1 if variable 1 and variable 2 are eiter both 0 or both not 0, otherwise sets variable 3 to 0."

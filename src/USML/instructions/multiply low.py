@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class MultiplyLow(instruction.Instruction):
+class MultiplyLow(Instruction):
     name =  "Multiply Low"
     mnemonic = "MLL"
     description = "Multiplies the value of variable 1 by the value of variable 2 and stores the lower n bits of the result in variable 3."

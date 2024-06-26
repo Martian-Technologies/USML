@@ -1,7 +1,7 @@
-SET a 0
-SET b 1
-SET limit 64
-.again
-ADD a b a
-SWP a b
-JMIFG again limit b
+SET a 2
+SET b &a
+SET a 3
+DREF b c
+PRINT a
+PRINT b
+PRINT c

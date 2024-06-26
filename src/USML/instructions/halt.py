@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Halt(instruction.Instruction):
+class Halt(Instruction):
     name = "Halt"
     mnemonic = "HLT"
     description = "Halts the program."

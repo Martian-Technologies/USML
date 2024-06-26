@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class JumpIfNot(instruction.Instruction):
+class JumpIfNot(Instruction):
     name = "Jump If Not"
     mnemonic = "JMIFN"
     description = "Jumps to the label if the value of variable 2 is 0."

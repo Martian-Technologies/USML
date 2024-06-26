@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class JumpIfLessOrEqual(instruction.Instruction):
+class JumpIfLessOrEqual(Instruction):
     name = "Jump If Less Or Equal"
     mnemonic = "JMIFLE"
     description = "Jumps to the label if the value of variable 1 is less than or equal to the value of variable 2."

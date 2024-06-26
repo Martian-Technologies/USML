@@ -34,10 +34,10 @@ class USMLRunner:
                 i += 1
             con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
             code.addContext(con, lineData[1:len(lineData)])
-        for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
-            code = optimizer.run(code)
-        assembly = self.assembler.assemble(code)
-        return code, assembly
+        # for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
+        #     code = optimizer.run(code)
+        # assembly = self.assembler.assemble(code)
+        return code, [] #, assembly
 
     def getBestInstructionSimple(self, instructionName:str, instructionNotToUse:list|None = None) -> Context|None:
         instructionNotToUse = shalowCopy(instructionNotToUse)
@@ -87,5 +87,5 @@ class USMLRunner:
                     elif con.getCost() < best.getCost():
                         best = con
         if best is None and isMain:
-            raise Exception("cant find implimation for {instructionName}")
+            raise Exception(f"cant find implimation for {instructionName}")
         return best

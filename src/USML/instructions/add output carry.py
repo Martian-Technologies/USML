@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class AddOutputCarry(instruction.Instruction):
+class AddOutputCarry(Instruction):
     name = "Add Output Carry"
     mnemonic = "ADDC"
     description = "Adds variables 1 and 2 together and stores it in variable 3. The carry flag is stored in variable 4."

@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class LessOrEqual(instruction.Instruction):
+class LessOrEqual(Instruction):
     name =  "Less Or Equal"
     mnemonic = "LOE"
     description = "Sets the value of variable 3 to 1 if the value of variable 1 is less than or equal to the value of variable 2, otherwise sets it to 0."

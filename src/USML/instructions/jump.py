@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Jump(instruction.Instruction):
+class Jump(Instruction):
     name = "Jump"
     mnemonic = "JMP"
     description = "Jumps to the label."

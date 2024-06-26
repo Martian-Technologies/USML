@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class BitShiftLeftWithFill(instruction.Instruction):
+class BitShiftLeftWithFill(Instruction):
     name = "Bit Shift Left With Fill"
     mnemonic = "BSLF"
     description = "Shifts the bits of variable 1 to the left by 1 and fills the rightmost bit with the value of variable 3. The result is stored in variable 2."

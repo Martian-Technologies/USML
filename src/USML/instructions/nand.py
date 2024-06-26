@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Nand(instruction.Instruction):
+class Nand(Instruction):
     name =  "Nand"
     mnemonic = "NAND"
     description = "Sets variable 3 to 1 if variable 1 and variable 2 are both 0, otherwise sets variable 3 to 0."

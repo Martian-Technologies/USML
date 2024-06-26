@@ -4,7 +4,7 @@
         "cost": 0,
         "readWritePos": [],
         "instructionId": 0,
-        "instructionName": "Halt",
+        "instructionName": "HLT",
         "paramOrder": []
     },
     "No Operation": {
@@ -12,7 +12,7 @@
         "cost": 1,
         "readWritePos": [],
         "instructionId": 1,
-        "instructionName": "No Operation",
+        "instructionName": "NOP",
         "paramOrder": []
     },
     "Jump": {
@@ -20,7 +20,7 @@
         "cost": 2,
         "readWritePos": [null],
         "instructionId": 2,
-        "instructionName": "Jump",
+        "instructionName": "JMP",
         "paramOrder": ["PARAM1"]
     },
     "Jump If": {
@@ -28,7 +28,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"]],
         "instructionId": 3,
-        "instructionName": "Jump If",
+        "instructionName": "JMIF",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Jump If Not": {
@@ -36,7 +36,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"]],
         "instructionId": 4,
-        "instructionName": "Jump If Not",
+        "instructionName": "JMIFN",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Jump If Equal": {
@@ -44,7 +44,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"], ["reg"]],
         "instructionId": 5,
-        "instructionName": "Jump If Equal",
+        "instructionName": "JMIFE",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Jump If Not Equal": {
@@ -52,7 +52,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"], ["reg"]],
         "instructionId": 6,
-        "instructionName": "Jump If Not Equal",
+        "instructionName": "JMIFNE",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Jump If Less": {
@@ -60,7 +60,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"], ["reg"]],
         "instructionId": 7,
-        "instructionName": "Jump If Less",
+        "instructionName": "JMIFL",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Jump If Less Or Equal": {
@@ -68,7 +68,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"], ["reg"]],
         "instructionId": 8,
-        "instructionName": "Jump If Less Or Equal",
+        "instructionName": "JMIFLE",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Jump If Greater": {
@@ -76,7 +76,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"], ["reg"]],
         "instructionId": 9,
-        "instructionName": "Jump If Greater",
+        "instructionName": "JMIFG",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Jump If Greater Or Equal": {
@@ -84,7 +84,7 @@
         "cost": 2,
         "readWritePos": [null, ["reg"], ["reg"]],
         "instructionId": 10,
-        "instructionName": "Jump If Greater Or Equal",
+        "instructionName": "JMIFGE",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Label": {
@@ -92,23 +92,31 @@
         "cost": 0,
         "readWritePos": [null],
         "instructionId": 11,
-        "instructionName": "Label",
+        "instructionName": ".",
         "paramOrder": ["PARAM1"]
+    },
+    "Dereference": {
+        "hasInstruction": true,
+        "cost": 0,
+        "readWritePos": ["reg", "ram"],
+        "instructionId": 13,
+        "instructionName": "DREF",
+        "paramOrder": []
     },
     "Set": {
         "hasInstruction": true,
         "cost": 1,
         "readWritePos": ["reg", null],
-        "instructionId": 12,
-        "instructionName": "Set",
+        "instructionId": 14,
+        "instructionName": "SET",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Reset": {
         "hasInstruction": true,
         "cost": 1,
         "readWritePos": ["reg"],
-        "instructionId": 13,
-        "instructionName": "Reset",
+        "instructionId": 15,
+        "instructionName": "RST",
         "paramOrder": ["PARAM1"]
     },
     "Copy": {
@@ -116,7 +124,7 @@
         "cost": 0.5,
         "readWritePos": ["all", "all"],
         "instructionId": "no Id because copy commands will be turned intp movement commands. Leaves id 14 and 15 commands for [reg to ram] and [ram to reg]",
-        "instructionName": "Copy",
+        "instructionName": "CPY",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Swap": {
@@ -124,7 +132,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"]],
         "instructionId": 16,
-        "instructionName": "Swap",
+        "instructionName": "SWP",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Equals": {
@@ -132,7 +140,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 17,
-        "instructionName": "Equals",
+        "instructionName": "EQU",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Not Equals": {
@@ -140,7 +148,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 18,
-        "instructionName": "Not Equals",
+        "instructionName": "NEQU",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Greater": {
@@ -148,7 +156,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 19,
-        "instructionName": "Greater",
+        "instructionName": "GRT",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Less": {
@@ -156,7 +164,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 20,
-        "instructionName": "Less",
+        "instructionName": "LES",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Greater Or Equal": {
@@ -164,7 +172,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 21,
-        "instructionName": "Greater Or Equal",
+        "instructionName": "GOE",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Less Or Equal": {
@@ -172,7 +180,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 22,
-        "instructionName": "Less Or Equal",
+        "instructionName": "LOE",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "And": {
@@ -180,7 +188,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 23,
-        "instructionName": "And",
+        "instructionName": "AND",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Or": {
@@ -188,7 +196,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 24,
-        "instructionName": "Or",
+        "instructionName": "OR",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Xor": {
@@ -196,7 +204,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 25,
-        "instructionName": "Xor",
+        "instructionName": "XOR",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Nand": {
@@ -204,7 +212,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 26,
-        "instructionName": "Nand",
+        "instructionName": "NAND",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Nor": {
@@ -212,7 +220,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 27,
-        "instructionName": "Nor",
+        "instructionName": "NOR",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Xnor": {
@@ -220,7 +228,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 28,
-        "instructionName": "Xnor",
+        "instructionName": "XNOR",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Not": {
@@ -228,7 +236,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"]],
         "instructionId": 29,
-        "instructionName": "Not",
+        "instructionName": "NOT",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Bool": {
@@ -236,7 +244,7 @@
         "cost": 1,
         "readWritePos": ["all", ["reg"]],
         "instructionId": 30,
-        "instructionName": "Bool",
+        "instructionName": "BOOL",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Bit Shift Left": {
@@ -244,7 +252,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"]],
         "instructionId": 31,
-        "instructionName": "Bit Shift Left",
+        "instructionName": "BSL",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Bit Shift Left With Fill": {
@@ -252,7 +260,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 32,
-        "instructionName": "Bit Shift Left With Fill",
+        "instructionName": "BSLF",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Bit Shift Left With Overflow And Fill": {
@@ -260,7 +268,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"], ["reg"]],
         "instructionId": 33,
-        "instructionName": "Bit Shift Left With Overflow And Fill",
+        "instructionName": "BSLOF",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3", "PARAM4"]
     },
     "Bit Shift Left With Overflow": {
@@ -268,7 +276,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 34,
-        "instructionName": "Bit Shift Left With Overflow",
+        "instructionName": "BSLO",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Bit Shift Right": {
@@ -276,7 +284,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"]],
         "instructionId": 35,
-        "instructionName": "Bit Shift Right",
+        "instructionName": "BSR",
         "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Bit Shift Right With Fill": {
@@ -284,7 +292,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 36,
-        "instructionName": "Bit Shift Right With Fill",
+        "instructionName": "BSRF",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Bit Shift Right With Overflow And Fill": {
@@ -292,7 +300,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"], ["reg"]],
         "instructionId": 37,
-        "instructionName": "Bit Shift Right With Overflow And Fill",
+        "instructionName": "BSROF",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3", "PARAM4"]
     },
     "Bit Shift Right With Overflow": {
@@ -300,7 +308,7 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 38,
-        "instructionName": "Bit Shift Right With Overflow",
+        "instructionName": "BSRO",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
     "Add": {
@@ -308,15 +316,15 @@
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"]],
         "instructionId": 39,
-        "instructionName": "Add",
+        "instructionName": "ADD",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
     },
-    "Add With Carry": {
+    "Add Output Carry": {
         "hasInstruction": true,
         "cost": 1,
         "readWritePos": [["reg"], ["reg"], ["reg"], ["reg"]],
         "instructionId": 40,
-        "instructionName": "Add With Carry",
+        "instructionName": "ADDC",
         "paramOrder": ["PARAM1", "PARAM2", "PARAM3", "PARAM4"]
     },
     "Print": {
@@ -324,7 +332,7 @@
         "cost": 1,
         "readWritePos": [["reg"]],
         "instructionId": 41,
-        "instructionName": "Print",
+        "instructionName": "PRINT",
         "paramOrder": ["PARAM1"]
     }
 }

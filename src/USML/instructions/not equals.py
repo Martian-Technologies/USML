@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class NotEquals(instruction.Instruction):
+class NotEquals(Instruction):
     name =  "Not Equals"
     mnemonic = "NEQU"
     description = "Sets variable 3 to 1 if variable 1 is not equal to variable 2, otherwise sets variable 3 to 0."

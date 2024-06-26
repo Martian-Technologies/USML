@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Nor(instruction.Instruction):
+class Nor(Instruction):
     name =  "Nor"
     mnemonic = "NOR"
     description = "Sets variable 3 to 1 if both variable 1 and variable 2 are 0, otherwise sets variable 3 to 0."

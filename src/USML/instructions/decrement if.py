@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class DecrementIf(instruction.Instruction):
+class DecrementIf(Instruction):
     name =  "Decrement If"
     mnemonic = "DECI"
     description = "Decrements the value of variable 1 by 1 if variable 2 is 0."

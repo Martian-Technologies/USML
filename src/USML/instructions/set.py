@@ -1,7 +1,7 @@
-from USML.instructions import instruction
+from USML.instructions.instruction import Instruction
 from USML.bitString import BitString
 
-class Set(instruction.Instruction):
+class Set(Instruction):
     name = "Set"
     mnemonic = "SET"
     description = "Sets variable 1 to the value of variable 2."
@@ -10,7 +10,7 @@ class Set(instruction.Instruction):
 
     @staticmethod
     def run(params:tuple[str|float], memory:dict[str, dict[str, BitString|str|int]]) -> None|int:
-        memory[params[0]]["value"].setInt(params[1])
+        memory[params[0]]["value"].setInt(Instruction.dealWithNumberData(params[1], memory))
 
     @staticmethod
     def getImplementations() -> list[list[list[str]]]:
