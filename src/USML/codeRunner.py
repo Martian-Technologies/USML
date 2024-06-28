@@ -26,7 +26,7 @@ class CodeRunner:
             if self.instructionPointer >= len(self.code):
                 return None
             couldBeCommand = self.code.getCommand(self.instructionPointer)
-            if couldBeCommand[0] != ".":
+            if couldBeCommand[0] not in [".", "@"]:
                 command = couldBeCommand
             else:
                 self.instructionPointer += 1

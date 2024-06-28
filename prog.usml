@@ -1,7 +1,8 @@
 SET a 2
+@hold a
 SET b &a
-SET a 3
-DREF b c
-PRINT a
+SET c 3
+DREFW b c
 PRINT b
 PRINT c
+@release a

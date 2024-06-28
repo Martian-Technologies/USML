@@ -208,11 +208,19 @@ class Context:
             for i in range(len(command[1])):
                 name = command[1][i]
                 if includeNumbers or type(name) == str:
+                    expectedDataType = None
+                    usageTypes = None
+                    if command[0] == "@":
+                        expectedDataType = [None, "Var"][i]
+                        usageTypes = [None, "in"][i]
+                    else:
+                        expectedDataType = ILU.getExpectedDataType_Mnemonic(command[0])[i]
+                        usageTypes = ILU.getUsageTypes_Mnemonic(command[0])[i]
                     newName = functionToRun(
                         name,
                         lineNumber,
-                        ILU.getExpectedDataType_Mnemonic(command[0])[i],
-                        ILU.getUsageTypes_Mnemonic(command[0])[i]
+                        expectedDataType,
+                        usageTypes
                     )
                     if newName is not None:
                         command[1][i] = newName
@@ -352,63 +360,90 @@ class ContextDataGetter:
                 yield self.iterInRunOrder(iterInRunOrderData.copy(), self.getJumpLabelPos(line[1][0]), False, deepcopy(vistedLines))
         return iterInRunOrderData
 
-    def varNextRead(self, varName:str, startLineNumber:int, vistedLines = None):
+    def varNextRead(self, varName:str, startLineNumber:int, vistedLines = None, hitHold = False):
         varAndLabelUsage = self.getVarAndLabelUsage()
         if vistedLines is None:
             vistedLines:dict[int, bool] = {}
         otherPath:None|dict[str, int] = None
         if startLineNumber in vistedLines:
+            if otherPath is None:
+                return hitHold
             return otherPath
         vistedLines[startLineNumber] = True
         if otherPath is not None:
             if otherPath["steps"] < len(vistedLines):
+                if otherPath is None:
+                    return hitHold
                 return otherPath
         line = self.context.getCommand(startLineNumber)
         if line is None:
-            return otherPath
-        if "program stop" in ILU.getTags_Mnemonic(line[0]):
-            return otherPath
-        if "force jump" in ILU.getTags_Mnemonic(line[0]):
-            startLineNumber = self.getJumpLabelPos(line[1][0])
-        elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
-            labelUsage = varAndLabelUsage[line[1][0]]
-            possibleOtherPath = self.varNextRead(varName, self.getJumpLabelPos(line[1][0]), deepcopy(vistedLines))
             if otherPath is None:
-                otherPath = possibleOtherPath
-            elif otherPath["steps"] > possibleOtherPath:
-                otherPath = possibleOtherPath
-        while True:
-            startLineNumber += 1
-            if startLineNumber in vistedLines:
-                return otherPath
-            vistedLines[startLineNumber] = True
-            if otherPath is not None:
-                if otherPath["steps"] < len(vistedLines):
-                    return otherPath
-            line = self.context.getCommand(startLineNumber)
-            if line is None:
-                return otherPath
+                return hitHold
+            return otherPath
+        if line[0] == "@":
+            if line[1][1] == varName:
+                hitHold = True
+        else:
             if "program stop" in ILU.getTags_Mnemonic(line[0]):
+                if otherPath is None:
+                    return hitHold
                 return otherPath
             if "force jump" in ILU.getTags_Mnemonic(line[0]):
                 startLineNumber = self.getJumpLabelPos(line[1][0])
             elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
                 labelUsage = varAndLabelUsage[line[1][0]]
-                possibleOtherPath = self.varNextRead(varName, self.getJumpLabelPos(line[1][0]), deepcopy(vistedLines))
+                possibleOtherPath = self.varNextRead(varName, self.getJumpLabelPos(line[1][0]), deepcopy(vistedLines), hitHold)
                 if otherPath is None:
                     otherPath = possibleOtherPath
                 elif otherPath["steps"] > possibleOtherPath:
                     otherPath = possibleOtherPath
-            for i in range(len(line[1])):
-                if line[1][i] == varName:
-                    usageType = ILU.getUsageTypes_Mnemonic(line[0])[i]
-                    if usageType == "out":
-                        return otherPath
-                    elif usageType in ["in", "both"]:
-                        if (otherPath is None) or otherPath["steps"] >= len(vistedLines):
-                            return {"lineNumber":startLineNumber, "steps":len(vistedLines)}
-                        else:
+                    
+        while True:
+            startLineNumber += 1
+            if startLineNumber in vistedLines:
+                if otherPath is None:
+                    return hitHold
+                return otherPath
+            vistedLines[startLineNumber] = True
+            if otherPath is not None:
+                if otherPath["steps"] < len(vistedLines):
+                    if otherPath is None:
+                        return hitHold
+                    return otherPath
+            line = self.context.getCommand(startLineNumber)
+            if line is None:
+                if otherPath is None:
+                    return hitHold
+                return otherPath
+            if line[0] == "@":
+                if line[1][1] == varName:
+                    hitHold = True
+            else:
+                if "program stop" in ILU.getTags_Mnemonic(line[0]):
+                    if otherPath is None:
+                        return hitHold
+                    return otherPath
+                if "force jump" in ILU.getTags_Mnemonic(line[0]):
+                    startLineNumber = self.getJumpLabelPos(line[1][0])
+                elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
+                    labelUsage = varAndLabelUsage[line[1][0]]
+                    possibleOtherPath = self.varNextRead(varName, self.getJumpLabelPos(line[1][0]), deepcopy(vistedLines), hitHold)
+                    if otherPath is None:
+                        otherPath = possibleOtherPath
+                    elif otherPath["steps"] > possibleOtherPath:
+                        otherPath = possibleOtherPath
+                for i in range(len(line[1])):
+                    if line[1][i] == varName:
+                        usageType = ILU.getUsageTypes_Mnemonic(line[0])[i]
+                        if usageType == "out":
+                            if otherPath is None:
+                                return hitHold
                             return otherPath
+                        elif usageType in ["in", "both"]:
+                            if (otherPath is None) or otherPath["steps"] >= len(vistedLines):
+                                return {"lineNumber":startLineNumber, "steps":len(vistedLines), "hitHold":hitHold}
+                            else:
+                                return otherPath
 
     def varNextWriten(self, varName:str, startLineNumber:int, vistedLines = None):
         varAndLabelUsage = self.getVarAndLabelUsage()

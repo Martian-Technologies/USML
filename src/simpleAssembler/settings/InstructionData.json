@@ -95,13 +95,21 @@
         "instructionName": ".",
         "paramOrder": ["PARAM1"]
     },
-    "Dereference": {
+    "DereferenceWrite": {
         "hasInstruction": true,
-        "cost": 0,
-        "readWritePos": ["reg", "ram"],
+        "cost": 1,
+        "readWritePos": ["reg", "reg"],
+        "instructionId": 12,
+        "instructionName": "DREFW",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "DereferenceRead": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": ["reg", "reg"],
         "instructionId": 13,
-        "instructionName": "DREF",
-        "paramOrder": []
+        "instructionName": "DREFR",
+        "paramOrder": ["PARAM1", "PARAM2"]
     },
     "Set": {
         "hasInstruction": true,

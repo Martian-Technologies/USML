@@ -16,7 +16,8 @@ class UnusedVarOptimizer(BaseSimpleOptimizer):
                 if varAndLabelUsage[param]["type"] == "var":
                     for usage in varAndLabelUsage[param]["usage"]:
                         if usage["usageType"] in ["out", "both"]:
-                            if dataGetter.varNextRead(param, usage["line"]) is None:
+                            nextRead = dataGetter.varNextRead(param, usage["line"])
+                            if nextRead is None:
                                 if usage["line"] in toDel:
                                     toDel[usage["line"]] += 1
                                 else:

@@ -20,22 +20,27 @@ class USMLRunner:
             if lineData[0] == "":
                 continue
             if lineData[0][0] == ".":
-                lineData = [".", lineData[0][1:len(lineData[0])]]
+                lineData = [".", lineData[0][1:len(lineData[0])]] + lineData[1:len(lineData)]
+            elif lineData[0][0] == "@":
+                lineData = ["@", lineData[0][1:len(lineData[0])]] + lineData[1:len(lineData)]
             for i in range(len(lineData[1:len(lineData)])):
                 try:
                     lineData[i + 1] = float(lineData[i + 1])
                 except:
                     pass
-            con = self.getBestInstructionSimple(ILU.getName(lineData[0]))
-            toReplace = []
-            i = 1
-            for var in lineData[1:len(lineData)]:
-                toReplace.append("PARAM" + str(i))
-                i += 1
-            con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
-            code.addContext(con, lineData[1:len(lineData)])
-        # for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
-        #     code = optimizer.run(code)
+            if lineData[0] == "@":
+                code.addCommand(lineData)
+            else:
+                con = self.getBestInstructionSimple(ILU.getName(lineData[0]))
+                toReplace = []
+                i = 1
+                for var in lineData[1:len(lineData)]:
+                    toReplace.append("PARAM" + str(i))
+                    i += 1
+                con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
+                code.addContext(con, lineData[1:len(lineData)])
+        for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
+            code = optimizer.run(code)
         # assembly = self.assembler.assemble(code)
         return code, [] #, assembly
 
