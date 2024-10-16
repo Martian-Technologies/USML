@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Literal
-from copy import deepcopy
+from copy import copy, deepcopy
 
 from USML.instructions.instructionLookUp import ILU
 
@@ -11,42 +11,59 @@ class Context:
         self.costs: list[float] = []
         self.varNames: list[str] = []
 
-    def addCommand(self, command: tuple[str, list[str]] | list[list[str]], cost: float = None, varsToKeep:Literal["all"]|list|None = "all", index: int|None = None) -> None:
+    def addCommand(self, command:tuple[str, list[str]]|list[list[str]], cost:float = None, varsToKeep:Literal["all"]|list|None = "all", index:int|None = None) -> None:
         # set varsToKeep
-        if varsToKeep is None :
+        if varsToKeep is None:
             varsToKeep = []
         # correct command format
         if len(command) == 1:
             command = (command[0], [])
-        elif type(command[1]) == str:
+        elif type(command[1]) != list:
             command = (command[0], command[1:len(command)])
         command:tuple[str, list[str]]
         # replace vars in self.vars and not in varsToKeep
         if varsToKeep != "all":
             hashOfOldNames:dict[str, str] = {}
             for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
                 name = command[1][i]
-                if name not in varsToKeep:
-                    if name not in hashOfOldNames:
-                        hashOfOldNames[name] = self.generateNewVarName(name, command[1])
-                    command[1][i] = hashOfOldNames[name]
+                if type(name) == str:
+                    pre = ""
+                    if name[0:1] == "&":
+                        pre = "&"
+                        name = name[1:len(name)]
+                    if name not in varsToKeep and pre + name not in varsToKeep:
+                        if name not in hashOfOldNames and (pre + name) not in hashOfOldNames:
+                            hashOfOldNames[name] = self.generateNewVarName(name, command[1])
+                        command[1][i] = pre + hashOfOldNames[name]
         # add command
         if index is None or index == len(self.commands):
-            for var in command[1]:
+            for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
+                var = command[1][i]
                 if type(var) == str:
+                    if var[0:1] == "&":
+                        var = var[1:len(var)]
                     if var not in self.varNames:
                         self.varNames.append(var)
             self.commands.append(deepcopy(command))
             self.costs.append(cost)
         else:
-            for var in command[1]:
+            for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
+                var = command[1][i]
                 if type(var) == str:
+                    if var[0:1] == "&":
+                        var = var[1:len(var)]
                     if var not in self.varNames:
                         self.varNames.append(var)
             self.commands.insert(index, deepcopy(command))
             self.costs.insert(index, cost)
 
-    def addCommands(self, commands: list[tuple[str, list[str]]] | list[list[str]], costs: list[float]|None = None, varsToKeep:Literal["all"]|list|None = "all", index: int|None = None):
+    def addCommands(self, commands:list[tuple[str, list[str]]]|list[list[str]], costs:list[float]|None = None, varsToKeep:Literal["all"]|list|None = "all", index:int|None = None):
         commands = deepcopy(commands)
         # set index
         if index is None:
@@ -66,12 +83,18 @@ class Context:
             # format command correctly
             if len(command) == 1:
                 commands[i] = (command[0], [])
-            elif type(command[1]) == str:
+            elif type(command[1]) != list:
                 commands[i] = (command[0], command[1:len(command)])
             # get vars used in commands
-            for var in commands[i][1]:
-                if var not in vars:
-                    vars.append(var)
+            for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
+                var = command[1][i]
+                if type(var) == str:
+                    if var[0:1] == "&":
+                        var = var[1:len(var)]
+                    if var not in vars:
+                        vars.append(var)
         # loop through all commands
         hashOfOldNames:dict[str, str] = {} # to store the names that have already been changed
         for commandCostPair in zip(commands, costs):
@@ -79,22 +102,33 @@ class Context:
             command = commandCostPair[0]
             if varsToKeep != "all":
                 for i in range(len(command[1])):
+                    if command[0] == "@" and i == 0:
+                        continue
                     name = command[1][i]
                     if type(name) == str:
-                        if name not in varsToKeep:
+                        pre = ""
+                        if name[0:1] == "&":
+                            pre = "&"
+                            name = name[1:len(name)]
+                        if name not in varsToKeep and pre + name not in varsToKeep:
                             if name not in hashOfOldNames:
                                 hashOfOldNames[name] = self.generateNewVarName(name, vars)
-                            command[1][i] = hashOfOldNames[name]
+                            command[1][i] = pre + hashOfOldNames[name]
             # add command
-            for var in commandCostPair[0][1]:
+            for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
+                var = command[1][i]
                 if type(var) == str:
+                    if var[0:1] == "&":
+                        var = var[1:len(var)]
                     if var not in self.varNames:
                         self.varNames.append(var)
             self.commands.insert(index, commandCostPair[0])
             self.costs.insert(index, commandCostPair[1])
             index += 1
     
-    def addContext(self, context: Context, varsToKeep:Literal["all"]|list|None = "all", index: int = None) -> None:
+    def addContext(self, context:Context, varsToKeep:Literal["all"]|list|None = "all", index:int = None) -> None:
         context = context.copy()
         # set index
         if index is None:
@@ -105,25 +139,35 @@ class Context:
         # replace vars that are in self.vars and not in varsToKeep
         if varsToKeep != "all":
             hashOfOldNames:dict[str, str] = {}
-            def correctVarNames(name, line, type, usageType):
-                if name not in varsToKeep:
-                    if name not in hashOfOldNames:
-                        hashOfOldNames[name] = self.generateNewVarName(name, context.varNames)
-                    return hashOfOldNames[name]
+            def correctVarNames(var, line, type, usageType):
+                pre = ""
+                if var[0:1] == "&":
+                    pre = "&"
+                    var = var[1:len(var)]
+                if var not in varsToKeep and pre + var not in varsToKeep:
+                    if var not in hashOfOldNames:
+                        hashOfOldNames[var] = self.generateNewVarName(var, context.varNames)
+                    return pre + hashOfOldNames[var]
                 return None
             context.iterOverParams(correctVarNames)
         # loop through all commands
         for commandCostPair in context:
             # add command
-            for var in commandCostPair[0][1]:
+            command = commandCostPair[0]
+            for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
+                var = command[1][i]
                 if type(var) == str:
+                    if var[0:1] == "&":
+                        var = var[1:len(var)]
                     if var not in self.varNames:
                         self.varNames.append(var)
-            self.commands.insert(index, commandCostPair[0])
+            self.commands.insert(index, command)
             self.costs.insert(index, commandCostPair[1])
             index += 1
 
-    def removeCommand(self, index: int) -> tuple[tuple[str, list[str]], float]|None:
+    def removeCommand(self, index:int) -> tuple[tuple[str, list[str]], float]|None:
         if index >= 0 and index < len(self.commands):
             pair = (self.commands[index], self.costs[index])
             del self.commands[index]
@@ -132,16 +176,16 @@ class Context:
             return pair
         return None
 
-    def getCommand(self, index: int) -> tuple[str, list[str]]|None:
+    def getCommand(self, index:int) -> tuple[str, list[str]]|None:
         if index >= 0 and index < len(self.commands):
             return self.commands[index]
         return None
     
-    def setCost(self, value: float, index: int) -> None:
+    def setCost(self, value:float, index:int) -> None:
         if index >= 0 and index < len(self.commands):
             self.costs[index] = value
 
-    def getCost(self, index: int | None = None) -> float|None:
+    def getCost(self, index:int|None = None) -> float|None:
         if index is None:
             cost = 0
             for c in self.costs:
@@ -162,24 +206,45 @@ class Context:
     def replaceVarName(self, nameToReplace, nameToUse):
         for line in self.commands:
             for i in range(len(line[1])):
-                if line[1][i] == nameToReplace:
-                    line[1][i] = nameToUse
+                if line[0] == "@" and i == 0:
+                    continue
+                pre = ""
+                var = line[1][i]
+                if var[0:1] == "&":
+                    pre = "&"
+                    var = var[1:len(var)]
+                if var == nameToReplace:
+                    line[1][i] = pre + nameToUse
         self.updateVarNames()
 
     def replaceVarNames(self, replacementDict:dict):
-        for line in self.commands:
-            for i in range(len(line[1])):
-                if line[1][i] in replacementDict:
-                    line[1][i] = replacementDict[line[1][i]]
+        def replaceFunc(var, line, varType, usageType):
+            pre = ""
+            if var[0:1] == "&":
+                pre = "&"
+                var = var[1:len(var)]
+            if var in replacementDict:
+                if type(replacementDict[var]) == str:
+                    return pre + replacementDict[var]
+                return replacementDict[var]
+        self.iterOverParams(replaceFunc)
         self.updateVarNames()
 
     def replaceVarNamesWithUniqueNames(self, replacementDict:dict):
-        def replaceFunc(name, line, type, usageType):
-            if name in replacementDict:
-                return replacementDict[name]
-            elif name in replacementDict.values():
-                replacementDict[name] = self.generateNewVarName(name, replacementDict.values())
-                return replacementDict[name]
+        def replaceFunc(var, line, varType, usageType):
+            pre = ""
+            if var[0:1] == "&":
+                pre = "&"
+                var = var[1:len(var)]
+            if var in replacementDict:
+                if type(replacementDict[var]) == str:
+                    return pre + replacementDict[var]
+                return replacementDict[var]
+            elif var in replacementDict.values():
+                replacementDict[var] = self.generateNewVarName(var, replacementDict.values())
+                if type(replacementDict[var]) == str:
+                    return pre + replacementDict[var]
+                return replacementDict[var]
         self.iterOverParams(replaceFunc)
         self.updateVarNames()
 
@@ -206,6 +271,8 @@ class Context:
         for lineNumber in range(len(self.commands)):
             command = self.commands[lineNumber]
             for i in range(len(command[1])):
+                if command[0] == "@" and i == 0:
+                    continue
                 name = command[1][i]
                 if includeNumbers or type(name) == str:
                     expectedDataType = None
@@ -238,6 +305,8 @@ class Context:
     def updateVarNames(self):
         self.varNames = []
         def addName(name, line, type, usageType):
+            if name[0:1] == "&":
+                name = name[1:len(name)]
             if name not in self.varNames:
                 self.varNames.append(name)
         self.iterOverParams(addName)
@@ -295,27 +364,34 @@ class Context:
             i += 1
         return string
 
-
 # Context Data Getter Object
 class ContextDataGetter:
     def __init__(self, context:Context):
         self.context:Context = context.copy()
         self.varAndLabelUsage = None
         self.labelPositions:dict[str, int] = None
+        self.shouldHaveVar:dict[int, list[str]] = {}
+        self.varsRead:dict[int, list[str]] = {}
+        self.varsWritten:dict[int, list[str]] = {}
+        self.getRunOrderData()
 
-    def getJumpLabelPos(self, labelName) -> int:
+    def getJumpLabelPos(self, labelName, raiseExceptions = True) -> int:
         if self.labelPositions is not None:
             if labelName in self.labelPositions:
                 return self.labelPositions[labelName]
-            raise Exception(f"cound not find label {labelName}")
+            if raiseExceptions:
+                raise Exception(f"cound not find label {labelName}")
+            return None
         self.labelPositions = {}
         for i in range(len(self.context)):
-            line = self.context.getCommand(line)
+            line = self.context.getCommand(i)
             if line[0] == ".":
                 self.labelPositions[line[1][0]] = i
         if labelName in self.labelPositions:
             return self.labelPositions[labelName]
-        raise Exception(f"cound not find label {labelName}")
+        if raiseExceptions:
+            raise Exception(f"cound not find label {labelName}")
+        return None
 
     def getVarAndLabelUsage(self) -> dict[str, dict[str, list[dict[str, int]]|int]]:
         if self.varAndLabelUsage is not None:
@@ -342,183 +418,127 @@ class ContextDataGetter:
         def copy(self) -> ContextDataGetter.IterInRunOrderData:
             pass
 
-    def iterInRunOrder(self, iterInRunOrderData:IterInRunOrderData, lineNumber:int = 0, skipDoLineOnFirstLine:bool = True, vistedLines:dict = None):
+    def iterInRunOrder(self, iterInRunOrderData:IterInRunOrderData, lineNumber:int = 0, skipDoLineOnFirstLine:bool = True, vistedLines:list[int] = None):
         if vistedLines is None:
-            vistedLines = {}
-        while line not in vistedLines:
-            vistedLines[line] = True
+            vistedLines = []
+        while lineNumber not in vistedLines:
+            vistedLines.append(lineNumber)
             line = self.context.getCommand(lineNumber)
             if line is None:
                     break
             if len(vistedLines) > 1 or not skipDoLineOnFirstLine:
                 iterInRunOrderData.doLine(line, lineNumber)
-            if "program stop" in ILU.getTags_Mnemonic(line[0]):
-                break
-            elif "force jump" in ILU.getTags_Mnemonic(line[0]):
-                lineNumber = self.getJumpLabelPos(line[1][0])
-            elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
-                yield self.iterInRunOrder(iterInRunOrderData.copy(), self.getJumpLabelPos(line[1][0]), False, deepcopy(vistedLines))
-        return iterInRunOrderData
-
-    def varNextRead(self, varName:str, startLineNumber:int, vistedLines = None, hitHold = False):
-        varAndLabelUsage = self.getVarAndLabelUsage()
-        if vistedLines is None:
-            vistedLines:dict[int, bool] = {}
-        otherPath:None|dict[str, int] = None
-        if startLineNumber in vistedLines:
-            if otherPath is None:
-                return hitHold
-            return otherPath
-        vistedLines[startLineNumber] = True
-        if otherPath is not None:
-            if otherPath["steps"] < len(vistedLines):
-                if otherPath is None:
-                    return hitHold
-                return otherPath
-        line = self.context.getCommand(startLineNumber)
-        if line is None:
-            if otherPath is None:
-                return hitHold
-            return otherPath
-        if line[0] == "@":
-            if line[1][1] == varName:
-                hitHold = True
-        else:
-            if "program stop" in ILU.getTags_Mnemonic(line[0]):
-                if otherPath is None:
-                    return hitHold
-                return otherPath
-            if "force jump" in ILU.getTags_Mnemonic(line[0]):
-                startLineNumber = self.getJumpLabelPos(line[1][0])
-            elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
-                labelUsage = varAndLabelUsage[line[1][0]]
-                possibleOtherPath = self.varNextRead(varName, self.getJumpLabelPos(line[1][0]), deepcopy(vistedLines), hitHold)
-                if otherPath is None:
-                    otherPath = possibleOtherPath
-                elif otherPath["steps"] > possibleOtherPath:
-                    otherPath = possibleOtherPath
-                    
-        while True:
-            startLineNumber += 1
-            if startLineNumber in vistedLines:
-                if otherPath is None:
-                    return hitHold
-                return otherPath
-            vistedLines[startLineNumber] = True
-            if otherPath is not None:
-                if otherPath["steps"] < len(vistedLines):
-                    if otherPath is None:
-                        return hitHold
-                    return otherPath
-            line = self.context.getCommand(startLineNumber)
-            if line is None:
-                if otherPath is None:
-                    return hitHold
-                return otherPath
-            if line[0] == "@":
-                if line[1][1] == varName:
-                    hitHold = True
-            else:
+            if line[0] != "@":
                 if "program stop" in ILU.getTags_Mnemonic(line[0]):
-                    if otherPath is None:
-                        return hitHold
-                    return otherPath
-                if "force jump" in ILU.getTags_Mnemonic(line[0]):
-                    startLineNumber = self.getJumpLabelPos(line[1][0])
+                    break
+                elif "force jump" in ILU.getTags_Mnemonic(line[0]):
+                    lineNumber = self.getJumpLabelPos(line[1][0])
                 elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
-                    labelUsage = varAndLabelUsage[line[1][0]]
-                    possibleOtherPath = self.varNextRead(varName, self.getJumpLabelPos(line[1][0]), deepcopy(vistedLines), hitHold)
-                    if otherPath is None:
-                        otherPath = possibleOtherPath
-                    elif otherPath["steps"] > possibleOtherPath:
-                        otherPath = possibleOtherPath
-                for i in range(len(line[1])):
-                    if line[1][i] == varName:
-                        usageType = ILU.getUsageTypes_Mnemonic(line[0])[i]
-                        if usageType == "out":
-                            if otherPath is None:
-                                return hitHold
-                            return otherPath
-                        elif usageType in ["in", "both"]:
-                            if (otherPath is None) or otherPath["steps"] >= len(vistedLines):
-                                return {"lineNumber":startLineNumber, "steps":len(vistedLines), "hitHold":hitHold}
-                            else:
-                                return otherPath
+                    for i in self.iterInRunOrder(iterInRunOrderData.copy(), self.getJumpLabelPos(line[1][0]), False, deepcopy(vistedLines)):
+                        yield i
+            lineNumber += 1
+        yield iterInRunOrderData
 
-    def varNextWriten(self, varName:str, startLineNumber:int, vistedLines = None):
-        varAndLabelUsage = self.getVarAndLabelUsage()
-        if vistedLines is None:
-            vistedLines:dict[int, bool] = {}
-        otherPath:None|dict[str, int] = None
-        if startLineNumber in vistedLines:
-            return otherPath
-        vistedLines[startLineNumber] = True
-        if otherPath is not None:
-            if otherPath["steps"] < len(vistedLines):
-                return otherPath
-        line = self.context.getCommand(startLineNumber)
-        if line is None:
-            return otherPath
-        if "program stop" in ILU.getTags_Mnemonic(line[0]):
-            return otherPath
-        if "force jump" in ILU.getTags_Mnemonic(line[0]):
-            labelUsage = varAndLabelUsage[line[1][0]]
-            newstartLineNumber = None
-            for usage in labelUsage["usage"]:
-                if usage["usageType"] == "out":
-                    newstartLineNumber = usage["line"]
-            if newstartLineNumber is None:
-                raise Exception(f"jump label {line[1][0]} not defined. Line {startLineNumber}")
-            startLineNumber = newstartLineNumber
-        elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
-            labelUsage = varAndLabelUsage[line[1][0]]
-            for usage in labelUsage["usage"]:
-                if usage["usageType"] == "out":
-                    possibleOtherPath = self.varNextRead(varName, usage["line"], deepcopy(vistedLines))
-                    if otherPath is None:
-                        otherPath = possibleOtherPath
-                    elif otherPath["steps"] > possibleOtherPath:
-                        otherPath = possibleOtherPath
-        while True:
-            startLineNumber += 1
-            if startLineNumber in vistedLines:
-                return otherPath
-            vistedLines[startLineNumber] = True
-            if otherPath is not None:
-                if otherPath["steps"] < len(vistedLines):
-                    return otherPath
-            line = self.context.getCommand(startLineNumber)
-            if line is None:
-                return otherPath
-            if "program stop" in ILU.getTags_Mnemonic(line[0]):
-                return otherPath
-            if "force jump" in ILU.getTags_Mnemonic(line[0]):
-                labelUsage = varAndLabelUsage[line[1][0]]
-                newstartLineNumber = None
-                for usage in labelUsage["usage"]:
-                    if usage["usageType"] == "out":
-                        newstartLineNumber = usage["line"]
-                if newstartLineNumber is None:
-                    raise Exception(f"jump label {line[1][0]} not defined. Line {startLineNumber}")
-                startLineNumber = newstartLineNumber
-            elif  "maybe jump" in ILU.getTags_Mnemonic(line[0]):
-                labelUsage = varAndLabelUsage[line[1][0]]
-                for usage in labelUsage["usage"]:
-                    if usage["usageType"] == "out":
-                        possibleOtherPath = self.varNextRead(varName, usage["line"], deepcopy(vistedLines))
-                        if otherPath is None:
-                            otherPath = possibleOtherPath
-                        elif otherPath["steps"] > possibleOtherPath:
-                            otherPath = possibleOtherPath
-            for i in range(len(line[1])):
-                if line[1][i] == varName:
-                    usageType = ILU.getUsageTypes_Mnemonic(line[0])[i]
-                    if usageType in ["out", "both"]:
-                        if (otherPath is None) or otherPath["steps"] >= len(vistedLines):
-                            return {"lineNumber":startLineNumber, "steps":len(vistedLines)}
-                        else:
-                            return otherPath
+    def getRunOrderData(self):
+        class IterClass(ContextDataGetter.IterInRunOrderData):
+            def __init__(self) -> None:
+                self.vistedLineOrder:list = []
+                self.shouldHaveVar:dict[int, list[str]] = {}
+                self.forceHaveVar:dict[int, list[str]] = {}
+                self.varsRead:dict[int, list[str]] = {}
+                self.varsWritten:dict[int, list[str]] = {}
+                self.lastLine:tuple[str, list[str|int]]|None = None
 
+            def doLine(self, line, lineNumber):
+                # if it is the first line there is no previous var data
+                if len(self.vistedLineOrder) == 0:
+                    self.shouldHaveVar[lineNumber] = []
+                    self.forceHaveVar[lineNumber] = []
+                else:
+                    # copy the forced vars
+                    self.shouldHaveVar[lineNumber] = copy(self.forceHaveVar[self.vistedLineOrder[0]])
+                    self.forceHaveVar[lineNumber] = copy(self.forceHaveVar[self.vistedLineOrder[0]])
+                # make arrays for var read written data
+                self.varsRead[lineNumber] = []
+                self.varsWritten[lineNumber] = []
+                # do line
+                if line[0] == "@":
+                    if line[1][0] == "hold":
+                        if line[1][1] not in self.forceHaveVar[lineNumber]:
+                            self.shouldHaveVar[lineNumber].append(line[1][1])
+                            self.forceHaveVar[lineNumber].append(line[1][1])
+                    elif line[1][0] == "release":
+                        if line[1][1] in self.forceHaveVar[lineNumber]:
+                            self.shouldHaveVar[lineNumber].remove(line[1][1])
+                            self.forceHaveVar[lineNumber].remove(line[1][1])
+                else:
+                    paramUsageTypes = ILU.getUsageTypes_Mnemonic(line[0])
+                    paramDataTypes = ILU.getExpectedDataType_Mnemonic(line[0])
+                    params = line[1]
+                    for paramIndex in range(len(params)):
+                        if paramDataTypes[paramIndex] == "var":                            
+                            varName = params[paramIndex]
+                            self.shouldHaveVar[lineNumber].append(varName)
+                            if paramUsageTypes[paramIndex] in ["out", "both"]:
+                                if varName not in self.varsWritten[lineNumber]:
+                                    self.varsWritten[lineNumber].append(varName)
+                            if paramUsageTypes[paramIndex] in ["in", "both"]:
+                                if varName not in self.varsRead[lineNumber]:
+                                    self.varsRead[lineNumber].append(varName)
+                                    foundVar = False
+                                    for previousLinNumber in self.vistedLineOrder:
+                                        self.shouldHaveVar[previousLinNumber].append(varName)
+                                        if varName in self.varsWritten[previousLinNumber] or varName in self.shouldHaveVar[previousLinNumber]:
+                                            foundVar = True
+                                            break
+                                    if not foundVar:
+                                        raise Exception(f"did not find var {varName} on line {lineNumber}. Line trace {str(self.vistedLineOrder)}")
+                self.vistedLineOrder.insert(0, lineNumber)
+                self.lastLine = line
+                        
+            def copy(self):
+                newClass = IterClass()
+                newClass.vistedLineOrder = copy(self.vistedLineOrder)
+                newClass.shouldHaveVar = deepcopy(self.shouldHaveVar)
+                newClass.forceHaveVar = deepcopy(self.forceHaveVar)
+                newClass.varsRead = deepcopy(self.varsRead)
+                newClass.varsWritten = deepcopy(self.varsWritten)
+                newClass.lastLine = self.lastLine
+                return newClass
+        self.traceDatas:list[IterClass] = []
+        for i in self.iterInRunOrder(IterClass(), skipDoLineOnFirstLine=False):
+            self.traceDatas.append(i)
+        for lineNumber in range(len(self.context)):
+            self.shouldHaveVar[lineNumber] = []
+            self.varsRead[lineNumber] = []
+            self.varsWritten[lineNumber] = []
+            for traceData in self.traceDatas:
+                if lineNumber in traceData.shouldHaveVar:
+                    for varName in traceData.shouldHaveVar[lineNumber]:
+                        if varName not in self.shouldHaveVar[lineNumber]:
+                            self.shouldHaveVar[lineNumber].append(varName)
+                if lineNumber in traceData.varsRead:
+                    for varName in traceData.varsRead[lineNumber]:
+                        if varName not in self.varsRead[lineNumber]:
+                            self.varsRead[lineNumber].append(varName)
+                if lineNumber in traceData.varsWritten:
+                    for varName in traceData.varsWritten[lineNumber]:
+                        if varName not in self.varsWritten[lineNumber]:
+                            self.varsWritten[lineNumber].append(varName)
+            
+    def needVarOnLine(self, varName:str, lineNumber:int):
+        if lineNumber in self.shouldHaveVar:
+            return (varName in self.shouldHaveVar[lineNumber])
+
+    def varNextWriten(self, varName:str, lineNumber:int):
+        for trace in self.traceDatas:
+            if lineNumber in trace.vistedLineOrder:
+                index = trace.vistedLineOrder.index(lineNumber)
+                while len(self.varsWritten) < index:
+                    if varName in self.varsWritten[index]:
+                        return lineNumber
+                    index += 1
+        return None
 
 # Context Data Changer Object
 class ContextDataChanger:

@@ -1,8 +1,14 @@
+SET g 3
+PRINT g
 SET a 2
 @hold a
 SET b &a
 SET c 3
+JMIF l a
 DREFW b c
+JMP k
+.l
 PRINT b
+.k
 PRINT c
 @release a

@@ -3,7 +3,7 @@ from copy import copy as shalowCopy
 from USML.instructions.instructionLookUp import ILU
 from USML.optimizers.simple.simpleOptimizerGetter import SimpleOptimizerGetter
 from USML.baseAssembler import Assembler
-from USML.context import Context
+from USML.context import Context, ContextDataGetter
 
 
 class USMLRunner:
@@ -13,7 +13,14 @@ class USMLRunner:
     
     def process(self, codeStr:str):
         code = Context()
-        for line in codeStr.splitlines():
+        for lineStr in codeStr.splitlines():
+            line = ""
+            lastChar = ""
+            for char in lineStr+" ":
+                if lastChar + char == "//":
+                    break
+                line += lastChar
+                lastChar = char
             lineData = line.split(" ")
             if len(lineData) == 0:
                 continue
@@ -39,9 +46,10 @@ class USMLRunner:
                     i += 1
                 con.replaceVarNamesWithUniqueNames(dict(zip(toReplace, lineData[1:len(lineData)])))
                 code.addContext(con, lineData[1:len(lineData)])
+        ContextDataGetter(code).getRunOrderData()
         for optimizer in SimpleOptimizerGetter.simpleOptimizerGetter.getOptimizer():
             code = optimizer.run(code)
-        # assembly = self.assembler.assemble(code)
+        assembly = self.assembler.assemble(code)
         return code, [] #, assembly
 
     def getBestInstructionSimple(self, instructionName:str, instructionNotToUse:list|None = None) -> Context|None:

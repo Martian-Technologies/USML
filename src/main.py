@@ -18,4 +18,3 @@ with open("prog.usml") as codeStr:
     input("press enter to run")
     runner = CodeRunner(code, bitCount=8)
     runner.run()
-

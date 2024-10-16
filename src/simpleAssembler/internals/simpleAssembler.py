@@ -1,5 +1,5 @@
 from __future__ import annotations
-from copy import deepcopy
+from copy import copy, deepcopy
 import json
 
 from USML.instructions.instructionLookUp import ILU
@@ -50,7 +50,80 @@ class SimpleAssemblerMemoryMannager:
     @staticmethod
     def doMemoryMannagement(context:Context) -> Context:
         context = context.copy()
-        if "program stop" not in ILU.getTags_Mnemonic(context.getCommand(len(context) - 1)[0]):
+        lastCommand = context.getCommand(len(context) - 1)[0]
+        if lastCommand == "@" or "program stop" not in ILU.getTags_Mnemonic(lastCommand):
+            context.addCommand(("HLT", []))
+        dataGetter = ContextDataGetter(context)
+        overlapData = SimpleAssemblerMemoryMannager.getNonOverlappingVars(dataGetter)
+        ramVarIndexs = SimpleAssemblerMemoryMannager.getVarAddresses(dataGetter, overlapData)
+        dataSetter = ContextDataChanger(context)
+
+    @staticmethod
+    def getVarAddresses(dataGetter:ContextDataGetter, overlapData:dict[list[str]]):
+        varGroupings:list[list[str]] = []
+        for var in overlapData:
+            varOverLapData = overlapData[var]
+            groupingsToAdd = [[var]]
+            for grouping in varGroupings:
+                skipAdd = False
+                for varName in grouping:
+                    if varName not in varOverLapData:
+                        skipAdd = True
+                        break
+                if not skipAdd:
+                    groupingsToAdd.append(copy(grouping))
+                    grouping.append(var)
+            varGroupings.extend(groupingsToAdd)
+        varGroupings.sort(key=len, reverse=True)
+        varsInGroups:list[str] = []
+        for group in varGroupings.copy():
+            keepGroup = True
+            for var in group:
+                if var in varsInGroups:
+                    keepGroup = False
+                    varGroupings.remove(group)
+                    break
+            if keepGroup:
+                for var in group:
+                    varsInGroups.append(var)
+        varToRamMap = {}
+        ramToVarMap = {}
+        for i in range(len(varGroupings)):
+            group = varGroupings[i]
+            for var in group:
+                varToRamMap[var] = i
+                ramToVarMap[i] = var
+        return varToRamMap, ramToVarMap
+    
+    @staticmethod
+    def getNonOverlappingVars(dataGetter:ContextDataGetter) -> dict[list[str]]:
+        foundVarOverLaps:dict[str, list[str]] = {}
+        for var1 in dataGetter.context.varNames:
+            if dataGetter.getJumpLabelPos(var1, False) != None:
+                continue
+            foundVarOverLaps[var1] = []
+            for var2 in dataGetter.context.varNames:
+                if dataGetter.getJumpLabelPos(var2, False) != None:
+                    continue
+                foundVarOverLaps[var1].append(var2)
+        for lineNum in range(len(dataGetter.context)):
+            lineVars = dataGetter.shouldHaveVar[lineNum]
+            for var1 in lineVars:
+                for var2 in lineVars:
+                    if var2 in foundVarOverLaps[var1]:
+                        try:
+                            # print(foundVarOverLaps[var1])
+                            # print(var2)
+                            foundVarOverLaps[var1].remove(var2)
+                        except:
+                            pass
+        return foundVarOverLaps            
+
+    @staticmethod
+    def nothing(context:Context):
+        context = context.copy()
+        lastCommand = context.getCommand(len(context) - 1)[0]
+        if lastCommand == "@" or "program stop" not in ILU.getTags_Mnemonic(lastCommand):
             context.addCommand(("HLT", []))
         dataGetter = ContextDataGetter(context)
         dataSetter = ContextDataChanger(context)
@@ -66,31 +139,34 @@ class SimpleAssemblerMemoryMannager:
             line = context.getCommand(lineNumber)
             SimpleAssemblerMemoryMannager.doMemoryMannagementForLine(mem, context, dataGetter, dataSetter, lineNumber)
             allMem[lineNumber] = mem.copy()
-            tags = ILU.getTags_Mnemonic(line[0])
-            if context.getCommand(lineNumber)[0] == ".":
-                mem.clearUnmapped()
-                nextLineNumber += 1
-            elif "force jump" in tags:
-                labelData = getVarAndLabelUsage[line[1][0]]
-                for usage in labelData["usage"]:
-                    if usage["usageType"] == "out":
-                        nextLineNumber = usage["line"]
-                if nextLineNumber is None:
-                    raise Exception(f"Label {line[1][0]} in {line[0]} on line {lineNumber} is not defined.")
-                mem.clearUnmapped()
-            elif "maybe jump" in tags:
-                labelData = getVarAndLabelUsage[line[1][0]]
-                for usage in labelData["usage"]:
-                    if usage["usageType"] == "out":
-                        jumpLoc = usage["line"]
-                if jumpLoc is None:
-                    raise Exception(f"Label {line[1][0]} in {line[0]} on line {lineNumber} is not defined.")
-                toDoJumps.append((lineNumber, jumpLoc))
-                nextLineNumber += 1
+            if line[0] != "@":
+                tags = ILU.getTags_Mnemonic(line[0])
+                if context.getCommand(lineNumber)[0] == ".":
+                    mem.clearUnmapped()
+                    nextLineNumber += 1
+                elif "force jump" in tags:
+                    labelData = getVarAndLabelUsage[line[1][0]]
+                    for usage in labelData["usage"]:
+                        if usage["usageType"] == "out":
+                            nextLineNumber = usage["line"]
+                    if nextLineNumber is None:
+                        raise Exception(f"Label {line[1][0]} in {line[0]} on line {lineNumber} is not defined.")
+                    mem.clearUnmapped()
+                elif "maybe jump" in tags:
+                    labelData = getVarAndLabelUsage[line[1][0]]
+                    for usage in labelData["usage"]:
+                        if usage["usageType"] == "out":
+                            jumpLoc = usage["line"]
+                    if jumpLoc is None:
+                        raise Exception(f"Label {line[1][0]} in {line[0]} on line {lineNumber} is not defined.")
+                    toDoJumps.append((lineNumber, jumpLoc))
+                    nextLineNumber += 1
+                else:
+                    nextLineNumber += 1
             else:
                 nextLineNumber += 1
             while (
-                    ("program stop" in ILU.getTags_Mnemonic(context.getCommand(lineNumber)[0])) or
+                    (context.getCommand(lineNumber)[0] != "@" and "program stop" in ILU.getTags_Mnemonic(context.getCommand(lineNumber)[0])) or
                     (nextLineNumber >= totalLineCount) or
                     (nextLineNumber in allMem)
                 ):

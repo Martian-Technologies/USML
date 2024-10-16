@@ -3,7 +3,14 @@ import json
 from USML.instructions.instructionLookUp import ILU
 
 def getFormattedJson(data, depth=1, maxDepth=2):
-    if type(data) != dict and type(data) != list:
+    if type(data) not in [list, tuple, dict]:
+        if type(data).__str__ is object.__str__ and type(data) not in [int, float, str]:
+            return '{"' + type(data).__name__ + '" : ' +\
+                getFormattedJson(
+                    {attr:data.__getattribute__(attr) for attr in dir(data) if not callable(getattr(data, attr)) and not attr.startswith("__")},
+                    depth,
+                    maxDepth-1
+                ) + "}"
         if type(data) == str:
             return '"' + data + '"'
         if type(data) == bool:
@@ -22,7 +29,7 @@ def getFormattedJson(data, depth=1, maxDepth=2):
                 if type(key) == str:
                     keyStr = '"' + key + '"'
                 else:
-                    keyStr = str(key)
+                    keyStr = '"' + str(key) + '"'
                 string += "    " * depth + keyStr + ": " + getFormattedJson(data[key], depth+1, maxDepth)
                 if i < len(data):
                     string += ","
@@ -52,21 +59,23 @@ def getFormattedJson(data, depth=1, maxDepth=2):
             return str(data)
         return json.dumps(data)
 
-# read data
-instructionData = None
-with open("src/simpleAssembler/settings/InstructionData.json") as f:
-    instructionData = json.load(f)
 
-# do data update here
-# ------------------------------------------------------
+if __name__ == "__main__":
+    # read data
+    instructionData = None
+    with open("src/simpleAssembler/settings/InstructionData.json") as f:
+        instructionData = json.load(f)
+
+    # do data update here
+    # ------------------------------------------------------
 
 
 
 
 
-# ------------------------------------------------------
+    # ------------------------------------------------------
 
-# set data to new json
-with open("src/simpleAssembler/settings/InstructionData2.json", "w") as f:
-    f.write(getFormattedJson(instructionData))
+    # set data to new json
+    with open("src/simpleAssembler/settings/InstructionData2.json", "w") as f:
+        f.write(getFormattedJson(instructionData))
     

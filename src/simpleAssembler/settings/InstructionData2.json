@@ -1,0 +1,346 @@
+{
+    "Halt": {
+        "hasInstruction": true,
+        "cost": 0,
+        "readWritePos": [],
+        "instructionId": 0,
+        "instructionName": "HLT",
+        "paramOrder": []
+    },
+    "No Operation": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [],
+        "instructionId": 1,
+        "instructionName": "NOP",
+        "paramOrder": []
+    },
+    "Jump": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null],
+        "instructionId": 2,
+        "instructionName": "JMP",
+        "paramOrder": ["PARAM1"]
+    },
+    "Jump If": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"]],
+        "instructionId": 3,
+        "instructionName": "JMIF",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Jump If Not": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"]],
+        "instructionId": 4,
+        "instructionName": "JMIFN",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Jump If Equal": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"], ["reg"]],
+        "instructionId": 5,
+        "instructionName": "JMIFE",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Jump If Not Equal": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"], ["reg"]],
+        "instructionId": 6,
+        "instructionName": "JMIFNE",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Jump If Less": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"], ["reg"]],
+        "instructionId": 7,
+        "instructionName": "JMIFL",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Jump If Less Or Equal": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"], ["reg"]],
+        "instructionId": 8,
+        "instructionName": "JMIFLE",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Jump If Greater": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"], ["reg"]],
+        "instructionId": 9,
+        "instructionName": "JMIFG",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Jump If Greater Or Equal": {
+        "hasInstruction": true,
+        "cost": 2,
+        "readWritePos": [null, ["reg"], ["reg"]],
+        "instructionId": 10,
+        "instructionName": "JMIFGE",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Label": {
+        "hasInstruction": true,
+        "cost": 0,
+        "readWritePos": [null],
+        "instructionId": 11,
+        "instructionName": ".",
+        "paramOrder": ["PARAM1"]
+    },
+    "DereferenceWrite": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": ["reg", "reg"],
+        "instructionId": 12,
+        "instructionName": "DREFW",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "DereferenceRead": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": ["reg", "reg"],
+        "instructionId": 13,
+        "instructionName": "DREFR",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Set": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": ["reg", null],
+        "instructionId": 14,
+        "instructionName": "SET",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Reset": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": ["reg"],
+        "instructionId": 15,
+        "instructionName": "RST",
+        "paramOrder": ["PARAM1"]
+    },
+    "Copy": {
+        "hasInstruction": true,
+        "cost": 0.5,
+        "readWritePos": ["all", "all"],
+        "instructionId": "no Id because copy commands will be turned intp movement commands. Leaves id 14 and 15 commands for [reg to ram] and [ram to reg]",
+        "instructionName": "CPY",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Swap": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"]],
+        "instructionId": 16,
+        "instructionName": "SWP",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Equals": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 17,
+        "instructionName": "EQU",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Not Equals": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 18,
+        "instructionName": "NEQU",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Greater": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 19,
+        "instructionName": "GRT",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Less": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 20,
+        "instructionName": "LES",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Greater Or Equal": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 21,
+        "instructionName": "GOE",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Less Or Equal": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 22,
+        "instructionName": "LOE",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "And": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 23,
+        "instructionName": "AND",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Or": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 24,
+        "instructionName": "OR",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Xor": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 25,
+        "instructionName": "XOR",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Nand": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 26,
+        "instructionName": "NAND",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Nor": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 27,
+        "instructionName": "NOR",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Xnor": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 28,
+        "instructionName": "XNOR",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Not": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"]],
+        "instructionId": 29,
+        "instructionName": "NOT",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Bool": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": ["all", ["reg"]],
+        "instructionId": 30,
+        "instructionName": "BOOL",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Bit Shift Left": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"]],
+        "instructionId": 31,
+        "instructionName": "BSL",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Bit Shift Left With Fill": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 32,
+        "instructionName": "BSLF",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Bit Shift Left With Overflow And Fill": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"], ["reg"]],
+        "instructionId": 33,
+        "instructionName": "BSLOF",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3", "PARAM4"]
+    },
+    "Bit Shift Left With Overflow": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 34,
+        "instructionName": "BSLO",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Bit Shift Right": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"]],
+        "instructionId": 35,
+        "instructionName": "BSR",
+        "paramOrder": ["PARAM1", "PARAM2"]
+    },
+    "Bit Shift Right With Fill": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 36,
+        "instructionName": "BSRF",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Bit Shift Right With Overflow And Fill": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"], ["reg"]],
+        "instructionId": 37,
+        "instructionName": "BSROF",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3", "PARAM4"]
+    },
+    "Bit Shift Right With Overflow": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 38,
+        "instructionName": "BSRO",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Add": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"]],
+        "instructionId": 39,
+        "instructionName": "ADD",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3"]
+    },
+    "Add Output Carry": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"], ["reg"], ["reg"], ["reg"]],
+        "instructionId": 40,
+        "instructionName": "ADDC",
+        "paramOrder": ["PARAM1", "PARAM2", "PARAM3", "PARAM4"]
+    },
+    "Print": {
+        "hasInstruction": true,
+        "cost": 1,
+        "readWritePos": [["reg"]],
+        "instructionId": 41,
+        "instructionName": "PRINT",
+        "paramOrder": ["PARAM1"]
+    }
+}
